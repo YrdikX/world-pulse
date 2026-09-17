@@ -168,6 +168,12 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 
 .bucket-header{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:22px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line);}
 .bucket-header:first-child{margin-top:0;}
+.month-header{cursor:pointer; display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:9px 14px; margin:8px 0;}
+.month-header:hover{border-color:var(--accent); color:var(--accent);}
+.month-caret{font-size:10px; color:var(--ink-dim); flex:none; width:10px;}
+.month-count{color:var(--ink-dim); font-weight:400; text-transform:none; letter-spacing:0;}
+.month-body{display:flex; flex-direction:column; gap:10px; margin:0 0 4px;}
+.month-body[hidden]{display:none;}
 .feed-list{display:flex; flex-direction:column; gap:10px;}
 .feed-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; cursor:pointer; transition:border-color .15s;}
 .feed-card:hover{border-color:var(--accent);}
@@ -269,7 +275,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <p class="lede">Not opinions — factual links: who said or did what, and who it connects to. Every edge is a real event with a source link. This is a small seed of real stories — the base grows with every day processed, and older items move to the Archive automatically.</p>
   <div class="meta-row">
     <span>NODES: <b>246</b></span>
-    <span>EDGES: <b>91</b></span>
+    <span>EDGES: <b>111</b></span>
     <span>COUNTRIES ON MAP: <b>221</b></span>
     <span>EVERY EDGE LINKS TO A SOURCE</span>
   </div>
@@ -396,7 +402,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 91 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 111 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -468,6 +474,44 @@ function fmtDate(dateStr){
   if (n <= 0) return dateStr + ' (today)';
   if (n === 1) return dateStr + ' (1 day ago)';
   return dateStr + ' (' + n + ' days ago)';
+}
+
+// Anything older than 30 days is grouped by calendar month, collapsed by
+// default, instead of one ever-growing flat list — a year of history
+// shouldn't mean scrolling past a thousand cards to reach the comments.
+var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function monthKey(dateStr){ var d = new Date(dateStr); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0'); }
+function monthLabel(dateStr){ var d = new Date(dateStr); return MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear(); }
+function renderArchiveGrouped(items, cardFn, openFirst){
+  var groups = {}, order = [];
+  items.forEach(function(x){
+    var k = monthKey(x.date);
+    if (!groups[k]){ groups[k] = []; order.push(k); }
+    groups[k].push(x);
+  });
+  order.sort().reverse();
+  var html = '';
+  order.forEach(function(k, i){
+    var groupItems = groups[k];
+    var open = !!openFirst && i === 0;
+    html += '<div class="month-header' + (open ? ' open' : '') + '" data-month="' + k + '">' +
+      '<span class="month-caret">' + (open ? '▾' : '▸') + '</span>' + monthLabel(groupItems[0].date) +
+      ' <span class="month-count">(' + groupItems.length + ')</span></div>' +
+      '<div class="month-body"' + (open ? '' : ' hidden') + ' data-month-body="' + k + '">' +
+      groupItems.map(cardFn).join('') + '</div>';
+  });
+  return html;
+}
+function wireMonthToggles(container){
+  Array.from(container.querySelectorAll('.month-header')).forEach(function(h){
+    h.addEventListener('click', function(){
+      var k = h.getAttribute('data-month');
+      var body = container.querySelector('[data-month-body="' + k + '"]');
+      var isOpen = h.classList.toggle('open');
+      body.hidden = !isOpen;
+      h.querySelector('.month-caret').textContent = isOpen ? '▾' : '▸';
+    });
+  });
 }
 
 var RUS_PATH = "__RUS_PATH__";
@@ -725,7 +769,47 @@ var EDGES = [
   {from:'gha', to:'gha', label:'Mahama government continues fiscal consolidation under its IMF program', url:'https://www.reuters.com/world/africa/', date:'2026-09-04', scope:'domestic', country:'gha',
    detail:'Ghana’s government under President John Mahama, in office since January 2025, continued fiscal consolidation measures under its IMF program, part of the country’s recovery from its 2022 debt crisis.'},
   {from:'mar', to:'mar', label:'continues to see youth-led protests over public services, echoing the GenZ 212 movement', url:'https://www.reuters.com/world/africa/', date:'2026-08-28', scope:'domestic', country:'mar',
-   detail:'Morocco continued to see youth-led protests over underfunded healthcare and education, echoing the GenZ 212 movement that emerged in late 2025 amid contrasts with major sports-infrastructure spending.'}
+   detail:'Morocco continued to see youth-led protests over underfunded healthcare and education, echoing the GenZ 212 movement that emerged in late 2025 amid contrasts with major sports-infrastructure spending.'},
+  {from:'bgr', to:'bgr', label:'formally adopts the euro, becoming the eurozone’s 21st member', url:'https://www.reuters.com/world/europe/', date:'2026-01-01', scope:'domestic', country:'bgr',
+   detail:'Bulgaria formally adopted the euro on January 1, becoming the 21st member of the eurozone after meeting the EU’s convergence criteria, a process years in the making.'},
+  {from:'france', to:'g7', label:'takes over the G7 presidency for 2026', url:'https://www.diplomatie.gouv.fr/en/french-foreign-policy/g7/', date:'2026-01-01', scope:'international',
+   detail:'France assumed the rotating G7 presidency for 2026, setting the year’s agenda for the group ahead of its leaders’ summit later in the year.'},
+  {from:'usa', to:'usa', label:'administration marks one year in office amid continued tariff disputes', url:'https://www.reuters.com/world/us/', date:'2026-01-20', scope:'domestic', country:'usa',
+   detail:'The US administration marked one year in office, with tariff disputes with multiple trading partners, including China, still unresolved and a continuing point of friction in global trade.'},
+  {from:'china', to:'china', label:'holds annual Central Economic Work Conference, sets growth targets amid trade tensions', url:'https://www.reuters.com/world/china/', date:'2026-01-08', scope:'domestic', country:'china',
+   detail:'China’s leadership held its annual Central Economic Work Conference, setting economic priorities and growth targets for the year as policymakers try to offset weak domestic demand and ongoing trade tensions.'},
+  {from:'eu', to:'russia', label:'marks the war’s anniversary with a further sanctions push', url:'https://ec.europa.eu/commission/presscorner/', date:'2026-02-24', scope:'international',
+   detail:'On the anniversary of Russia’s full-scale invasion of Ukraine, the European Commission pushed forward further sanctions measures targeting Russia’s energy revenue and sanctions-evasion networks.'},
+  {from:'nato', to:'ukraine', label:'reaffirms support on the war’s anniversary', url:'https://www.nato.int/', date:'2026-02-24', scope:'international',
+   detail:'NATO issued a statement reaffirming continued support for Ukraine on the anniversary of Russia’s full-scale invasion, while allies discussed longer-term security guarantees.'},
+  {from:'india', to:'india', label:'government presents the annual Union Budget', url:'https://www.reuters.com/world/india/', date:'2026-02-01', scope:'domestic', country:'india',
+   detail:'India’s government presented its annual Union Budget to parliament, outlining spending and tax priorities for the fiscal year amid a coalition government dependent on regional allies for the first time since 2014.'},
+  {from:'brazil', to:'brazil', label:'Supreme Court proceedings against Bolsonaro allies continue', url:'https://www.reuters.com/world/americas/', date:'2026-02-15', scope:'domestic', country:'brazil',
+   detail:'Brazil’s Supreme Court continued proceedings against several allies of former president Bolsonaro following his own September 2025 conviction for attempting a coup, ahead of the October 2026 election.'},
+  {from:'cze', to:'cze', label:'government passes its first budget since taking office', url:'https://www.reuters.com/world/europe/', date:'2026-03-10', scope:'domestic', country:'cze',
+   detail:'The Czech government under PM Andrej Babiš passed its first budget since taking office in late 2025, an early test of the coalition’s cohesion.'},
+  {from:'isr', to:'isr', label:'coalition faces early tension over the ultra-Orthodox conscription bill', url:'https://www.timesofisrael.com/', date:'2026-03-05', scope:'domestic', country:'isr',
+   detail:'Israel’s governing coalition faced early-year tension over legislation on military conscription for ultra-Orthodox men, a recurring fault line that would resurface again later in the year.'},
+  {from:'zaf', to:'zaf', label:'coalition government reaches budget deal after weeks of internal disputes', url:'https://www.reuters.com/world/africa/', date:'2026-03-20', scope:'domestic', country:'zaf',
+   detail:'South Africa’s Government of National Unity reached a deal on the national budget after weeks of internal disputes between the ANC and Democratic Alliance, echoing similar tension during the 2025 budget cycle.'},
+  {from:'poland', to:'poland', label:'President Nawrocki vetoes another government bill', url:'https://notesfrompoland.com/', date:'2026-04-10', scope:'domestic', country:'poland',
+   detail:'President Karol Nawrocki vetoed another bill from PM Donald Tusk’s government, continuing the "cohabitation" standoff that has defined Polish politics since Nawrocki took office in August 2025.'},
+  {from:'mex', to:'mex', label:'Sheinbaum’s electoral reform stalls in Congress despite the supermajority', url:'https://www.reuters.com/world/americas/', date:'2026-04-15', scope:'domestic', country:'mex',
+   detail:'President Claudia Sheinbaum’s proposed electoral reform stalled in Congress, a rare setback for a coalition that otherwise holds the two-thirds supermajority needed to amend the constitution.'},
+  {from:'india', to:'india', label:'BJP takes over 70% of seats in West Bengal, ending Mamata Banerjee’s 15-year rule', url:'https://www.reuters.com/world/india/', date:'2026-05-04', scope:'domestic', country:'india',
+   detail:'The BJP won more than 70% of seats in West Bengal’s state assembly election, ending Mamata Banerjee’s 15-year hold on the state and marking one of the party’s biggest state-level wins since 2024.'},
+  {from:'tur', to:'ukraine', label:'hosts an early round of Russia-Ukraine talks', url:'https://www.aljazeera.com/where/turkey/', date:'2026-05-12', scope:'international',
+   detail:'Turkey hosted an early-year round of talks between Russian and Ukrainian officials, continuing its role as a mediator and host for periodic negotiations since 2022.'},
+  {from:'brazil', to:'brazil', label:'Lula formally launches re-election campaign', url:'https://www.reuters.com/world/americas/', date:'2026-05-20', scope:'domestic', country:'brazil',
+   detail:'President Lula da Silva formally launched his re-election campaign ahead of the October 2026 vote, with polling showing a tight race against Flávio Bolsonaro.'},
+  {from:'kor', to:'kor', label:'Lee Jae-myung marks one year in office', url:'https://carnegieendowment.org/', date:'2026-06-03', scope:'domestic', country:'kor',
+   detail:'President Lee Jae-myung marked one year in office, a year that began with a snap election following Yoon Suk-yeol’s martial-law crisis and impeachment.'},
+  {from:'g20', to:'usa', label:'finance ministers hold an early-year session on debt relief', url:'https://g20.org/', date:'2026-06-20', scope:'international',
+   detail:'G20 finance ministers held an early-year session focused on sovereign debt relief for lower-income countries, ahead of the leaders’ summit hosted by the United States later in 2026.'},
+  {from:'arg', to:'arg', label:'Milei government touts falling inflation at the midterm mark', url:'https://www.reuters.com/world/americas/', date:'2026-06-25', scope:'domestic', country:'arg',
+   detail:'Argentina’s government under Javier Milei touted continued disinflation at the midpoint of the year, crediting sustained fiscal austerity even as critics pointed to the social cost of the adjustment.'},
+  {from:'idn', to:'idn', label:'free-meal program faces funding questions ahead of the budget cycle', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-06-10', scope:'domestic', country:'idn',
+   detail:'Indonesia’s signature free school-meal program faced funding questions ahead of the annual budget cycle, months before its nationwide expansion later in the year.'}
 ];
 
 var SYSTEMS = {
@@ -1550,14 +1634,25 @@ drawMap();
 function archiveCard(x){
   return '<div class="archive-card"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
     '<span class="archive-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
+    '<span class="feed-scope">' + x.scope + '</span>' +
     '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></span></div>';
 }
 function renderArchive(){
   var list = document.getElementById('archive-list');
-  var items = EDGES.filter(function(x){ return x.scope === 'international' && daysAgo(x.date) > RECENT_DAYS; })
+  // Previously filtered to international only, which silently hid every
+  // archived domestic item from this tab (they still showed up in Feed's
+  // own archive section) -- no documented reason for the split, so include
+  // both scopes here now, same as everywhere else.
+  var items = EDGES.filter(function(x){ return daysAgo(x.date) > RECENT_DAYS; })
     .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
   if (!items.length){ list.innerHTML = '<div class="archive-empty">Nothing older than this week yet — everything so far is still recent.</div>'; return; }
-  list.innerHTML = renderBucketed(items, archiveCard, ['month','archive']);
+  var monthItems = items.filter(function(x){ return bucketOf(x.date) === 'month'; });
+  var olderItems = items.filter(function(x){ return bucketOf(x.date) === 'archive'; });
+  var html = '';
+  if (monthItems.length) html += '<div class="bucket-header">This month</div>' + monthItems.map(archiveCard).join('');
+  if (olderItems.length) html += renderArchiveGrouped(olderItems, archiveCard, true);
+  list.innerHTML = html;
+  wireMonthToggles(list);
 }
 
 function renderChambers(activeId){
@@ -1602,7 +1697,12 @@ function feedCard(x){
 function renderFeed(){
   var list = document.getElementById('feed-list');
   var items = EDGES.slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
-  list.innerHTML = renderBucketed(items, feedCard);
+  var recentItems = items.filter(function(x){ return bucketOf(x.date) !== 'archive'; });
+  var olderItems = items.filter(function(x){ return bucketOf(x.date) === 'archive'; });
+  var html = renderBucketed(recentItems, feedCard, ['today','week','month']);
+  if (olderItems.length) html += '<div class="bucket-header">Archive</div>' + renderArchiveGrouped(olderItems, feedCard, false);
+  list.innerHTML = html;
+  wireMonthToggles(list);
   Array.from(list.querySelectorAll('.feed-card[data-goto]')).forEach(function(card){
     card.addEventListener('click', function(){ openEntityPage(card.getAttribute('data-goto')); });
   });

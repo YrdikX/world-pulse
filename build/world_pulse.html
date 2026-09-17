@@ -168,6 +168,12 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 
 .bucket-header{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:22px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line);}
 .bucket-header:first-child{margin-top:0;}
+.month-header{cursor:pointer; display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:9px 14px; margin:8px 0;}
+.month-header:hover{border-color:var(--accent); color:var(--accent);}
+.month-caret{font-size:10px; color:var(--ink-dim); flex:none; width:10px;}
+.month-count{color:var(--ink-dim); font-weight:400; text-transform:none; letter-spacing:0;}
+.month-body{display:flex; flex-direction:column; gap:10px; margin:0 0 4px;}
+.month-body[hidden]{display:none;}
 .feed-list{display:flex; flex-direction:column; gap:10px;}
 .feed-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; cursor:pointer; transition:border-color .15s;}
 .feed-card:hover{border-color:var(--accent);}
@@ -269,7 +275,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <p class="lede">Not opinions — factual links: who said or did what, and who it connects to. Every edge is a real event with a source link. This is a small seed of real stories — the base grows with every day processed, and older items move to the Archive automatically.</p>
   <div class="meta-row">
     <span>NODES: <b>246</b></span>
-    <span>EDGES: <b>91</b></span>
+    <span>EDGES: <b>111</b></span>
     <span>COUNTRIES ON MAP: <b>221</b></span>
     <span>EVERY EDGE LINKS TO A SOURCE</span>
   </div>
@@ -396,7 +402,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 91 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 111 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -468,6 +474,44 @@ function fmtDate(dateStr){
   if (n <= 0) return dateStr + ' (today)';
   if (n === 1) return dateStr + ' (1 day ago)';
   return dateStr + ' (' + n + ' days ago)';
+}
+
+// Anything older than 30 days is grouped by calendar month, collapsed by
+// default, instead of one ever-growing flat list — a year of history
+// shouldn't mean scrolling past a thousand cards to reach the comments.
+var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function monthKey(dateStr){ var d = new Date(dateStr); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0'); }
+function monthLabel(dateStr){ var d = new Date(dateStr); return MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear(); }
+function renderArchiveGrouped(items, cardFn, openFirst){
+  var groups = {}, order = [];
+  items.forEach(function(x){
+    var k = monthKey(x.date);
+    if (!groups[k]){ groups[k] = []; order.push(k); }
+    groups[k].push(x);
+  });
+  order.sort().reverse();
+  var html = '';
+  order.forEach(function(k, i){
+    var groupItems = groups[k];
+    var open = !!openFirst && i === 0;
+    html += '<div class="month-header' + (open ? ' open' : '') + '" data-month="' + k + '">' +
+      '<span class="month-caret">' + (open ? '▾' : '▸') + '</span>' + monthLabel(groupItems[0].date) +
+      ' <span class="month-count">(' + groupItems.length + ')</span></div>' +
+      '<div class="month-body"' + (open ? '' : ' hidden') + ' data-month-body="' + k + '">' +
+      groupItems.map(cardFn).join('') + '</div>';
+  });
+  return html;
+}
+function wireMonthToggles(container){
+  Array.from(container.querySelectorAll('.month-header')).forEach(function(h){
+    h.addEventListener('click', function(){
+      var k = h.getAttribute('data-month');
+      var body = container.querySelector('[data-month-body="' + k + '"]');
+      var isOpen = h.classList.toggle('open');
+      body.hidden = !isOpen;
+      h.querySelector('.month-caret').textContent = isOpen ? '▾' : '▸';
+    });
+  });
 }
 
 var RUS_PATH = "M675.704,17.873L672.220,18.163L666.523,17.493L662.585,16.606L659.355,15.006L656.514,14.638L659.224,13.367L662.306,12.946L666.937,13.883L673.541,15.785L675.704,17.873M587.489,14.255L585.371,14.501L583.931,14.642L583.910,14.947L582.112,15.255L579.942,14.814L580.521,14.233L576.677,14.176L579.782,13.837L582.356,13.814L583.061,14.316L583.724,13.870L585.106,13.563L587.937,13.971L587.489,14.255M686.472,19.207L677.574,20.103L677.003,17.053L678.108,16.792L679.612,16.943L685.764,18.263L686.472,19.207M693.945,22.303L695.963,23.450L696.873,22.885L702.238,22.916L707.936,24.049L710.641,24.919L711.889,26.127L710.793,26.814L707.437,28.218L706.841,28.972L709.576,29.328L713.091,29.969L714.263,29.488L717.068,31.119L717.161,30.459L719.747,30.057L726.343,30.477L728.211,31.666L736.689,32.044L734.425,30.103L739.014,30.547L742.040,30.534L746.827,31.872L749.794,33.498L750.005,34.562L755.024,36.562L759.461,37.594L757.867,34.927L762.514,36.071L764.937,35.387L769.787,36.169L770.254,35.457L773.947,35.813L769.275,33.454L770.295,32.353L790.123,34.003L794.026,35.512L802.093,37.453L809.319,36.973L813.901,37.391L817.212,38.442L819.810,40.344L823.323,41.112L825.253,40.559L828.710,40.489L833.236,41.018L836.618,40.719L843.553,43.118L844.817,42.255L840.703,40.530L839.827,39.347L847.336,40.086L851.257,39.925L858.952,41.212L863.559,42.390L879.929,53.142L879.935,53.157L878.918,54.399L875.889,54.191L879.851,55.695L884.305,58.023L886.341,58.784L888.196,59.953L888.663,60.701L883.787,60.085L880.579,62.212L879.077,62.541L878.352,64.526L877.426,66.260L878.258,67.556L872.584,65.590L869.609,67.829L867.315,66.758L866.646,67.995L863.219,67.594L864.674,69.519L865.164,72.351L866.569,73.534L869.885,74.189L874.381,78.450L872.371,78.558L874.123,81.006L876.452,82.278L873.888,83.814L876.419,87.248L873.619,87.982L875.851,91.037L875.097,93.839L872.242,91.767L867.064,87.379L859.322,80.727L856.061,76.668L856.096,74.922L854.732,73.554L857.531,72.900L857.487,69.215L857.886,66.241L859.038,63.987L855.791,60.004L853.460,60.243L855.056,62.570L853.320,65.672L847.278,62.198L842.800,63.158L842.861,67.918L846.620,69.712L842.437,70.476L839.287,70.778L837.237,68.661L833.313,68.217L832.032,69.655L824.692,69.152L818.203,70.019L816.439,75.732L814.086,82.656L818.063,83.035L820.777,84.918L823.609,85.587L823.841,84.084L826.566,84.279L832.778,87.588L835.057,90.147L835.771,93.152L838.637,96.743L841.086,101.647L840.568,106.087L841.248,108.209L840.402,111.782L839.291,115.315L838.798,117.122L836.557,118.916L834.992,118.956L832.501,117.469L830.479,119.707L830.700,120.725L830.023,120.190L829.071,118.636L830.308,118.554L828.482,114.940L826.239,112.321L827.651,111.237L831.036,111.781L830.663,108.796L829.200,105.434L829.380,104.311L828.757,101.550L825.351,102.454L824.058,103.665L820.339,103.661L817.420,100.778L813.095,98.597L808.242,97.616L805.148,94.655L802.888,92.808L800.998,91.514L797.207,88.481L794.293,87.373L790.098,86.478L787.046,86.559L784.527,87.101L783.678,88.598L785.497,89.312L786.745,90.973L786.129,91.937L786.292,95.127L787.273,96.451L785.094,98.381L781.498,97.222L778.771,97.478L776.860,96.459L775.190,96.134L772.988,98.281L770.095,98.789L768.301,99.550L764.967,99.050L762.739,99.082L760.402,97.513L757.155,96.055L754.489,95.659L751.699,96.052L749.776,96.610L745.568,95.345L743.712,93.091L740.431,92.318L738.053,91.966L734.639,90.723L734.034,93.840L736.062,95.610L734.896,97.721L731.026,96.950L728.562,96.840L726.147,95.435L723.616,95.391L721.010,94.468L718.145,95.882L714.835,98.505L712.523,99.037L711.689,99.289L709.568,97.412L706.639,97.823L705.017,96.528L703.033,95.944L700.989,94.206L699.393,93.665L696.342,94.438L692.193,92.705L691.687,94.280L682.724,86.641L678.647,84.317L679.061,83.375L674.507,86.213L672.334,86.384L671.795,84.743L668.343,83.717L666.226,84.449L664.125,81.346L659.662,80.715L658.151,81.931L652.789,83.042L651.947,83.784L643.615,84.831L642.923,85.857L645.388,87.918L643.414,88.700L644.160,89.519L642.423,90.984L647.046,93.053L646.978,94.477L643.565,94.347L643.193,95.240L639.570,93.681L635.799,93.742L633.691,95.010L630.447,93.794L624.512,91.711L620.819,91.789L616.875,95.060L617.209,97.265L614.239,95.513L613.184,98.856L614.042,99.482L613.196,101.808L615.768,103.889L617.563,103.804L619.634,105.854L619.778,107.433L621.154,107.929L620.483,109.749L618.206,110.254L616.470,113.418L619.375,116.320L619.579,118.381L623.136,121.982L621.895,123.215L621.631,123.993L620.460,123.784L618.313,121.926L617.578,121.824L615.836,121.115L614.798,119.860L612.312,119.220L610.880,119.701L610.323,119.132L606.603,117.666L602.808,117.171L600.588,116.648L600.348,117.009L596.685,114.425L593.633,113.271L591.160,111.472L592.875,110.982L594.433,108.415L592.817,107.201L596.197,105.948L595.998,105.278L593.892,105.772L593.702,104.409L594.795,103.552L597.115,103.327L597.290,102.304L596.408,100.612L597.065,99.005L596.851,98.105L593.091,97.106L591.688,97.139L589.887,95.726L588.149,96.202L584.865,95.144L584.790,94.553L583.660,93.248L581.725,93.103L581.333,92.169L581.801,91.560L579.932,89.857L577.534,90.148L576.784,89.997L576.319,90.681L575.410,90.559L574.457,88.633L573.713,87.635L574.112,87.354L576.031,87.458L576.816,86.801L575.982,85.999L574.298,85.469L574.334,84.926L573.278,84.377L571.446,82.408L571.786,81.604L571.266,80.230L568.866,79.532L567.728,79.881L567.253,79.155L564.688,78.421L563.618,76.694L563.151,75.274L561.928,74.601L562.722,73.672L561.534,70.942L562.803,69.256L562.368,68.745L564.575,67.131L561.963,65.787L565.856,62.181L567.492,60.549L567.960,59.109L564.323,57.173L564.770,55.332L562.380,53.230L563.212,50.910L560.023,47.839L561.414,45.804L557.843,44.006L557.683,42.117L559.251,41.868L562.395,40.786L564.209,39.847L567.958,41.478L573.667,42.121L582.330,45.172L584.344,46.455L585.105,48.251L583.288,49.668L580.123,50.388L570.215,48.337L568.791,48.680L572.753,50.656L573.256,51.908L574.184,54.739L577.155,55.601L579.027,56.334L578.914,54.964L577.295,53.750L578.330,52.698L583.963,54.438L585.536,53.750L583.459,51.744L587.409,49.101L589.382,49.257L591.673,50.200L592.190,48.346L589.869,46.737L590.272,45.123L588.155,43.450L594.168,44.315L595.930,45.826L593.464,46.160L594.057,47.661L596.045,48.585L599.009,48.000L598.814,46.279L602.555,44.994L608.627,42.677L610.214,42.809L608.960,44.447L611.618,44.728L612.646,43.806L616.418,43.732L618.878,42.613L622.006,44.239L623.395,42.452L620.484,40.889L621.072,39.998L627.417,40.815L630.658,41.658L639.742,44.741L640.279,43.329L637.396,41.902L637.007,41.330L634.433,41.065L634.367,39.786L631.997,37.792L631.399,36.979L633.469,34.678L633.161,32.368L634.245,31.869L639.810,32.539L641.233,33.952L640.864,36.013L642.666,36.823L644.583,38.600L646.470,42.235L649.727,43.889L649.971,45.690L648.272,49.523L650.893,49.921L651.124,48.949L652.973,48.256L652.685,46.921L653.650,45.636L651.490,44.102L651.310,42.321L648.963,42.099L647.543,40.598L647.325,37.988L643.250,35.916L645.484,34.203L643.695,32.397L644.612,32.339L646.681,33.748L647.749,36.200L650.201,36.664L647.923,34.832L650.416,33.833L654.333,33.698L659.086,35.147L655.657,33.030L653.301,30.323L656.193,29.811L660.855,29.923L664.686,29.590L662.010,28.261L662.709,26.618L664.784,26.554L667.121,25.402L671.653,25.092L671.533,24.456L676.107,24.240L678.236,24.762L680.858,23.527L684.265,23.566L683.512,22.563L683.996,21.575L687.020,20.621L691.085,21.374L689.376,21.947L693.945,22.303M613.802,37.763L612.760,37.986L606.113,37.656L604.991,36.527L601.084,35.846L600.096,34.474L601.802,33.928L601.014,32.543L603.664,30.376L601.748,30.065L605.063,27.835L603.901,26.699L607.198,25.473L612.180,23.980L617.936,23.546L620.360,22.684L623.642,22.383L625.687,23.300L625.072,24.023L619.497,25.175L614.698,26.282L610.371,28.644L608.961,31.124L607.309,33.568L608.868,35.679L613.802,37.763M768.958,25.581L770.496,27.346L763.488,27.275L761.208,27.876L755.109,26.281L753.384,24.684L755.064,24.248L760.094,24.350L768.958,25.581M781.503,26.693L780.881,27.679L777.545,27.452L772.514,26.487L771.594,25.734L775.698,26.085L781.503,26.693M775.014,31.431L772.135,31.448L767.816,31.165L767.295,31.031L767.704,30.026L769.750,29.791L773.831,30.763L775.014,31.431M147.332,37.324L144.478,37.479L147.581,35.742L148.022,35.636L149.671,35.641L151.221,36.368L150.440,36.715L147.332,37.324M855.522,37.479L853.586,37.609L851.802,36.801L852.419,35.742L855.522,37.479M137.003,48.810L137.411,49.481L139.825,47.520L144.840,47.923L145.256,50.448L141.485,51.624L137.638,51.903L133.850,54.608L132.223,55.196L130.344,55.111L130.040,54.126L128.333,53.303L129.589,52.122L128.116,51.681L125.201,52.031L125.489,51.087L127.460,50.084L123.987,50.725L123.003,51.994L120.071,53.142L136.441,42.390L138.293,44.450L139.664,47.133L137.003,48.810M553.003,83.865L548.721,83.910L545.808,83.568L546.179,82.245L549.249,81.285L551.753,81.797L552.845,82.274L552.711,83.097L553.003,83.865M844.349,94.632L851.065,100.021L846.729,99.008L848.478,103.442L853.174,106.587L854.681,108.731L851.456,106.881L851.570,109.256L849.240,106.681L847.339,103.692L844.653,100.381L843.526,98.061L840.297,94.016L836.351,91.059L833.022,86.949L833.995,85.565L831.861,84.172L832.533,83.749L834.866,85.738L838.201,88.637L840.717,91.597L844.349,94.632";
@@ -1152,7 +1196,47 @@ var EDGES = [
   {from:'gha', to:'gha', label:'Mahama government continues fiscal consolidation under its IMF program', url:'https://www.reuters.com/world/africa/', date:'2026-09-04', scope:'domestic', country:'gha',
    detail:'Ghana’s government under President John Mahama, in office since January 2025, continued fiscal consolidation measures under its IMF program, part of the country’s recovery from its 2022 debt crisis.'},
   {from:'mar', to:'mar', label:'continues to see youth-led protests over public services, echoing the GenZ 212 movement', url:'https://www.reuters.com/world/africa/', date:'2026-08-28', scope:'domestic', country:'mar',
-   detail:'Morocco continued to see youth-led protests over underfunded healthcare and education, echoing the GenZ 212 movement that emerged in late 2025 amid contrasts with major sports-infrastructure spending.'}
+   detail:'Morocco continued to see youth-led protests over underfunded healthcare and education, echoing the GenZ 212 movement that emerged in late 2025 amid contrasts with major sports-infrastructure spending.'},
+  {from:'bgr', to:'bgr', label:'formally adopts the euro, becoming the eurozone’s 21st member', url:'https://www.reuters.com/world/europe/', date:'2026-01-01', scope:'domestic', country:'bgr',
+   detail:'Bulgaria formally adopted the euro on January 1, becoming the 21st member of the eurozone after meeting the EU’s convergence criteria, a process years in the making.'},
+  {from:'france', to:'g7', label:'takes over the G7 presidency for 2026', url:'https://www.diplomatie.gouv.fr/en/french-foreign-policy/g7/', date:'2026-01-01', scope:'international',
+   detail:'France assumed the rotating G7 presidency for 2026, setting the year’s agenda for the group ahead of its leaders’ summit later in the year.'},
+  {from:'usa', to:'usa', label:'administration marks one year in office amid continued tariff disputes', url:'https://www.reuters.com/world/us/', date:'2026-01-20', scope:'domestic', country:'usa',
+   detail:'The US administration marked one year in office, with tariff disputes with multiple trading partners, including China, still unresolved and a continuing point of friction in global trade.'},
+  {from:'china', to:'china', label:'holds annual Central Economic Work Conference, sets growth targets amid trade tensions', url:'https://www.reuters.com/world/china/', date:'2026-01-08', scope:'domestic', country:'china',
+   detail:'China’s leadership held its annual Central Economic Work Conference, setting economic priorities and growth targets for the year as policymakers try to offset weak domestic demand and ongoing trade tensions.'},
+  {from:'eu', to:'russia', label:'marks the war’s anniversary with a further sanctions push', url:'https://ec.europa.eu/commission/presscorner/', date:'2026-02-24', scope:'international',
+   detail:'On the anniversary of Russia’s full-scale invasion of Ukraine, the European Commission pushed forward further sanctions measures targeting Russia’s energy revenue and sanctions-evasion networks.'},
+  {from:'nato', to:'ukraine', label:'reaffirms support on the war’s anniversary', url:'https://www.nato.int/', date:'2026-02-24', scope:'international',
+   detail:'NATO issued a statement reaffirming continued support for Ukraine on the anniversary of Russia’s full-scale invasion, while allies discussed longer-term security guarantees.'},
+  {from:'india', to:'india', label:'government presents the annual Union Budget', url:'https://www.reuters.com/world/india/', date:'2026-02-01', scope:'domestic', country:'india',
+   detail:'India’s government presented its annual Union Budget to parliament, outlining spending and tax priorities for the fiscal year amid a coalition government dependent on regional allies for the first time since 2014.'},
+  {from:'brazil', to:'brazil', label:'Supreme Court proceedings against Bolsonaro allies continue', url:'https://www.reuters.com/world/americas/', date:'2026-02-15', scope:'domestic', country:'brazil',
+   detail:'Brazil’s Supreme Court continued proceedings against several allies of former president Bolsonaro following his own September 2025 conviction for attempting a coup, ahead of the October 2026 election.'},
+  {from:'cze', to:'cze', label:'government passes its first budget since taking office', url:'https://www.reuters.com/world/europe/', date:'2026-03-10', scope:'domestic', country:'cze',
+   detail:'The Czech government under PM Andrej Babiš passed its first budget since taking office in late 2025, an early test of the coalition’s cohesion.'},
+  {from:'isr', to:'isr', label:'coalition faces early tension over the ultra-Orthodox conscription bill', url:'https://www.timesofisrael.com/', date:'2026-03-05', scope:'domestic', country:'isr',
+   detail:'Israel’s governing coalition faced early-year tension over legislation on military conscription for ultra-Orthodox men, a recurring fault line that would resurface again later in the year.'},
+  {from:'zaf', to:'zaf', label:'coalition government reaches budget deal after weeks of internal disputes', url:'https://www.reuters.com/world/africa/', date:'2026-03-20', scope:'domestic', country:'zaf',
+   detail:'South Africa’s Government of National Unity reached a deal on the national budget after weeks of internal disputes between the ANC and Democratic Alliance, echoing similar tension during the 2025 budget cycle.'},
+  {from:'poland', to:'poland', label:'President Nawrocki vetoes another government bill', url:'https://notesfrompoland.com/', date:'2026-04-10', scope:'domestic', country:'poland',
+   detail:'President Karol Nawrocki vetoed another bill from PM Donald Tusk’s government, continuing the "cohabitation" standoff that has defined Polish politics since Nawrocki took office in August 2025.'},
+  {from:'mex', to:'mex', label:'Sheinbaum’s electoral reform stalls in Congress despite the supermajority', url:'https://www.reuters.com/world/americas/', date:'2026-04-15', scope:'domestic', country:'mex',
+   detail:'President Claudia Sheinbaum’s proposed electoral reform stalled in Congress, a rare setback for a coalition that otherwise holds the two-thirds supermajority needed to amend the constitution.'},
+  {from:'india', to:'india', label:'BJP takes over 70% of seats in West Bengal, ending Mamata Banerjee’s 15-year rule', url:'https://www.reuters.com/world/india/', date:'2026-05-04', scope:'domestic', country:'india',
+   detail:'The BJP won more than 70% of seats in West Bengal’s state assembly election, ending Mamata Banerjee’s 15-year hold on the state and marking one of the party’s biggest state-level wins since 2024.'},
+  {from:'tur', to:'ukraine', label:'hosts an early round of Russia-Ukraine talks', url:'https://www.aljazeera.com/where/turkey/', date:'2026-05-12', scope:'international',
+   detail:'Turkey hosted an early-year round of talks between Russian and Ukrainian officials, continuing its role as a mediator and host for periodic negotiations since 2022.'},
+  {from:'brazil', to:'brazil', label:'Lula formally launches re-election campaign', url:'https://www.reuters.com/world/americas/', date:'2026-05-20', scope:'domestic', country:'brazil',
+   detail:'President Lula da Silva formally launched his re-election campaign ahead of the October 2026 vote, with polling showing a tight race against Flávio Bolsonaro.'},
+  {from:'kor', to:'kor', label:'Lee Jae-myung marks one year in office', url:'https://carnegieendowment.org/', date:'2026-06-03', scope:'domestic', country:'kor',
+   detail:'President Lee Jae-myung marked one year in office, a year that began with a snap election following Yoon Suk-yeol’s martial-law crisis and impeachment.'},
+  {from:'g20', to:'usa', label:'finance ministers hold an early-year session on debt relief', url:'https://g20.org/', date:'2026-06-20', scope:'international',
+   detail:'G20 finance ministers held an early-year session focused on sovereign debt relief for lower-income countries, ahead of the leaders’ summit hosted by the United States later in 2026.'},
+  {from:'arg', to:'arg', label:'Milei government touts falling inflation at the midterm mark', url:'https://www.reuters.com/world/americas/', date:'2026-06-25', scope:'domestic', country:'arg',
+   detail:'Argentina’s government under Javier Milei touted continued disinflation at the midpoint of the year, crediting sustained fiscal austerity even as critics pointed to the social cost of the adjustment.'},
+  {from:'idn', to:'idn', label:'free-meal program faces funding questions ahead of the budget cycle', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-06-10', scope:'domestic', country:'idn',
+   detail:'Indonesia’s signature free school-meal program faced funding questions ahead of the annual budget cycle, months before its nationwide expansion later in the year.'}
 ];
 
 var SYSTEMS = {
@@ -1977,14 +2061,25 @@ drawMap();
 function archiveCard(x){
   return '<div class="archive-card"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
     '<span class="archive-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
+    '<span class="feed-scope">' + x.scope + '</span>' +
     '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></span></div>';
 }
 function renderArchive(){
   var list = document.getElementById('archive-list');
-  var items = EDGES.filter(function(x){ return x.scope === 'international' && daysAgo(x.date) > RECENT_DAYS; })
+  // Previously filtered to international only, which silently hid every
+  // archived domestic item from this tab (they still showed up in Feed's
+  // own archive section) -- no documented reason for the split, so include
+  // both scopes here now, same as everywhere else.
+  var items = EDGES.filter(function(x){ return daysAgo(x.date) > RECENT_DAYS; })
     .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
   if (!items.length){ list.innerHTML = '<div class="archive-empty">Nothing older than this week yet — everything so far is still recent.</div>'; return; }
-  list.innerHTML = renderBucketed(items, archiveCard, ['month','archive']);
+  var monthItems = items.filter(function(x){ return bucketOf(x.date) === 'month'; });
+  var olderItems = items.filter(function(x){ return bucketOf(x.date) === 'archive'; });
+  var html = '';
+  if (monthItems.length) html += '<div class="bucket-header">This month</div>' + monthItems.map(archiveCard).join('');
+  if (olderItems.length) html += renderArchiveGrouped(olderItems, archiveCard, true);
+  list.innerHTML = html;
+  wireMonthToggles(list);
 }
 
 function renderChambers(activeId){
@@ -2029,7 +2124,12 @@ function feedCard(x){
 function renderFeed(){
   var list = document.getElementById('feed-list');
   var items = EDGES.slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
-  list.innerHTML = renderBucketed(items, feedCard);
+  var recentItems = items.filter(function(x){ return bucketOf(x.date) !== 'archive'; });
+  var olderItems = items.filter(function(x){ return bucketOf(x.date) === 'archive'; });
+  var html = renderBucketed(recentItems, feedCard, ['today','week','month']);
+  if (olderItems.length) html += '<div class="bucket-header">Archive</div>' + renderArchiveGrouped(olderItems, feedCard, false);
+  list.innerHTML = html;
+  wireMonthToggles(list);
   Array.from(list.querySelectorAll('.feed-card[data-goto]')).forEach(function(card){
     card.addEventListener('click', function(){ openEntityPage(card.getAttribute('data-goto')); });
   });
