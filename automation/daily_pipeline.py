@@ -1,5 +1,6 @@
 """
-The "heavy" daily pass: reads candidates the 30-minute monitor collected,
+The "heavy" deep pass (runs every 6 hours): reads candidates the 30-minute
+monitor collected,
 fetches the actual article, asks Claude to extract a structured edge (or
 reject the candidate), and writes anything accepted to pending_edges.jsonl
 for a human glance before it's merged into the site. Nothing here writes
