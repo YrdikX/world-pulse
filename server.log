@@ -1,0 +1,178 @@
+::1 - - [16/Sep/2026 20:01:44] "GET /book/pages/01_dino.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/index.html HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/01_dino.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/02_triceratops.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/03_longneck.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/05_dino_egg.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/06_car.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/04_stegosaurus.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/08_airplane.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/07_firetruck.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/10_sailboat.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/09_rocket.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/11_bunny.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/12_bear.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/23_friends.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/14_elephant.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/13_cat.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/21_treats.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/24_practice.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/20_balloons.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/22_house.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/18_bouquet.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/15_owl.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/16_turtle.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/19_sky.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] "GET /book/pages/17_garden.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:01:59] code 404, message File not found
+::1 - - [16/Sep/2026 20:01:59] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:02:45] "GET /book/pages/04_stegosaurus.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:02:45] code 404, message File not found
+::1 - - [16/Sep/2026 20:02:45] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/index.html HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/01_dino.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/02_triceratops.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/03_longneck.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/05_dino_egg.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/04_stegosaurus.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/06_car.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/07_firetruck.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/09_rocket.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/08_airplane.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/10_sailboat.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/11_bunny.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/12_bear.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/13_cat.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/14_elephant.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/15_owl.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/16_turtle.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/17_garden.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/18_bouquet.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/19_sky.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/20_balloons.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/21_treats.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/22_house.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/23_friends.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] "GET /book/pages/24_practice.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:04:50] code 404, message File not found
+::1 - - [16/Sep/2026 20:04:50] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/02_triceratops.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/01_dino.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/03_longneck.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/05_dino_egg.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/04_stegosaurus.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/08_airplane.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/10_sailboat.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/11_bunny.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/14_elephant.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/16_turtle.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/17_garden.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/20_balloons.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/22_house.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/23_friends.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/06_car.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/07_firetruck.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/09_rocket.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/13_cat.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/12_bear.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/15_owl.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/18_bouquet.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/19_sky.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/21_treats.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] "GET /book/pages/24_practice.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:04:54] code 404, message File not found
+::1 - - [16/Sep/2026 20:04:54] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/index.html HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/02_triceratops.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/03_longneck.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/01_dino.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/07_firetruck.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/08_airplane.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/05_dino_egg.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/14_elephant.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/11_bunny.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/13_cat.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/17_garden.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/19_sky.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/20_balloons.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/04_stegosaurus.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/23_friends.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/06_car.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/09_rocket.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/10_sailboat.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/12_bear.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/15_owl.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/16_turtle.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/18_bouquet.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/21_treats.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/22_house.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/24_practice.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/00_title.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/000_copyright.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:06:15] "GET /book/pages/001_belongs.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:06:15] code 404, message File not found
+::1 - - [16/Sep/2026 20:06:15] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:06:59] "GET /cover_front.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:06:59] code 404, message File not found
+::1 - - [16/Sep/2026 20:06:59] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:08:45] "GET /cover_front.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:08:45] code 404, message File not found
+::1 - - [16/Sep/2026 20:08:45] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:08:50] "GET /cover_back.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:08:50] code 404, message File not found
+::1 - - [16/Sep/2026 20:08:50] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:09:27] "GET /cover_back.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:09:27] code 404, message File not found
+::1 - - [16/Sep/2026 20:09:27] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:10:03] "GET /book/render_all.html HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:10:03] code 404, message File not found
+::1 - - [16/Sep/2026 20:10:03] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:10:11] "GET /book/pages/00_title.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:11] "GET /book/pages/000_copyright.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:11] "GET /book/pages/001_belongs.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:11] "GET /book/pages/01_dino.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:11] "GET /book/pages/02_triceratops.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/03_longneck.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/04_stegosaurus.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/05_dino_egg.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/06_car.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/07_firetruck.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/08_airplane.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/09_rocket.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/10_sailboat.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/11_bunny.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/12_bear.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/13_cat.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/14_elephant.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/15_owl.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/16_turtle.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/17_garden.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:12] "GET /book/pages/18_bouquet.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:13] "GET /book/pages/19_sky.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:13] "GET /book/pages/20_balloons.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:13] "GET /book/pages/21_treats.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:13] "GET /book/pages/22_house.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:13] "GET /book/pages/23_friends.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:13] "GET /book/pages/24_practice.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:13] "GET /cover_front.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:10:13] "GET /cover_back.svg HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:34] "GET /interior.pdf HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:10:34] code 404, message File not found
+::1 - - [16/Sep/2026 20:10:34] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:10:34] code 404, message File not found
+::1 - - [16/Sep/2026 20:10:34] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:10:56] "GET /book/render_all.html HTTP/1.1" 304 -
+::1 - - [16/Sep/2026 20:10:56] code 404, message File not found
+::1 - - [16/Sep/2026 20:10:56] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:11:02] "GET /book/pages/00_title.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:11:02] "GET /book/pages/000_copyright.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:11:02] "GET /book/pages/001_belongs.svg HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:11:11] "GET /interior.pdf HTTP/1.1" 200 -
+::1 - - [16/Sep/2026 20:11:11] code 404, message File not found
+::1 - - [16/Sep/2026 20:11:11] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:11:11] code 404, message File not found
+::1 - - [16/Sep/2026 20:11:11] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:11:19] code 404, message File not found
+::1 - - [16/Sep/2026 20:11:19] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [16/Sep/2026 20:11:31] code 404, message File not found
+::1 - - [16/Sep/2026 20:11:31] "GET /favicon.ico HTTP/1.1" 404 -

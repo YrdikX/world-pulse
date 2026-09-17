@@ -269,7 +269,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <p class="lede">Not opinions — factual links: who said or did what, and who it connects to. Every edge is a real event with a source link. This is a small seed of real stories — the base grows with every day processed, and older items move to the Archive automatically.</p>
   <div class="meta-row">
     <span>NODES: <b>246</b></span>
-    <span>EDGES: <b>74</b></span>
+    <span>EDGES: <b>91</b></span>
     <span>COUNTRIES ON MAP: <b>221</b></span>
     <span>EVERY EDGE LINKS TO A SOURCE</span>
   </div>
@@ -397,7 +397,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 74 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 11 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 91 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 11 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -692,7 +692,41 @@ var EDGES = [
   {from:'phl', to:'china', label:'accuses Chinese coast guard of blocking a resupply mission near Second Thomas Shoal', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-09-14', scope:'international',
    detail:'The Philippines accused China’s coast guard of blocking and shadowing a resupply mission to Philippine forces near Second Thomas Shoal in the South China Sea, the latest in a long series of confrontations in disputed waters.'},
   {from:'ven', to:'usa', label:'Maduro government denounces renewed US sanctions threats and naval presence in the Caribbean', url:'https://apnews.com/hub/venezuela', date:'2026-09-15', scope:'international',
-   detail:'Venezuela’s government denounced renewed US sanctions threats and an increased US naval presence in the southern Caribbean, which Washington has linked to counter-narcotics operations and pressure on the Maduro government.'}
+   detail:'Venezuela’s government denounced renewed US sanctions threats and an increased US naval presence in the southern Caribbean, which Washington has linked to counter-narcotics operations and pressure on the Maduro government.'},
+  {from:'france', to:'france', label:'government faces renewed no-confidence motion threat over the 2027 budget standoff', url:'https://www.reuters.com/world/europe/', date:'2026-09-12', scope:'domestic', country:'france',
+   detail:'France’s government faced a renewed no-confidence threat as parties clashed over the 2027 budget, the latest episode in a period of chronic instability that has already seen several governments fall over fiscal disputes since 2024.'},
+  {from:'nld', to:'nld', label:'coalition talks drag on as parties struggle to agree on migration policy', url:'https://www.reuters.com/world/europe/', date:'2026-08-27', scope:'domestic', country:'nld',
+   detail:'Dutch coalition negotiations continued to drag on, with migration policy remaining the central sticking point between parties trying to form a stable governing majority.'},
+  {from:'irl', to:'irl', label:'government unveils new housing plan amid persistent affordability crisis', url:'https://www.irishtimes.com/', date:'2026-09-05', scope:'domestic', country:'irl',
+   detail:'Ireland’s government unveiled a new housing plan aimed at boosting supply, its latest response to a years-long affordability crisis that has become one of the dominant issues in Irish politics.'},
+  {from:'cze', to:'cze', label:'government faces EU pressure over its more cautious stance on further Ukraine military aid', url:'https://www.reuters.com/world/europe/', date:'2026-08-22', scope:'domestic', country:'cze',
+   detail:'The Czech government faced pressure from EU partners over a more cautious approach to further military aid for Ukraine, a shift from the previous government’s posture and a point of friction within the bloc.'},
+  {from:'srb', to:'srb', label:'sees renewed student-led anti-government protests continuing into a second year', url:'https://www.reuters.com/world/europe/', date:'2026-09-01', scope:'domestic', country:'srb',
+   detail:'Serbia saw renewed student-led protests against the government, continuing into a second year after demonstrations that began following the November 2024 Novi Sad railway station canopy collapse, which critics blamed on corruption.'},
+  {from:'bgr', to:'bgr', label:'continues adjusting to eurozone entry after adopting the euro in January', url:'https://www.reuters.com/world/europe/', date:'2026-08-14', scope:'domestic', country:'bgr',
+   detail:'Bulgaria continued adjusting to life in the eurozone after formally adopting the euro in January 2026, with the government monitoring price effects on consumers as the currency changeover settled in.'},
+  {from:'irq', to:'irq', label:'parties continue post-election talks to form a new government', url:'https://apnews.com/hub/iraq', date:'2026-08-30', scope:'domestic', country:'irq',
+   detail:'Iraqi political parties continued negotiations to form a new government following the November 2025 parliamentary election, a process that has historically taken months given the country’s fragmented, consensus-based system.'},
+  {from:'lbn', to:'lbn', label:'government continues implementing the Hezbollah disarmament plan under the late-2024 ceasefire framework', url:'https://www.reuters.com/world/middle-east/', date:'2026-09-08', scope:'domestic', country:'lbn',
+   detail:'Lebanon’s government continued working to implement the disarmament provisions agreed under the November 2024 Israel-Hezbollah ceasefire framework, a slow and politically sensitive process central to the country’s postwar stabilization.'},
+  {from:'vnm', to:'vnm', label:'Communist Party continues anti-corruption campaign under current leadership', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-19', scope:'domestic', country:'vnm',
+   detail:'Vietnam’s ruling Communist Party continued its long-running anti-corruption campaign, part of a sustained effort to discipline officials that has reshaped the country’s political landscape in recent years.'},
+  {from:'tha', to:'tha', label:'coalition government faces renewed political and legal challenges', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-09-10', scope:'domestic', country:'tha',
+   detail:'Thailand’s coalition government faced renewed political and legal challenges, continuing a pattern of instability that has repeatedly reshaped Thai governments and coalitions in recent years.'},
+  {from:'mys', to:'mys', label:'Anwar government continues economic reform push amid coalition tensions', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-25', scope:'domestic', country:'mys',
+   detail:'Malaysia’s government under Anwar Ibrahim continued pushing its economic reform agenda, including subsidy rationalization, while managing tensions within its multi-party governing coalition.'},
+  {from:'bgd', to:'bgd', label:'interim government continues preparing for national elections after the 2024 change of power', url:'https://apnews.com/hub/bangladesh', date:'2026-09-02', scope:'domestic', country:'bgd',
+   detail:'Bangladesh’s interim government, in power since the August 2024 change of power, continued preparations for national elections, a central test of the transition initiated after the previous government’s fall.'},
+  {from:'lka', to:'lka', label:'continues IMF-backed economic recovery under the Dissanayake government', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-11', scope:'domestic', country:'lka',
+   detail:'Sri Lanka continued its IMF-backed economic recovery program under President Anura Kumara Dissanayake, elected in September 2024 in the aftermath of the country’s 2022 economic collapse.'},
+  {from:'nzl', to:'nzl', label:'heads toward an October general election amid cost-of-living pressure on the coalition government', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-09-14', scope:'domestic', country:'nzl',
+   detail:'New Zealand headed toward its general election with the governing coalition facing sustained pressure over cost-of-living issues, a dominant theme of the campaign.'},
+  {from:'eth', to:'eth', label:'continues to face conflict and humanitarian pressure in the Amhara region', url:'https://www.reuters.com/world/africa/', date:'2026-08-17', scope:'domestic', country:'eth',
+   detail:'Ethiopia continued to face conflict and a significant humanitarian toll in the Amhara region, where fighting involving Fano militia forces has persisted since 2023.'},
+  {from:'gha', to:'gha', label:'Mahama government continues fiscal consolidation under its IMF program', url:'https://www.reuters.com/world/africa/', date:'2026-09-04', scope:'domestic', country:'gha',
+   detail:'Ghana’s government under President John Mahama, in office since January 2025, continued fiscal consolidation measures under its IMF program, part of the country’s recovery from its 2022 debt crisis.'},
+  {from:'mar', to:'mar', label:'continues to see youth-led protests over public services, echoing the GenZ 212 movement', url:'https://www.reuters.com/world/africa/', date:'2026-08-28', scope:'domestic', country:'mar',
+   detail:'Morocco continued to see youth-led protests over underfunded healthcare and education, echoing the GenZ 212 movement that emerged in late 2025 amid contrasts with major sports-infrastructure spending.'}
 ];
 
 var SYSTEMS = {

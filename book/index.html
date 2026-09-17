@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><head><style>
+body{margin:0;background:#eee;font-family:sans-serif}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:6px}
+.cell{background:#fff;border:1px solid #ccc}
+.cell img{width:100%;display:block}
+.cell div{text-align:center;font-size:11px;padding:2px}
+</style></head>
+<body><div class="grid" id="g"></div>
+<script>
+const files = [
+"00_title.svg","000_copyright.svg","001_belongs.svg",
+"01_dino.svg","02_triceratops.svg","03_longneck.svg","04_stegosaurus.svg",
+"05_dino_egg.svg","06_car.svg","07_firetruck.svg","08_airplane.svg",
+"09_rocket.svg","10_sailboat.svg","11_bunny.svg","12_bear.svg",
+"13_cat.svg","14_elephant.svg","15_owl.svg","16_turtle.svg",
+"17_garden.svg","18_bouquet.svg","19_sky.svg","20_balloons.svg",
+"21_treats.svg","22_house.svg","23_friends.svg","24_practice.svg"
+];
+const g = document.getElementById('g');
+for (const f of files){
+  const cell = document.createElement('div');
+  cell.className='cell';
+  cell.innerHTML = `<img src="pages/${f}"><div>${f}</div>`;
+  g.appendChild(cell);
+}
+</script>
+</body></html>

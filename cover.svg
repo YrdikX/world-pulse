@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <symbol id="flower" viewBox="-40 -40 80 80">
+      <g stroke="#000" stroke-width="6" stroke-linejoin="round">
+        <circle cx="0" cy="-22" r="15" fill="currentColor"/>
+        <circle cx="0" cy="22" r="15" fill="currentColor"/>
+        <circle cx="-22" cy="0" r="15" fill="currentColor"/>
+        <circle cx="22" cy="0" r="15" fill="currentColor"/>
+        <circle cx="-15" cy="-15" r="15" fill="currentColor"/>
+        <circle cx="15" cy="15" r="15" fill="currentColor"/>
+        <circle cx="-15" cy="15" r="15" fill="currentColor"/>
+        <circle cx="15" cy="-15" r="15" fill="currentColor"/>
+        <circle cx="0" cy="0" r="16" fill="#FFD23F"/>
+      </g>
+    </symbol>
+    <symbol id="star" viewBox="-30 -30 60 60">
+      <polygon points="0,-28 7,-9 27,-9 11,3 17,23 0,11 -17,23 -11,3 -27,-9 -7,-9" fill="currentColor" stroke="#000" stroke-width="6" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="cloud" viewBox="-60 -34 120 68">
+      <g fill="#FFFFFF" stroke="#000" stroke-width="7" stroke-linejoin="round">
+        <rect x="-45" y="2" width="100" height="24" rx="12"/>
+        <circle cx="-25" cy="5" r="20"/>
+        <circle cx="8" cy="-8" r="26"/>
+        <circle cx="34" cy="6" r="16"/>
+      </g>
+    </symbol>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="1000" fill="#FFFFFF"/>
+
+  <!-- sky decor -->
+  <use href="#cloud" x="15" y="20" width="110" height="55"/>
+  <g stroke="#000" stroke-width="9" stroke-linejoin="round" stroke-linecap="round">
+    <circle cx="900" cy="120" r="52" fill="#FFD23F"/>
+    <g stroke="#FFD23F" stroke-width="12">
+      <line x1="900" y1="35" x2="900" y2="10"/>
+      <line x1="970" y1="60" x2="990" y2="45"/>
+      <line x1="985" y1="120" x2="1000" y2="120"/>
+      <line x1="970" y1="180" x2="990" y2="195"/>
+      <line x1="830" y1="60" x2="815" y2="42"/>
+    </g>
+  </g>
+  <use href="#star" x="40" y="230" width="55" height="55" style="color:#FF6FA0"/>
+  <use href="#star" x="935" y="300" width="45" height="45" style="color:#3FA9F5"/>
+  <use href="#star" x="55" y="640" width="35" height="35" style="color:#FFD23F"/>
+
+  <!-- title -->
+  <g font-family="'Arial Black', Arial, sans-serif" font-weight="900" text-anchor="middle" paint-order="stroke fill" stroke="#000" stroke-linejoin="round">
+    <text x="500" y="70" font-size="40" letter-spacing="4" fill="#3FA9F5" stroke-width="0">MY FIRST</text>
+    <text x="500" y="165" font-size="98" stroke-width="9">
+      <tspan fill="#FF5C5C">C</tspan><tspan fill="#FF9F45">O</tspan><tspan fill="#FFD23F">L</tspan><tspan fill="#3FC97A">O</tspan><tspan fill="#3FA9F5">R</tspan><tspan fill="#7E6FE0">I</tspan><tspan fill="#FF6FA0">N</tspan><tspan fill="#FF5C5C">G</tspan>
+    </text>
+    <text x="500" y="255" font-size="98" stroke-width="9">
+      <tspan fill="#FF9F45">B</tspan><tspan fill="#FFD23F">O</tspan><tspan fill="#3FC97A">O</tspan><tspan fill="#3FA9F5">K</tspan>
+    </text>
+  </g>
+
+  <!-- subtitle ribbon -->
+  <g>
+    <path d="M210,295 L790,295 L825,330 L790,365 L210,365 L175,330 Z" fill="#3FA9F5" stroke="#000" stroke-width="9" stroke-linejoin="round"/>
+    <text x="500" y="343" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="27" fill="#FFFFFF" text-anchor="middle">Dinosaurs, Animals &amp; Fun!</text>
+  </g>
+
+  <!-- grass hills -->
+  <path d="M0,760 C120,710 220,800 340,750 C460,700 560,790 680,745 C800,700 900,780 1000,745 L1000,1000 L0,1000 Z" fill="#6FBF3E" stroke="#000" stroke-width="0"/>
+  <path d="M0,790 C130,745 230,820 350,780 C470,735 570,815 690,775 C810,730 900,805 1000,775 L1000,1000 L0,1000 Z" fill="#8BD450" stroke="#000" stroke-width="14" stroke-linejoin="round"/>
+
+  <!-- back row flowers -->
+  <g>
+    <line x1="70" y1="870" x2="70" y2="915" stroke="#3FA13A" stroke-width="8" stroke-linecap="round"/>
+    <use href="#flower" x="40" y="835" width="60" height="60" style="color:#FF6FA0"/>
+    <line x1="950" y1="830" x2="950" y2="880" stroke="#3FA13A" stroke-width="8" stroke-linecap="round"/>
+    <use href="#flower" x="920" y="795" width="60" height="60" style="color:#FF5C5C"/>
+  </g>
+
+  <!-- DINO (left) -->
+  <g id="dino">
+    <ellipse cx="115" cy="700" rx="65" ry="26" fill="#6FCF63" stroke="#000" stroke-width="12" transform="rotate(-18 115 700)"/>
+    <ellipse cx="180" cy="770" rx="38" ry="26" fill="#6FCF63" stroke="#000" stroke-width="12"/>
+    <ellipse cx="280" cy="770" rx="38" ry="26" fill="#6FCF63" stroke="#000" stroke-width="12"/>
+    <ellipse cx="230" cy="640" rx="125" ry="145" fill="#6FCF63" stroke="#000" stroke-width="12"/>
+    <ellipse cx="135" cy="605" rx="32" ry="19" fill="#6FCF63" stroke="#000" stroke-width="11"/>
+    <ellipse cx="325" cy="605" rx="32" ry="19" fill="#6FCF63" stroke="#000" stroke-width="11"/>
+    <ellipse cx="230" cy="700" rx="65" ry="78" fill="#DFF7C8" stroke="#000" stroke-width="0"/>
+    <circle cx="190" cy="450" r="98" fill="#6FCF63" stroke="#000" stroke-width="12"/>
+    <polygon points="232,458 253,408 272,462" fill="#4CAF50" stroke="#000" stroke-width="8" stroke-linejoin="round"/>
+    <polygon points="262,518 286,463 306,522" fill="#4CAF50" stroke="#000" stroke-width="8" stroke-linejoin="round"/>
+    <polygon points="284,578 310,522 328,582" fill="#4CAF50" stroke="#000" stroke-width="8" stroke-linejoin="round"/>
+    <ellipse cx="140" cy="478" rx="48" ry="36" fill="#DFF7C8" stroke="#000" stroke-width="10"/>
+    <circle cx="108" cy="478" r="6" fill="#000"/>
+    <circle cx="170" cy="420" r="24" fill="#FFFFFF" stroke="#000" stroke-width="7"/>
+    <circle cx="215" cy="414" r="24" fill="#FFFFFF" stroke="#000" stroke-width="7"/>
+    <circle cx="176" cy="424" r="10" fill="#000"/>
+    <circle cx="221" cy="418" r="10" fill="#000"/>
+    <circle cx="180" cy="418" r="4" fill="#FFF"/>
+    <circle cx="225" cy="412" r="4" fill="#FFF"/>
+    <circle cx="150" cy="460" r="14" fill="#FFAFC5" opacity="0.8"/>
+    <path d="M120,495 Q140,510 160,497" fill="none" stroke="#000" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- CAR (center) with flower cargo -->
+  <g id="car">
+    <circle cx="430" cy="762" r="46" fill="#333333" stroke="#000" stroke-width="10"/>
+    <circle cx="430" cy="762" r="18" fill="#CFCFCF" stroke="#000" stroke-width="6"/>
+    <circle cx="610" cy="762" r="46" fill="#333333" stroke="#000" stroke-width="10"/>
+    <circle cx="610" cy="762" r="18" fill="#CFCFCF" stroke="#000" stroke-width="6"/>
+    <rect x="365" y="670" width="70" height="30" rx="10" fill="#FF9F45" stroke="#000" stroke-width="11" stroke-linejoin="round"/>
+    <use href="#flower" x="382" y="630" width="42" height="42" style="color:#FF6FA0"/>
+    <use href="#flower" x="405" y="622" width="42" height="42" style="color:#3FA9F5"/>
+    <rect x="360" y="590" width="290" height="110" rx="42" fill="#FFB84C" stroke="#000" stroke-width="13" stroke-linejoin="round"/>
+    <rect x="460" y="505" width="150" height="100" rx="32" fill="#FFB84C" stroke="#000" stroke-width="13" stroke-linejoin="round"/>
+    <rect x="478" y="522" width="112" height="62" rx="18" fill="#BEE7FF" stroke="#000" stroke-width="9"/>
+    <line x1="534" y1="522" x2="534" y2="584" stroke="#000" stroke-width="7"/>
+    <rect x="360" y="675" width="290" height="24" rx="12" fill="#FF6B6B" stroke="#000" stroke-width="10" stroke-linejoin="round"/>
+    <circle cx="638" cy="648" r="20" fill="#FFF6B0" stroke="#000" stroke-width="9"/>
+    <path d="M600,712 Q625,726 650,712" fill="none" stroke="#000" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- BUNNY (right) -->
+  <g id="bunny" transform="translate(0,35)">
+    <circle cx="905" cy="668" r="26" fill="#FFFFFF" stroke="#000" stroke-width="10"/>
+    <ellipse cx="795" cy="375" rx="24" ry="68" fill="#FFF4E3" stroke="#000" stroke-width="11" transform="rotate(-14 795 375)"/>
+    <ellipse cx="795" cy="380" rx="12" ry="46" fill="#FFC2DD" transform="rotate(-14 795 380)"/>
+    <ellipse cx="855" cy="375" rx="24" ry="68" fill="#FFF4E3" stroke="#000" stroke-width="11" transform="rotate(14 855 375)"/>
+    <ellipse cx="855" cy="380" rx="12" ry="46" fill="#FFC2DD" transform="rotate(14 855 380)"/>
+    <ellipse cx="825" cy="660" rx="115" ry="130" fill="#FFF4E3" stroke="#000" stroke-width="12"/>
+    <ellipse cx="775" cy="762" rx="36" ry="24" fill="#FFF4E3" stroke="#000" stroke-width="11"/>
+    <ellipse cx="875" cy="762" rx="36" ry="24" fill="#FFF4E3" stroke="#000" stroke-width="11"/>
+    <ellipse cx="735" cy="630" rx="28" ry="17" fill="#FFF4E3" stroke="#000" stroke-width="10"/>
+    <circle cx="825" cy="470" r="92" fill="#FFF4E3" stroke="#000" stroke-width="12"/>
+    <circle cx="792" cy="450" r="16" fill="#000"/>
+    <circle cx="852" cy="450" r="16" fill="#000"/>
+    <circle cx="797" cy="444" r="5" fill="#FFF"/>
+    <circle cx="857" cy="444" r="5" fill="#FFF"/>
+    <ellipse cx="822" cy="478" rx="12" ry="8" fill="#FF9FC7" stroke="#000" stroke-width="5"/>
+    <circle cx="770" cy="490" r="13" fill="#FFAFC5" opacity="0.8"/>
+    <circle cx="875" cy="490" r="13" fill="#FFAFC5" opacity="0.8"/>
+    <path d="M760,485 L720,478 M760,492 L718,495 M885,485 L925,478 M885,492 L927,495" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- front row flowers & grass -->
+  <use href="#flower" x="300" y="800" width="50" height="50" style="color:#B57EDC"/>
+  <line x1="325" y1="825" x2="325" y2="855" stroke="#3FA13A" stroke-width="7" stroke-linecap="round"/>
+  <use href="#flower" x="655" y="810" width="50" height="50" style="color:#FFA94D"/>
+  <line x1="680" y1="835" x2="680" y2="862" stroke="#3FA13A" stroke-width="7" stroke-linecap="round"/>
+  <use href="#flower" x="480" y="850" width="40" height="40" style="color:#FF6B6B"/>
+  <line x1="500" y1="870" x2="500" y2="892" stroke="#3FA13A" stroke-width="6" stroke-linecap="round"/>
+
+  <g stroke="#2E8B2E" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M45,905 Q50,880 45,860 M60,905 Q65,875 70,858"/>
+    <path d="M900,895 Q905,872 900,855 M915,895 Q920,868 925,850"/>
+    <path d="M550,900 Q555,880 550,865"/>
+  </g>
+
+  <!-- age badge -->
+  <g transform="rotate(-8 130 900)">
+    <circle cx="130" cy="900" r="72" fill="#FF6B6B" stroke="#000" stroke-width="11"/>
+    <text x="130" y="890" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle">AGES</text>
+    <text x="130" y="925" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle">2-6</text>
+  </g>
+
+  <g>
+    <rect x="760" y="930" width="200" height="46" rx="23" fill="#FFFFFF" stroke="#000" stroke-width="7"/>
+    <text x="860" y="961" font-family="'Arial Black', Arial, sans-serif" font-weight="700" font-size="24" fill="#555555" text-anchor="middle">by Your Name</text>
+  </g>
+</svg>
