@@ -37,3 +37,25 @@ os.makedirs(os.path.dirname(OUT), exist_ok=True)
 with open(OUT, "w", encoding="utf-8") as f:
     f.write(html)
 print("wrote", OUT, "size:", os.path.getsize(OUT))
+
+# Extract a plain {id, label, type} index of every entity for the automation
+# scripts (monitor.py etc.) to use, so it never drifts out of sync with the
+# actual dataset -- it's regenerated from the built page every time.
+entity_re = re.compile(
+    r"\{id:\s*['\"]([^'\"]+)['\"],\s*label:\s*['\"]((?:[^'\"\\]|\\.)*)['\"],\s*type:\s*['\"]([^'\"]+)['\"]"
+)
+seen_ids = set()
+entities_index = []
+for m in entity_re.finditer(html):
+    eid, label, etype = m.group(1), m.group(2), m.group(3)
+    if eid in seen_ids:
+        continue
+    seen_ids.add(eid)
+    label = label.replace("\\'", "'").replace('\\"', '"')
+    entities_index.append({"id": eid, "label": label, "type": etype})
+
+AUTOMATION = os.path.join(BASE, "automation")
+os.makedirs(AUTOMATION, exist_ok=True)
+with open(os.path.join(AUTOMATION, "entities.json"), "w", encoding="utf-8") as f:
+    json.dump(entities_index, f, ensure_ascii=False, indent=1)
+print("wrote entities index:", len(entities_index), "entities")
