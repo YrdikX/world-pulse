@@ -397,7 +397,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 91 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 11 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 91 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -1417,6 +1417,158 @@ var SYSTEMS_FULL = {
       {flag:true, date:'04.10.2026', event:'First round of the presidential election'}
     ],
     related: [['usa','ideological echo of Trump/Bolsonaro']]
+  },
+  esp: {
+    snapshot: 'A minority government has ruled for three years running on favors bought one vote at a time from Catalan and Basque parties that could pull the plug on any single bill.',
+    facts: [['Prime Minister','Pedro Sánchez (PSOE) — 3rd government since 21.11.2023'],['Coalition','PSOE+Sumar minority, no majority on its own'],['Congress of Deputies','No bloc holds 176/350 outright'],['Pressure','Corruption scandals around Sánchez’s inner circle; Junts demands over a Puigdemont pardon']],
+    seats: {chamber:'Congress of Deputies (350 seats)', majority:176, items:[
+      {name:'PP', seats:137, color:'#1C6FBF'},
+      {name:'PSOE', seats:121, color:'#B5342E'},
+      {name:'Vox', seats:33, color:'#1C1C1C'},
+      {name:'Sumar', seats:31, color:'#12805F'},
+      {name:'Regional parties', seats:28, color:'#8A93A3'}
+    ]},
+    parties: ['PSOE (1879) — center-left, governs a minority coalition.', 'PP (1989) — center-right, the largest single party by seats but couldn’t form a government in 2023.', 'Vox (2013) — far-right, Spanish nationalism.', 'Sumar (2023) — left umbrella coalition, junior coalition partner.', 'ERC, Junts, EH Bildu, PNV, BNG, Coalición Canaria — Catalan, Basque, Galician and Canary regional parties outside government but supplying votes bill-by-bill in exchange for regional concessions.'],
+    how: 'Parliamentary monarchy: King Felipe VI is ceremonial head of state, formally proposing a PM candidate after consulting parties but with no real discretion once a clear majority exists. The PM must survive an investiture vote (absolute majority in round one, simple majority in round two) and can only be removed by a constructive vote of no confidence — like Germany, a challenger must already command a majority before the incumbent falls. 17 autonomous communities, including Catalonia and the Basque Country, hold wide powers under individual statutes of autonomy rather than one federal law — the asymmetry that keeps the Catalan and Basque questions central to any Madrid coalition.',
+    turning: [
+      {flag:true, date:'23.07.2023', event:'General election: PP 137, PSOE 121 — no majority for anyone'},
+      {flag:true, date:'21.11.2023', event:'Sánchez forms a 3rd government, a PSOE+Sumar minority coalition'},
+      {flag:true, date:'11.2025', event:'Corruption scandals around Sánchez and his cabinet peak'},
+      {flag:false, date:'12.2025', event:'Junts says it will only back the government on 5 specific points in 2026 without progress on a Puigdemont pardon'}
+    ],
+    related: [['france','comparing semi-presidential and parliamentary models'], ['italy','comparing fragile Southern European coalitions']]
+  },
+  poland: {
+    snapshot: 'The country is living under "cohabitation": a pro-EU PM controls parliament while a president from the opposing camp blocks his reforms with a veto — and that will last at least until the president’s term ends in 2030.',
+    facts: [['Prime Minister','Donald Tusk (Civic Coalition) — since 13.12.2023'],['President','Karol Nawrocki (conservative, PiS-backed) — since 06.08.2025'],['Sejm','Tusk’s coalition has a majority but can’t override a presidential veto (needs 3/5)'],['Key fight','Presidential vetoes against the Tusk government’s reforms']],
+    seats: {chamber:'Sejm (460 seats)', majority:231, items:[
+      {name:'PiS', seats:194, color:'#B5342E'},
+      {name:'Civic Coalition (KO)', seats:157, color:'#1C6FBF'},
+      {name:'Third Way', seats:65, color:'#12805F'},
+      {name:'The Left', seats:26, color:'#B5750E'},
+      {name:'Confederation', seats:18, color:'#1C1C1C'}
+    ]},
+    parties: ['Civic Coalition (KO) — Tusk’s liberal-centrist, pro-EU party leading government.', 'PiS ("Law and Justice") — national-conservative, governed 2015–2023, now the largest opposition force; its candidate won the 2025 presidency.', 'Third Way (Poland 2050 + PSL) — centrists, junior coalition partner.', 'The Left (New Left) — social democrats, junior coalition partner.', 'Confederation — right-libertarian/nationalist, a growing third force.'],
+    how: 'Semi-presidential system: the president is directly elected for 5 years (max 2 terms) and holds real power — a legislative veto (overridable only by 3/5 of the Sejm), appointing Constitutional Tribunal judges, and representing Poland in NATO/EU — but the government is formed by the parliamentary majority, not the president. The Sejm (460 seats, proportional, 5% threshold/8% for coalitions) holds the main legislative power; the Senate (100 seats, first-past-the-post) can veto Sejm bills but is overridable by simple majority. The legitimacy of PiS-era Constitutional Tribunal appointments remains a live, unresolved dispute undermining the court’s standing.',
+    turning: [
+      {flag:true, date:'10.2023', event:'Tusk’s coalition wins the parliamentary election, ending 8 years of PiS rule'},
+      {flag:true, date:'13.12.2023', event:'Tusk becomes PM at the head of a broad coalition'},
+      {flag:true, date:'06.2025', event:'Presidential election: PiS-backed Karol Nawrocki wins the runoff'},
+      {flag:true, date:'06.08.2025', event:'Nawrocki takes office as president, opening a "cohabitation" period with a hostile government'}
+    ],
+    related: [['germany','neighbor and joint support for Ukraine'], ['russia','frontline geopolitical standoff']]
+  },
+  sau: {
+    snapshot: 'There has never been an election for head of state, and there won’t be one — politics here runs entirely around one man, a crown prince ruling in his father the king’s name while remaking the economy around "Vision 2030."',
+    facts: [['King','Salman bin Abdulaziz Al Saud — since 2015 (formal head of state)'],['Crown Prince and PM','Mohammed bin Salman (MBS) — de facto ruler since 2017'],['Legislature','Majlis al-Shura (Consultative Assembly) — 150 members, all royally appointed, none elected'],['Parties','None — political parties are banned']],
+    parties: ['No political parties exist. Power sits entirely within the House of Saud, and since 2017 effectively in the hands of one man, Crown Prince Mohammed bin Salman, who oversees defense, the economy and foreign policy while his father retains ceremonial functions.'],
+    how: 'Absolute monarchy: the king is simultaneously head of state, head of government (formally; MBS has held the PM title since 2022) and top religious authority ("Custodian of the Two Holy Mosques"). Succession runs within the House of Saud rather than strict primogeniture, historically shaped by the Allegiance Council. The Majlis al-Shura’s 150 members are all royally appointed for 4-year terms — they can propose legislation and question ministers but hold no veto and cannot bring down the government. Law is grounded in Sharia (Hanbali school) rather than a secular constitution; the 1992 Basic Law of Governance serves that role and explicitly defines the country as a monarchy under the House of Saud. 13 provinces are run by royally appointed governors, with no elected regional government.',
+    turning: [
+      {flag:false, date:'2015', event:'Salman becomes king'},
+      {flag:true, date:'06.2017', event:'MBS is named crown prince, bypassing more senior claimants — the start of his de facto rule'},
+      {flag:true, date:'2018', event:'Journalist Jamal Khashoggi is killed at the Saudi consulate in Istanbul, an international scandal Western intelligence agencies have linked to MBS'},
+      {flag:false, date:'2019–2026', event:'"Vision 2030" rollout: the driving ban on women is lifted, the NEOM megacity project launches, the economy diversifies away from oil'}
+    ],
+    related: [['irn','regional rivalry for influence in the Gulf'], ['usa','strategic partnership and arms sales']]
+  },
+  idn: {
+    snapshot: 'The president built a seven-party coalition against a single opposition party — the one that actually won the most votes in the election.',
+    facts: [['President','Prabowo Subianto — since 20.10.2024'],['Vice President','Gibran Rakabuming Raka (son of ex-president Jokowi)'],['DPR (parliament)','Prabowo’s coalition holds 469/580, majority 291'],['Opposition','PDI-P — the single largest party by votes — sits outside the coalition']],
+    seats: {chamber:'DPR (580 seats)', majority:291, items:[
+      {name:'PDI-P (opposition)', seats:110, color:'#B5342E'},
+      {name:'Golkar', seats:102, color:'#B5750E'},
+      {name:'Gerindra', seats:86, color:'#1C6FBF'},
+      {name:'NasDem', seats:69, color:'#12805F'},
+      {name:'PKB', seats:68, color:'#E0A458'},
+      {name:'PKS', seats:53, color:'#8A93A3'},
+      {name:'PAN + Demokrat', seats:92, color:'#5C6B80'}
+    ]},
+    parties: ['PDI-P (1973/1999) — nationalist center-left, the party of founding president Sukarno and his daughter Megawati; won the most votes in 2024 but stayed outside government, the only major opposition force.', 'Gerindra (2008, Prabowo) — nationalist, the president’s own party and the coalition’s core.', 'Golkar — the Suharto-era successor party, a pragmatic member of nearly every ruling coalition since 1998.', 'PKB, PAN, PKS, NasDem, Demokrat — the other six parties of the ruling "Advanced Coalition" (KIM Plus).'],
+    how: 'Presidential system with a near-mandatory coalition: the president is directly elected for 5 years (max 2 terms), in one or two rounds. No single party can realistically win a DPR majority alone given the threshold and fragmentation — Prabowo openly calls coalition government a practical necessity for governing 280+ million people across 17,000+ islands. The DPR (580 seats, open-list proportional in provincial multi-member districts, 4% national threshold) shares formal top billing with the People’s Consultative Assembly (MPR, DPR plus the non-partisan 152-seat Regional Representative Council, DPD) — but the MPR’s regular powers are mostly limited to swearing in the president and handling impeachment. Indonesia is unitary with wide regional autonomy (especially Aceh and Papua), not a federation.',
+    turning: [
+      {flag:true, date:'02.2024', event:'Prabowo wins the presidential election in the first round'},
+      {flag:true, date:'20.10.2024', event:'Prabowo is sworn in; Gibran (Jokowi’s son) becomes vice president'},
+      {flag:false, date:'08.2024', event:'A seven-party "super coalition" forms in the DPR, leaving PDI-P as the sole major opposition'},
+      {flag:false, date:'09.2026', event:'Prabowo gathers coalition party leaders (without PDI-P) to discuss an elections-law rewrite, including the parliamentary threshold'}
+    ],
+    related: [['china','regional balance of power in Southeast Asia']]
+  },
+  tur: {
+    snapshot: 'A president in power for more than 20 years is pushing a constitutional rewrite that could remove his two-term limit and let him run again in 2028 — while the main opposition’s most popular mayor sits under criminal prosecution.',
+    facts: [['President','Recep Tayyip Erdoğan (AKP) — continuously in power since 2003 (PM) / 2014 (president)'],['Grand National Assembly','AKP+MHP "People’s Alliance" — controls the agenda without a formal majority alone'],['Opposition','CHP — the largest opposition party; its Istanbul mayor Ekrem İmamoğlu faces criminal prosecution'],['Key 2026 question','A possible constitutional change to bypass the 2-term presidential limit']],
+    seats: {chamber:'Grand National Assembly (600 seats)', majority:301, items:[
+      {name:'AKP', seats:265, color:'#B5750E'},
+      {name:'CHP', seats:170, color:'#B5342E'},
+      {name:'DEM Party', seats:57, color:'#12805F'},
+      {name:'MHP', seats:50, color:'#1C1C1C'},
+      {name:'İYİ and others', seats:58, color:'#8A93A3'}
+    ]},
+    parties: ['AKP (2001, Erdoğan) — conservative-Islamist, the country’s dominant party for over two decades.', 'MHP — nationalist, AKP’s "People’s Alliance" partner, providing the president stability.', 'CHP (1923, founded by Atatürk) — secular, social-democratic, the main opposition; winning recent municipal elections in the largest cities.', 'DEM Party — pro-Kurdish, a third force balancing between Erdoğan and the opposition.', 'İYİ Parti — center-right nationalists, split from MHP.'],
+    how: 'Presidential system since 2018: after the 2017 referendum and 2018 election, Turkey moved from a parliamentary to a super-presidential system — the PM post was abolished, and the president is simultaneously head of state and government, appointing ministers and vice presidents without parliamentary confirmation. The constitution limits the president to two 5-year terms; because Erdoğan’s current term is formally his second under the new system, the constitutional reform under discussion is widely read as a way to grant him a third term in 2028. The Assembly (600 seats, 5-year terms, proportional in multi-member districts, a 7% national threshold) approves the budget and laws but lost the power to confirm the cabinet after 2017. Observers, including the Council of Europe, have long flagged declining judicial independence — the İmamoğlu case is seen as the key test of that trend.',
+    turning: [
+      {flag:false, date:'2023', event:'Erdoğan is re-elected president for a new 5-year term'},
+      {flag:false, date:'03.2024', event:'CHP wins municipal elections in the largest cities, including Istanbul and Ankara'},
+      {flag:true, date:'03.2025', event:'Istanbul mayor Ekrem İmamoğlu (CHP, Erdoğan’s likeliest challenger) is arrested on corruption charges — called political persecution by the opposition'},
+      {flag:false, date:'2025–2026', event:'Debate continues over a new constitution and possibly lifting the 2-term limit for the sitting president'}
+    ],
+    related: [['russia','comparing super-presidential systems'], ['germany','NATO membership and European relations']]
+  },
+  kor: {
+    snapshot: 'A year ago the country went from martial law and a presidential impeachment to a new president — whose own honeymoon just ended, with approval dropping below 50% over a ballot-shortage crisis in local elections.',
+    facts: [['President','Lee Jae-myung (Democratic Party) — since 04.06.2025'],['National Assembly','Democratic Party + allies 189/300, majority 151'],['Approval','Dropped below 50% for the first time (June 2026)'],['Prime Minister','Kim Min-seok']],
+    seats: {chamber:'National Assembly (300 seats)', majority:151, items:[
+      {name:'Democratic Party', seats:175, color:'#1C6FBF'},
+      {name:'People Power Party', seats:108, color:'#B5342E'},
+      {name:'Other/independents', seats:17, color:'#8A93A3'}
+    ]},
+    parties: ['Democratic Party (DPK, roots to 1955) — center-left, Lee’s party, dominant in the Assembly since 2024.', 'People Power Party (PPP) — center-right, ex-president Yoon’s party, in opposition since the impeachment.', 'Rebuilding Korea Party and Basic Income Party — junior DPK allies in the governing coalition.'],
+    how: 'Presidential system with a unicameral legislature: the president is directly elected for a single 5-year term with NO possibility of re-election — designed as a safeguard against a repeat of the country’s authoritarian past, which is exactly why Lee has no incentive to chase re-election but a strong one to push reform within one term. Of the Assembly’s 300 seats, 253 are first-past-the-post districts and 47 are allocated by a "linked" proportional formula meant to help small parties, though the 2024 election showed it can be gamed via "satellite" parties. Impeachment is a mechanism that has actually worked here: the Assembly voted to suspend Yoon, the Constitutional Court upheld it, and a new presidential election followed just two months later — the fastest transfer of power among the presidential democracies in this file. The PM is appointed by the president with Assembly consent but mainly coordinates the cabinet rather than governing independently.',
+    turning: [
+      {flag:true, date:'12.2024', event:'Yoon Suk-yeol declares martial law — an unprecedented crisis'},
+      {flag:true, date:'04.2025', event:'Yoon is removed from office via impeachment'},
+      {flag:true, date:'03.06.2025', event:'Lee Jae-myung is elected president, 60 days after the court’s ruling'},
+      {flag:false, date:'06.2026', event:'One year in office; after local elections and a ballot-shortage controversy, approval falls below 50% for the first time'}
+    ],
+    related: [['japan','regional rivalry and the US alliance'], ['usa','military alliance']]
+  },
+  aus: {
+    snapshot: 'The governing Labor party was just re-elected with an increased majority in 2025, while the conservative coalition suffered its worst result in decades and changed leaders.',
+    facts: [['Prime Minister','Anthony Albanese (Labor) — since 23.05.2022, re-elected 05.2025'],['House of Representatives','Labor holds a comfortable majority after the 2025 election'],['Opposition','Liberal-National Coalition — heavy 2025 defeat, changed leader'],['System quirk','Compulsory voting and preferential (ranked-choice) elections']],
+    seats: {chamber:'House of Representatives (150 seats)', majority:76, items:[
+      {name:'Labor', seats:94, color:'#B5342E'},
+      {name:'Liberal-National Coalition', seats:43, color:'#1C6FBF'},
+      {name:'Greens', seats:1, color:'#12805F'},
+      {name:'Independents (incl. "teal")', seats:12, color:'#8A93A3'}
+    ]},
+    parties: ['Labor (ALP, 1891) — center-left, union base, Albanese’s governing party.', 'Liberal Party — center-right, urban/business base, senior coalition partner.', 'National Party — agrarian conservatives, junior coalition partner, rural seats.', 'Greens — environmentalist left, the third-largest force.', '"Teal" independents — a new wave of independents from wealthy urban electorates, combining climate policy with fiscal conservatism, taking seats from the Liberals since 2022.'],
+    how: 'Constitutional monarchy with a federal parliament: the formal head of state is the British monarch, represented federally by a Governor-General; real executive power sits with the PM, the leader of the party/coalition commanding a House majority (a Westminster model, as in the UK and Canada). The House is elected via preferential (instant-runoff) voting in 150 single-member seats: voters rank candidates, and the least popular are eliminated and their votes redistributed until someone has over 50%. The 76-seat Senate uses single transferable vote, with each state getting 12 senators regardless of population — giving small states outsized influence and often leaving the Senate without a clear government majority, forcing deals with the Greens and independents. Voting is compulsory (a fine for non-attendance), keeping turnout above 90% and structurally reducing the payoff from base mobilization compared with majoritarian systems like Britain’s or America’s. Six states and two territories hold wide autonomy under the 1901 constitution, including police, education and health, while the federal government controls defense, immigration and income tax.',
+    turning: [
+      {flag:true, date:'21.05.2022', event:'Albanese’s Labor wins, ending 9 years of Coalition government'},
+      {flag:true, date:'03.05.2025', event:'Albanese is re-elected with an increased majority; the Coalition suffers one of its worst results on record'},
+      {flag:false, date:'05.2025', event:'The Liberal Party changes leader after the defeat'}
+    ],
+    related: [['uk','shared Westminster model'], ['china','top trading partner and source of geopolitical friction']]
+  },
+  mex: {
+    snapshot: 'The country’s first woman president inherited not just the job but a supermajority in both chambers of Congress — enough to rewrite the constitution almost on her own.',
+    facts: [['President','Claudia Sheinbaum (Morena) — since 01.10.2024'],['Chamber of Deputies','Morena+PVEM+PT coalition 363/500 — a qualified (2/3) majority'],['Party project','Morena’s "Fourth Transformation," López Obrador’s legacy'],['Ahead','Midterm elections in 2027']],
+    seats: {chamber:'Chamber of Deputies (500 seats)', majority:251, items:[
+      {name:'Morena', seats:236, color:'#B5342E'},
+      {name:'PAN', seats:72, color:'#1C6FBF'},
+      {name:'PVEM', seats:77, color:'#12805F'},
+      {name:'PT', seats:50, color:'#B5750E'},
+      {name:'PRI', seats:35, color:'#8A93A3'},
+      {name:'MC and others', seats:30, color:'#5C6B80'}
+    ]},
+    parties: ['Morena (2014, López Obrador) — left populist, "Fourth Transformation" — social programs, energy nationalization, anti-elite rhetoric; governs with a qualified majority.', 'PVEM and PT — junior coalition partners, vote with Morena almost without exception.', 'PAN — center-right, the largest opposition force.', 'PRI — centrist, the party that ruled for 71 straight years until 2000, now a distant third force.'],
+    how: 'Presidential system with no re-election at all: the president is elected for a single 6-year term with absolutely no possibility of re-election, ever — even non-consecutively — a harder line than the US or France, a direct lesson from Mexico’s history of PRI dominance. The Chamber of Deputies (500 seats — 300 district, 200 proportional) and Senate (128 — 2 per state plus 1 for the top opposition party in each state, 96 total, plus 32 national proportional) are both renewed alongside presidential elections every 6 years, with the Chamber also renewed at the midpoint. Formally a federation of 32 states, but historically with a strong center — Morena under Sheinbaum continues consolidating party control ahead of the 2027 midterms, when the whole Chamber and dozens of governorships are up again. A 2024 reform under López Obrador made judges, including the Supreme Court, directly elected — unprecedented globally, criticized as a threat to judicial independence but one that cemented the ruling coalition’s grip across all three branches.',
+    turning: [
+      {flag:true, date:'02.06.2024', event:'Sheinbaum wins the presidential election by the largest margin of the post-2000 era'},
+      {flag:true, date:'01.10.2024', event:'Sheinbaum becomes Mexico’s first woman president'},
+      {flag:false, date:'06.2024', event:'The Morena coalition wins a qualified (2/3) majority in the Chamber of Deputies'},
+      {flag:false, date:'04.2026', event:'Sheinbaum’s own electoral reform stalls in Congress, despite the supermajority'}
+    ],
+    related: [['usa','largest trading partner and migration border'], ['brazil','comparing Latin America’s leftist presidencies']]
   }
 };
 
