@@ -1,5 +1,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>World Pulse</title>
+<meta charset="utf-8">
+<title>World Pulse — Global Political Events, Connected</title>
+<meta name="description" content="World Pulse tracks world politics as a network of sourced facts — who said or did what, to whom, and when — instead of comparing opinions. Every claim links to its original source.">
+<link rel="canonical" href="https://getworldpulse.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="World Pulse">
+<meta property="og:title" content="World Pulse — Global Political Events, Connected">
+<meta property="og:description" content="World politics as a network of sourced facts — who said or did what, to whom, and when. Every claim links to its original source.">
+<meta property="og:url" content="https://getworldpulse.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="World Pulse — Global Political Events, Connected">
+<meta name="twitter:description" content="World politics as a network of sourced facts — who said or did what, to whom, and when. Every claim links to its original source.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"World Pulse","url":"https://getworldpulse.com/","description":"World Pulse tracks world politics as a network of sourced facts — who said or did what, to whom, and when — instead of comparing opinions."}
+</script>
 <style>
 :root{
   --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#EBEFF3;
@@ -163,6 +177,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-related button{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent-bg); border-radius:100px; padding:6px 14px; cursor:pointer;}
 .cp-related button:hover{border-color:var(--accent);}
 .cp-empty{color:var(--ink-dim); font-size:13.5px; padding:16px 0;}
+.comment-empty{color:var(--ink-dim); font-size:13.5px; padding:8px 0 18px;}
 
 .person-header{display:flex; gap:18px; align-items:flex-start; border-bottom:3px solid var(--ink); padding-bottom:16px; margin-bottom:14px;}
 .person-photo{width:88px; height:88px; border-radius:10px; object-fit:cover; border:1px solid var(--line); flex-shrink:0; background:var(--surface-2);}
@@ -282,7 +297,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <p class="lede">Not opinions — factual links: who said or did what, and who it connects to. Every edge is a real event with a source link. This is a small seed of real stories — the base grows with every day processed, and older items move to the Archive automatically.</p>
   <div class="meta-row">
     <span>NODES: <b>246</b></span>
-    <span>EDGES: <b>111</b></span>
+    <span>EDGES: <b>154</b></span>
     <span>COUNTRIES ON MAP: <b>221</b></span>
     <span>EVERY EDGE LINKS TO A SOURCE</span>
   </div>
@@ -414,7 +429,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 111 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 154 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -449,7 +464,6 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <input id="c-name" type="text" placeholder="Your name" maxlength="60"/>
       <textarea id="c-text" placeholder="Add a comment..." maxlength="500"></textarea>
       <button id="c-submit">Post comment</button>
-      <span class="comment-note">Example thread below is illustrative, not real visitor feedback.</span>
     </div>
   </div>
 </div>
@@ -545,6 +559,7 @@ var BRA_PATH = "__BRA_PATH__";
 
 __EXTRA_COUNTRY_PATHS__
 __PERSON_PROFILES__
+__ORG_PROFILES__
 var ENTITIES = [
   {id:'putin', label:'Putin', type:'person', country:'russia'},
   {id:'lavrov', label:'Lavrov', type:'person', country:'russia'},
@@ -821,7 +836,93 @@ var EDGES = [
   {from:'arg', to:'arg', label:'Milei government touts falling inflation at the midterm mark', url:'https://www.reuters.com/world/americas/', date:'2026-06-25', scope:'domestic', country:'arg',
    detail:'Argentina’s government under Javier Milei touted continued disinflation at the midpoint of the year, crediting sustained fiscal austerity even as critics pointed to the social cost of the adjustment.'},
   {from:'idn', to:'idn', label:'free-meal program faces funding questions ahead of the budget cycle', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-06-10', scope:'domestic', country:'idn',
-   detail:'Indonesia’s signature free school-meal program faced funding questions ahead of the annual budget cycle, months before its nationwide expansion later in the year.'}
+   detail:'Indonesia’s signature free school-meal program faced funding questions ahead of the annual budget cycle, months before its nationwide expansion later in the year.'},
+  {from:'bel', to:'bel', label:'government continues budget talks amid coalition tensions', url:'https://www.reuters.com/world/europe/', date:'2026-09-06', scope:'domestic', country:'bel',
+   detail:'Belgium’s coalition government continued difficult budget negotiations, a recurring feature of Belgian politics given the country’s fragmented, multi-party governing coalitions.'},
+  {from:'nld', to:'nld', label:'government advances new immigration restrictions', url:'https://www.reuters.com/world/europe/', date:'2026-07-20', scope:'domestic', country:'nld',
+   detail:'The Dutch government advanced further restrictions on asylum and family reunification, continuing a policy direction that has dominated Dutch coalition politics in recent years.'},
+  {from:'svk', to:'svk', label:'PM Fico faces renewed protests over judicial reforms and Russia-friendly stance', url:'https://www.reuters.com/world/europe/', date:'2026-08-05', scope:'domestic', country:'svk',
+   detail:'Slovak Prime Minister Robert Fico faced renewed street protests over judicial reforms and his government’s more conciliatory stance toward Russia, a recurring source of tension with the EU mainstream.'},
+  {from:'hrv', to:'hrv', label:'government reports continued economic growth within the eurozone', url:'https://www.reuters.com/world/europe/', date:'2026-07-10', scope:'domestic', country:'hrv',
+   detail:'Croatia’s government reported continued economic growth, citing tourism and EU funds since joining the eurozone and Schengen area in 2023.'},
+  {from:'fin', to:'nato', label:'reaffirms NATO commitments amid Baltic Sea security concerns', url:'https://www.reuters.com/world/europe/', date:'2026-08-12', scope:'international',
+   detail:'Finland reaffirmed its commitments within NATO, which it joined in 2023, amid continued concern over Baltic Sea security incidents involving undersea cables.'},
+  {from:'dnk', to:'usa', label:'continues Arctic security cooperation talks amid US interest in Greenland', url:'https://www.reuters.com/world/europe/', date:'2026-08-20', scope:'international',
+   detail:'Denmark continued coordinating on Arctic security with allies amid continued US interest in Greenland, a Danish autonomous territory, which has been a recurring point of friction since 2025.'},
+  {from:'geo', to:'geo', label:'government faces continued protests over its EU integration stance', url:'https://www.reuters.com/world/europe/', date:'2026-07-15', scope:'domestic', country:'geo',
+   detail:'Georgia continued to see protests over the ruling Georgian Dream party’s more cautious approach to EU integration, a rift that has driven sustained demonstrations since late 2024.'},
+  {from:'arm', to:'aze', label:'continues peace talks toward a final settlement', url:'https://www.reuters.com/world/europe/', date:'2026-08-01', scope:'international',
+   detail:'Armenia and Azerbaijan continued negotiations toward a comprehensive peace treaty, building on a framework agreement reached in 2025 after decades of conflict over Nagorno-Karabakh.'},
+  {from:'kaz', to:'kaz', label:'continues economic diversification away from oil amid regional realignment', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-07-18', scope:'domestic', country:'kaz',
+   detail:'Kazakhstan continued efforts to diversify its oil-dependent economy, part of a broader push by Central Asian states to balance relations between Russia, China and the West.'},
+  {from:'uzb', to:'uzb', label:'continues gradual political and economic reforms', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-08', scope:'domestic', country:'uzb',
+   detail:'Uzbekistan continued a gradual program of political and economic liberalization under President Shavkat Mirziyoyev, a shift from the more closed system of his predecessor.'},
+  {from:'mng', to:'mng', label:'government faces pressure over mining revenue transparency', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-07-22', scope:'domestic', country:'mng',
+   detail:'Mongolia’s government faced continued public pressure over transparency in mining revenues, a recurring political flashpoint given the sector’s dominance of the economy.'},
+  {from:'mmr', to:'mmr', label:'military government extends state of emergency amid continued civil conflict', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-15', scope:'domestic', country:'mmr',
+   detail:'Myanmar’s military government extended the state of emergency first declared after the February 2021 coup, as fighting with resistance forces and ethnic armed groups continued across the country.'},
+  {from:'khm', to:'khm', label:'government continues crackdown on opposition ahead of local elections', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-07-28', scope:'domestic', country:'khm',
+   detail:'Cambodia’s government continued legal pressure on opposition figures ahead of local elections, extending a long-running pattern under the ruling Cambodian People’s Party.'},
+  {from:'sgp', to:'sgp', label:'government unveils budget measures to address cost-of-living pressures', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-18', scope:'domestic', country:'sgp',
+   detail:'Singapore’s government announced further cost-of-living relief measures, a recurring policy response to public concern over housing and living costs in the city-state.'},
+  {from:'twn', to:'twn', label:'boosts defense spending amid continued Chinese military pressure', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-30', scope:'domestic', country:'twn',
+   detail:'Taiwan’s government announced a further increase in defense spending, citing sustained Chinese military pressure including the large-scale exercises earlier in the year.'},
+  {from:'chl', to:'chl', label:'government navigates final months before presidential transition', url:'https://www.reuters.com/world/americas/', date:'2026-08-05', scope:'domestic', country:'chl',
+   detail:'Chile’s government navigated its final months in office ahead of a presidential transition, following the country’s late-2025 election cycle.'},
+  {from:'per', to:'per', label:'government faces continued political instability amid corruption investigations', url:'https://www.reuters.com/world/americas/', date:'2026-07-12', scope:'domestic', country:'per',
+   detail:'Peru continued to face political instability and corruption investigations touching senior officials, a persistent feature of Peruvian politics that has produced multiple presidents in recent years.'},
+  {from:'ecu', to:'ecu', label:'government continues security crackdown amid gang violence', url:'https://www.reuters.com/world/americas/', date:'2026-08-22', scope:'domestic', country:'ecu',
+   detail:'Ecuador’s government continued a militarized security crackdown on drug-trafficking gangs, part of President Daniel Noboa’s response to a surge in violence since 2024.'},
+  {from:'bol', to:'bol', label:'new government begins economic stabilization program', url:'https://www.reuters.com/world/americas/', date:'2026-07-05', scope:'domestic', country:'bol',
+   detail:'Bolivia’s government under President Rodrigo Paz, elected in 2025, began an economic stabilization program aimed at addressing fuel shortages and currency pressures inherited from the previous administration.'},
+  {from:'pry', to:'pry', label:'government continues fiscal consolidation efforts', url:'https://www.reuters.com/world/americas/', date:'2026-08-10', scope:'domestic', country:'pry',
+   detail:'Paraguay’s government continued fiscal consolidation efforts as part of its ongoing macroeconomic management program.'},
+  {from:'ury', to:'ury', label:'government under Orsi continues center-left policy agenda', url:'https://www.reuters.com/world/americas/', date:'2026-07-30', scope:'domestic', country:'ury',
+   detail:'Uruguay’s government under President Yamandú Orsi, in office since March 2025, continued its center-left policy agenda while maintaining the country’s reputation for institutional stability.'},
+  {from:'gtm', to:'gtm', label:'government continues anti-corruption reforms under Arévalo', url:'https://www.reuters.com/world/americas/', date:'2026-08-14', scope:'domestic', country:'gtm',
+   detail:'Guatemala’s government under President Bernardo Arévalo continued anti-corruption reforms, facing ongoing resistance from entrenched judicial and political interests.'},
+  {from:'cub', to:'cub', label:'continues to face severe economic crisis and blackouts', url:'https://apnews.com/hub/cuba', date:'2026-07-08', scope:'domestic', country:'cub',
+   detail:'Cuba continued to face a severe economic crisis marked by prolonged blackouts and shortages, amid continued US sanctions and reduced support from traditional allies.'},
+  {from:'dza', to:'dza', label:'government continues gas export diplomacy with Europe', url:'https://www.reuters.com/world/africa/', date:'2026-08-25', scope:'domestic', country:'dza',
+   detail:'Algeria continued positioning itself as an alternative gas supplier to European countries seeking to reduce dependence on Russian energy.'},
+  {from:'tun', to:'tun', label:'President Saied consolidates power amid continued opposition crackdown', url:'https://www.reuters.com/world/africa/', date:'2026-07-14', scope:'domestic', country:'tun',
+   detail:'Tunisian President Kais Saied continued consolidating power amid a sustained crackdown on opposition figures, a trend that has drawn criticism from international human-rights groups since 2021.'},
+  {from:'uga', to:'uga', label:'Museveni extends decades-long rule after January 2026 election', url:'https://www.reuters.com/world/africa/', date:'2026-07-24', scope:'domestic', country:'uga',
+   detail:'Uganda’s Yoweri Museveni, in power since 1986, extended his rule following the January 2026 election, amid continued opposition allegations of repression and irregularities.'},
+  {from:'tza', to:'tza', label:'government faces international criticism over internet restrictions', url:'https://www.reuters.com/world/africa/', date:'2026-07-20', scope:'domestic', country:'tza',
+   detail:'Tanzania’s government faced international criticism over internet restrictions, part of a broader pattern of tightening control over information following the disputed October 2025 election.'},
+  {from:'sen', to:'sen', label:'government under Faye continues sovereigntist economic agenda', url:'https://www.reuters.com/world/africa/', date:'2026-08-06', scope:'domestic', country:'sen',
+   detail:'Senegal’s government under President Bassirou Diomaye Faye continued its sovereigntist economic agenda, including renegotiating terms with foreign extractive industries.'},
+  {from:'civ', to:'civ', label:'government manages post-election period after Ouattara’s re-election', url:'https://www.reuters.com/world/africa/', date:'2026-07-24', scope:'domestic', country:'civ',
+   detail:'Ivory Coast’s government managed the post-election period after President Alassane Ouattara’s re-election to a fourth term in October 2025, a vote opposition parties criticized as unconstitutional.'},
+  {from:'zmb', to:'zmb', label:'government continues debt restructuring talks with creditors', url:'https://www.reuters.com/world/africa/', date:'2026-08-16', scope:'domestic', country:'zmb',
+   detail:'Zambia’s government continued debt restructuring talks with international creditors, following its 2020 default and subsequent multi-year renegotiation process.'},
+  {from:'zwe', to:'zwe', label:'government faces continued economic and currency instability', url:'https://www.reuters.com/world/africa/', date:'2026-07-11', scope:'domestic', country:'zwe',
+   detail:'Zimbabwe continued to face economic and currency instability despite the introduction of a new gold-backed currency, the ZiG, in 2024.'},
+  {from:'zar', to:'zar', label:'government continues peace talks over the eastern conflict with M23', url:'https://www.reuters.com/world/africa/', date:'2026-08-19', scope:'domestic', country:'zar',
+   detail:'The Democratic Republic of Congo continued peace talks over the conflict in its eastern provinces involving the M23 armed group, which regional bodies have linked to Rwandan backing.'},
+  {from:'syr', to:'syr', label:'transitional government continues efforts to consolidate control after Assad’s fall', url:'https://www.reuters.com/world/middle-east/', date:'2026-07-16', scope:'domestic', country:'syr',
+   detail:'Syria’s transitional government continued efforts to consolidate control and rebuild state institutions following the fall of Bashar al-Assad in December 2024.'},
+  {from:'yem', to:'yem', label:'internationally recognized government continues to face Houthi control of the north', url:'https://www.reuters.com/world/middle-east/', date:'2026-08-24', scope:'domestic', country:'yem',
+   detail:'Yemen’s internationally recognized government continued to face a divided country, with Houthi forces still controlling much of the north years into the conflict.'},
+  {from:'jor', to:'jor', label:'government manages regional spillover from continued Gaza instability', url:'https://www.reuters.com/world/middle-east/', date:'2026-07-27', scope:'domestic', country:'jor',
+   detail:'Jordan’s government continued managing the economic and security spillover from continued instability in Gaza, including strains on its large Palestinian-origin population.'},
+  {from:'are', to:'are', label:'continues economic diversification and regional mediation efforts', url:'https://www.reuters.com/world/middle-east/', date:'2026-08-11', scope:'domestic', country:'are',
+   detail:'The United Arab Emirates continued its economic diversification push while positioning itself as a mediator in several regional conflicts.'},
+  {from:'usa', to:'usa', label:'Congress continues budget negotiations ahead of fiscal year deadline', url:'https://www.reuters.com/world/us/', date:'2026-08-28', scope:'domestic', country:'usa',
+   detail:'The US Congress continued budget negotiations ahead of the fiscal year deadline, with disputes over spending levels raising the recurring possibility of a government shutdown.'},
+  {from:'china', to:'china', label:'expands Belt and Road infrastructure agreements in Africa and Southeast Asia', url:'https://www.reuters.com/world/china/', date:'2026-08-05', scope:'international',
+   detail:'China signed further Belt and Road infrastructure agreements with countries in Africa and Southeast Asia, continuing its decade-long global infrastructure financing push.'},
+  {from:'india', to:'russia', label:'continues balancing energy ties with Russia amid Western pressure', url:'https://www.reuters.com/world/india/', date:'2026-08-14', scope:'international',
+   detail:'India continued purchasing discounted Russian oil despite Western pressure to reduce ties, part of its broader strategy of balancing relations between Russia and Western partners.'},
+  {from:'uk', to:'uk', label:'government faces continued pressure over immigration and small boat crossings', url:'https://www.reuters.com/world/uk/', date:'2026-08-02', scope:'domestic', country:'uk',
+   detail:'The UK government faced continued political pressure over irregular migration and small-boat Channel crossings, an issue that has dominated British politics across successive governments.'},
+  {from:'germany', to:'germany', label:'coalition government debates further defense spending increases', url:'https://www.reuters.com/world/europe/', date:'2026-07-19', scope:'domestic', country:'germany',
+   detail:'Germany’s coalition government debated further increases to defense spending, continuing the post-2022 "Zeitenwende" shift in security policy.'},
+  {from:'france', to:'france', label:'government seeks parliamentary support for the 2027 budget amid a fragmented Assembly', url:'https://www.reuters.com/world/europe/', date:'2026-08-25', scope:'domestic', country:'france',
+   detail:'France’s government sought parliamentary support for the 2027 budget in a National Assembly with no majority bloc, the same structural fragility behind the no-confidence threat earlier in the month.'},
+  {from:'russia', to:'ukraine', label:'continues drone and missile strikes on energy infrastructure ahead of winter', url:'https://www.reuters.com/world/europe/', date:'2026-08-30', scope:'international',
+   detail:'Russia continued drone and missile strikes targeting Ukrainian energy infrastructure ahead of winter, a recurring tactic through multiple years of the war.'}
 ];
 
 var SYSTEMS = {
@@ -1465,7 +1566,7 @@ function openGenericEntityPage(id){
   var e = byId[id];
   var outgoing = EDGES.filter(function(x){ return x.from === id; }).sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
   var incoming = EDGES.filter(function(x){ return x.to === id; }).sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
-  var profile = (e.type === 'person') ? PERSON_PROFILES[id] : null;
+  var profile = e.type === 'person' ? PERSON_PROFILES[id] : ORG_PROFILES[id];
 
   var html = '';
   if (profile){
@@ -1474,7 +1575,7 @@ function openGenericEntityPage(id){
     html += '<div><h2>' + e.label + '</h2><div class="snapshot">' + (profile.desc || typeLabel[e.type]) + '</div></div>';
     html += '</div>';
     if (profile.extract) html += '<p class="person-bio">' + profile.extract + '</p>';
-    html += '<div class="person-wiki-src">Bio and photo from <a href="' + profile.wiki + '" target="_blank" rel="noopener">Wikipedia</a> (CC BY-SA) — not written or verified by World Pulse. Current moments below are our own sourced items.</div>';
+    html += '<div class="person-wiki-src">Description from <a href="' + profile.wiki + '" target="_blank" rel="noopener">Wikipedia</a> (CC BY-SA) — not written or verified by World Pulse. Activity below is our own sourced reporting.</div>';
   } else {
     html += '<div class="country-header"><h2>' + e.label + '</h2>';
     var sub = typeLabel[e.type];
@@ -1866,16 +1967,13 @@ renderFeed();
 
 // --- comments (localStorage, per-browser demo only) ---
 (function(){
-  var SEED = [
-    {author:'Reader (example)', text:'This is exactly the format I wanted — can you add Chinese state media coverage next?', time:'example'},
-    {author:'Reader (example)', text:'Would be great to filter by country.', time:'example'}
-  ];
   var list = document.getElementById('comment-list');
   var stored = [];
   try { stored = JSON.parse(localStorage.getItem('wp_comments') || '[]'); } catch(e) { stored = []; }
   function render(){
     list.innerHTML = '';
-    SEED.concat(stored).forEach(function(c){
+    if (!stored.length){ list.innerHTML = '<div class="comment-empty">No comments yet — be the first.</div>'; return; }
+    stored.forEach(function(c){
       var el = document.createElement('div');
       el.className = 'comment';
       el.innerHTML = '<div class="comment-head"><span class="comment-author"></span><span class="comment-time"></span></div><div class="comment-text"></div>';

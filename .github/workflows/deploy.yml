@@ -30,6 +30,8 @@ jobs:
         run: |
           mkdir -p public
           cp build/world_pulse.html public/index.html
+          cp static/robots.txt public/robots.txt
+          cp static/sitemap.xml public/sitemap.xml
           echo "getworldpulse.com" > public/CNAME
 
       - uses: actions/configure-pages@v5

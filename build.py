@@ -25,10 +25,12 @@ for code in CORE:
 extra_paths = open(os.path.join(CACHE, "extra_country_paths.js"), encoding="utf-8").read()
 extra_entities = open(os.path.join(CACHE, "extra_country_entities.js"), encoding="utf-8").read()
 person_profiles = open(os.path.join(CACHE, "person_profiles.js"), encoding="utf-8").read()
+org_profiles = open(os.path.join(CACHE, "org_profiles.js"), encoding="utf-8").read()
 
 html = html.replace("__EXTRA_COUNTRY_PATHS__", extra_paths)
 html = html.replace("__EXTRA_COUNTRY_ENTITIES__", extra_entities)
 html = html.replace("__PERSON_PROFILES__", person_profiles)
+html = html.replace("__ORG_PROFILES__", org_profiles)
 
 leftover_after = set(re.findall(r"__[A-Z_]+__", html))
 print("leftover placeholders:", sorted(leftover_after))
