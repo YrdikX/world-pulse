@@ -25,6 +25,7 @@ jobs:
         run: |
           git config user.name "world-pulse-bot"
           git config user.email "actions@users.noreply.github.com"
+          touch automation/candidates.jsonl automation/seen_urls.json
           git add automation/candidates.jsonl automation/seen_urls.json
           if ! git diff --cached --quiet; then
             git commit -m "Monitor: update candidates ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
