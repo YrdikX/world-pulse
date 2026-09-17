@@ -1,0 +1,1575 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Pulse</title>
+<style>
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#EBEFF3;
+  --ink:#141C2B; --ink-dim:#5C6B80; --line:#DAE1E8;
+  --accent:#1C4E9C; --accent-bg:#E7EFFA;
+  --live:#C81E2C;
+  --pulse:#F2994A;
+  --ocean:#DCE6F0; --land:#E7E0D1; --land-line:#CEC6AF;
+  --t-person:#7A4FB0; --t-person-bg:#F1E9FB;
+  --t-country:#1C6FBF; --t-country-bg:#E5F0FB;
+  --t-org:#12805F; --t-org-bg:#E1F5EE;
+  --t-event:#B5750E; --t-event-bg:#FBF0DC;
+  --t-region:#55606F; --t-region-bg:#EBEDF1;
+  --shadow: 0 1px 2px rgba(20,28,43,0.05), 0 8px 24px -12px rgba(20,28,43,0.18);
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; padding:0 20px; padding-block:0 60px;}
+.wrap{max-width:1080px; margin:0 auto;}
+
+.masthead{border-bottom:3px solid var(--ink); padding:22px 0 16px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;}
+.masthead .name{font-family:'Archivo', sans-serif; font-weight:800; font-size:28px; letter-spacing:-0.01em;}
+.masthead .name span{color:var(--accent);}
+.masthead .tagline{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.08em;}
+.live-badge{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--live); display:flex; align-items:center; gap:6px; text-transform:uppercase; letter-spacing:.06em;}
+.live-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--live); animation:pulse 1.6s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+h1{font-family:'Archivo', sans-serif; font-weight:800; font-size:clamp(24px,3.6vw,34px); line-height:1.15; text-wrap:balance; margin:0 0 12px; color:var(--ink);}
+.lede{font-size:15px; line-height:1.6; color:var(--ink-dim); max-width:70ch; margin:0 0 22px;}
+.meta-row{display:flex; gap:18px; flex-wrap:wrap; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-dim); margin-bottom:22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding-block:10px;}
+.meta-row b{color:var(--ink);}
+
+.tabs{display:flex; gap:2px; margin-bottom:18px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.06em; background:var(--surface-2); border:1px solid var(--line); color:var(--ink-dim); padding:9px 18px; cursor:pointer; flex:none;}
+@media (max-width:480px){ .tab{padding:8px 12px; font-size:11px;} }
+.tab:first-child{border-radius:6px 0 0 6px;}
+.tab:last-child{border-radius:0 6px 6px 0;}
+.tab[aria-selected="true"]{background:var(--ink); border-color:var(--ink); color:#fff;}
+
+.search-wrap{position:relative; margin-bottom:16px; max-width:420px;}
+#search-input{width:100%; font-family:'IBM Plex Sans',sans-serif; font-size:14px; padding:10px 14px; border:1px solid var(--line); border-radius:7px; background:var(--surface); color:var(--ink);}
+#search-input:focus{outline:none; border-color:var(--accent);}
+#search-results{position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--surface); border:1px solid var(--line); border-radius:7px; box-shadow:var(--shadow); z-index:5; max-height:320px; overflow-y:auto; display:none;}
+#search-results.open{display:block;}
+.search-item{padding:10px 14px; font-size:13.5px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line);}
+.search-item:first-child{border-top:none;}
+.search-item:hover{background:var(--accent-bg);}
+.search-item .stype{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--ink-dim);}
+.search-empty{padding:12px 14px; font-size:13px; color:var(--ink-dim);}
+
+.legend{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;}
+.chip{font-family:'IBM Plex Mono',monospace; font-size:10.5px; padding:4px 10px; border-radius:3px; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
+.chip.person{background:var(--t-person-bg); color:var(--t-person);}
+.chip.country{background:var(--t-country-bg); color:var(--t-country);}
+.chip.org{background:var(--t-org-bg); color:var(--t-org);}
+.chip.event{background:var(--t-event-bg); color:var(--t-event);}
+.chip.region{background:var(--t-region-bg); color:var(--t-region);}
+
+.layout{display:grid; grid-template-columns:1fr 320px; gap:18px; align-items:start;}
+@media (max-width:820px){ .layout{grid-template-columns:1fr;} }
+
+.view{display:none;}
+.view.active{display:block;}
+
+.map-wrap{background:linear-gradient(180deg,#F7F9FB,#EEF1F5); border:1px solid var(--line); border-radius:12px; padding:12px; box-shadow:var(--shadow); overflow:hidden; position:relative;}
+.map-wrap svg{width:100%; height:auto; display:block; border-radius:8px; cursor:grab;}
+.map-wrap svg:active{cursor:grabbing;}
+
+path.land{fill:var(--land); stroke:var(--land-line); stroke-width:0.4;}
+path.hl-country{stroke:rgba(20,28,43,0.12); stroke-width:0.35; cursor:pointer; transition:filter .15s, stroke .15s;}
+path.hl-country:hover{filter:brightness(1.1); stroke:rgba(20,28,43,0.35);}
+path.hl-country.no-data{fill:var(--land); stroke:var(--land-line); stroke-width:0.4;}
+path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
+.graticule line{stroke:#FFFFFF; stroke-opacity:0.35; stroke-width:0.6;}
+.graticule .eq{stroke-opacity:0.5;}
+.map-pin{cursor:pointer;}
+.map-pin circle{stroke:var(--surface); stroke-width:1.6;}
+.map-pin text{font-family:'IBM Plex Mono',monospace; font-size:9.5px; fill:var(--ink); font-weight:500;}
+
+.map-controls{position:absolute; top:22px; right:22px; display:flex; flex-direction:column; gap:4px; z-index:2;}
+.map-btn{width:28px; height:28px; background:var(--surface); border:1px solid var(--line); color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:14px; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1; box-shadow:var(--shadow);}
+.map-btn:hover{border-color:var(--accent); color:var(--accent);}
+.alliance-flyout{position:absolute; top:22px; right:60px; background:var(--surface); border:1px solid var(--line); border-radius:7px; box-shadow:var(--shadow); padding:9px; z-index:3; width:200px; font-family:'IBM Plex Mono',monospace;}
+.af-title{font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:2px 6px 7px;}
+.af-item{display:flex; align-items:center; gap:8px; padding:6px 6px; border-radius:5px; cursor:pointer; font-size:12px; color:var(--ink);}
+.af-item:hover{background:var(--surface-2);}
+.af-item.active{background:var(--accent-bg); color:var(--accent);}
+.af-dot{width:10px;height:10px;border-radius:50%; flex:none; border:1px solid rgba(0,0,0,.15);}
+.af-check{margin-left:auto; opacity:0; font-size:11px;}
+.af-item.active .af-check{opacity:1;}
+
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px; box-shadow:var(--shadow); position:sticky; top:16px; min-height:200px;}
+.panel-empty{color:var(--ink-dim); font-size:13.5px; line-height:1.6;}
+.panel-type{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em;}
+.panel-name{font-family:'Archivo',sans-serif; font-size:21px; font-weight:800; margin:4px 0 14px; color:var(--ink);}
+.panel-section{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--accent); letter-spacing:.08em; margin:16px 0 8px;}
+.edge-item{font-size:13px; line-height:1.5; padding:9px 0; border-top:1px solid var(--line);}
+.edge-item a{color:var(--accent); text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:11px;}
+.edge-item a:hover{text-decoration:underline;}
+.edge-item .rel{color:var(--ink-dim);}
+.edge-item .who{font-weight:600; color:var(--ink);}
+.edge-date{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-dim); display:block; margin-top:3px;}
+.archive-hint{font-size:12px; color:var(--ink-dim); margin-top:14px; padding-top:10px; border-top:1px dashed var(--line);}
+.archive-hint b{color:var(--accent); cursor:pointer;}
+.panel-profile-link{font-size:12.5px; color:var(--accent); cursor:pointer; margin-top:16px; padding-top:12px; border-top:1px solid var(--line); font-weight:600;}
+.panel-profile-link:hover{text-decoration:underline;}
+.mode-toggle{display:flex; gap:0; margin-bottom:14px; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+.mode-btn{flex:1; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; background:var(--surface); border:none; color:var(--ink-dim); padding:7px 4px; cursor:pointer; border-right:1px solid var(--line);}
+.mode-btn:last-child{border-right:none;}
+.mode-btn.active{background:var(--ink); color:#fff;}
+.sys-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+.sys-table td{padding:7px 0; border-top:1px solid var(--line); vertical-align:top;}
+.sys-table td:first-child{color:var(--ink-dim); font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; width:88px; padding-right:8px;}
+.sys-note{font-size:12.5px; line-height:1.5; color:var(--ink); margin:10px 0 0; padding-top:10px; border-top:1px dashed var(--line);}
+.sys-src{font-size:11px; color:var(--ink-dim); margin-top:12px; font-style:italic;}
+.entity-link{cursor:pointer;}
+.entity-link:hover{text-decoration:underline;}
+.panel-name.clickable{cursor:pointer; text-decoration:underline; text-decoration-color:var(--line); text-decoration-thickness:2px; text-underline-offset:4px;}
+.panel-name.clickable:hover{color:var(--accent);}
+
+.back-link{font-family:'IBM Plex Mono',monospace; font-size:12px; background:none; border:none; color:var(--accent); cursor:pointer; padding:0; margin-bottom:20px; display:inline-flex; align-items:center; gap:6px;}
+.back-link:hover{text-decoration:underline;}
+.country-header{border-bottom:3px solid var(--ink); padding-bottom:16px; margin-bottom:22px;}
+.country-header h2{font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(26px,4vw,36px); margin:0 0 8px;}
+.country-header .snapshot{font-size:15px; line-height:1.6; color:var(--ink-dim); max-width:70ch;}
+.cp-grid{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-bottom:8px;}
+@media (max-width:820px){ .cp-grid{grid-template-columns:1fr;} }
+.cp-section{margin-bottom:30px;}
+.cp-section h3{font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:0 0 14px; border-bottom:1px solid var(--line); padding-bottom:8px;}
+.cp-facts{width:100%; border-collapse:collapse; font-size:13.5px;}
+.cp-facts td{padding:8px 0; border-top:1px solid var(--line); vertical-align:top;}
+.cp-facts td:first-child{color:var(--ink-dim); font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; width:130px;}
+.seatbar{display:flex; width:100%; height:26px; border-radius:5px; overflow:hidden; margin-bottom:12px; border:1px solid var(--line);}
+.seatbar span{height:100%;}
+.seat-legend{display:flex; flex-wrap:wrap; gap:10px 16px; font-size:12px;}
+.seat-legend-item{display:flex; align-items:center; gap:6px;}
+.seat-legend-item .sw{width:11px;height:11px;border-radius:3px;display:inline-block;}
+.seat-majority{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); margin-bottom:10px;}
+.cp-parties{margin:0; padding-left:18px; font-size:13.5px; line-height:1.7;}
+.cp-figures{width:100%; border-collapse:collapse; font-size:13px;}
+.cp-figures td{padding:6px 0; border-top:1px solid var(--line);}
+.cp-figures td:first-child{color:var(--ink-dim); width:60%;}
+.cp-figures td:last-child{font-weight:600; text-align:right;}
+.cp-how{font-size:14.5px; line-height:1.7; max-width:75ch;}
+.cp-timeline{list-style:none; margin:0; padding:0;}
+.cp-timeline li{display:flex; gap:14px; padding:9px 0; border-top:1px solid var(--line); font-size:13.5px;}
+.cp-timeline .tdate{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-dim); min-width:90px;}
+.cp-timeline .flag{color:var(--live);}
+.cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow);}
+.cp-news-item .who-line{font-size:12.5px; margin-bottom:6px;}
+.cp-news-item p{margin:0 0 8px; font-size:14px; line-height:1.6;}
+.cp-news-item a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none;}
+.cp-related{display:flex; flex-wrap:wrap; gap:8px;}
+.cp-related button{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent-bg); border-radius:100px; padding:6px 14px; cursor:pointer;}
+.cp-related button:hover{border-color:var(--accent);}
+.cp-empty{color:var(--ink-dim); font-size:13.5px; padding:16px 0;}
+
+.person-header{display:flex; gap:18px; align-items:flex-start; border-bottom:3px solid var(--ink); padding-bottom:16px; margin-bottom:14px;}
+.person-photo{width:88px; height:88px; border-radius:10px; object-fit:cover; border:1px solid var(--line); flex-shrink:0; background:var(--surface-2);}
+.person-header h2{font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(24px,4vw,32px); margin:0 0 6px;}
+.person-header .snapshot{font-size:14px; color:var(--ink-dim);}
+.person-bio{font-size:14.5px; line-height:1.65; max-width:75ch; margin:0 0 8px;}
+.person-wiki-src{font-size:11.5px; color:var(--ink-dim); font-style:italic; margin-bottom:24px;}
+.person-wiki-src a{color:var(--accent); font-style:normal;}
+
+.bucket-header{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:22px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line);}
+.bucket-header:first-child{margin-top:0;}
+.feed-list{display:flex; flex-direction:column; gap:10px;}
+.feed-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; cursor:pointer; transition:border-color .15s;}
+.feed-card:hover{border-color:var(--accent);}
+.feed-card.no-link{cursor:default;}
+.feed-card.no-link:hover{border-color:var(--line);}
+.feed-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:104px;}
+.feed-body{flex:1; font-size:13.5px;}
+.feed-scope{font-family:'IBM Plex Mono',monospace; font-size:9.5px; text-transform:uppercase; color:var(--ink-dim); letter-spacing:.05em; margin-left:8px;}
+.feed-body a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none; margin-left:8px;}
+
+.about-page{max-width:70ch;}
+.about-page h2{font-family:'Archivo',sans-serif; font-size:22px; font-weight:800; margin:0 0 6px;}
+.about-lede{font-size:14.5px; color:var(--ink-dim); line-height:1.6; margin:0 0 26px;}
+.about-page h3{font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); margin:22px 0 8px; border-bottom:1px solid var(--line); padding-bottom:8px;}
+.about-page p{font-size:14px; line-height:1.65; margin:0;}
+#view-indices .about-page{max-width:920px;}
+.idx-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0 4px;}
+@media (max-width:720px){ .idx-grid{grid-template-columns:1fr;} }
+.idx-card{background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:14px 16px; box-shadow:var(--shadow); cursor:default;}
+.idx-name{font-family:'Archivo',sans-serif; font-weight:800; font-size:15px; color:var(--ink); margin-bottom:2px;}
+.idx-pub{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;}
+.idx-desc{font-size:13px; line-height:1.55; color:var(--ink); margin:0 0 10px;}
+.idx-card a{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--accent); text-decoration:none;}
+.idx-card a:hover{text-decoration:underline;}
+.idx-activity-row{display:flex; align-items:center; gap:10px; padding:7px 0; border-top:1px solid var(--line); font-size:13px;}
+.idx-activity-row:first-child{border-top:none;}
+.idx-tier-badge{font-family:'IBM Plex Mono',monospace; font-size:10px; padding:2px 7px; border-radius:20px; color:#fff; flex:none;}
+.about-page ul{font-size:14px; line-height:1.7; padding-left:18px; margin:6px 0 0;}
+
+@keyframes pulseGlowT1{0%,100%{filter:drop-shadow(0 0 2px var(--pulse)) drop-shadow(0 0 4px var(--pulse));}50%{filter:drop-shadow(0 0 7px var(--pulse)) drop-shadow(0 0 13px var(--pulse));}}
+@keyframes pulseGlowT2{0%,100%{filter:drop-shadow(0 0 1px var(--pulse)) drop-shadow(0 0 2px var(--pulse));}50%{filter:drop-shadow(0 0 4px var(--pulse)) drop-shadow(0 0 7px var(--pulse));}}
+@keyframes pulseGlowT3{0%,100%{filter:drop-shadow(0 0 1px var(--pulse));}50%{filter:drop-shadow(0 0 2px var(--pulse)) drop-shadow(0 0 3px var(--pulse));}}
+path.hl-country.pulse-t1{animation:pulseGlowT1 1.8s ease-in-out infinite; stroke:var(--pulse); stroke-width:1.8;}
+path.hl-country.pulse-t2{animation:pulseGlowT2 2.4s ease-in-out infinite; stroke:var(--pulse); stroke-width:1.3;}
+path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:var(--pulse); stroke-width:1;}
+.map-legend{position:absolute; bottom:14px; left:14px; background:rgba(255,255,255,.94); border:1px solid var(--land-line); border-radius:4px; padding:9px 11px; font-family:'IBM Plex Mono',monospace; font-size:10px; display:flex; flex-direction:column; gap:5px; max-width:230px; z-index:2; line-height:1.3;}
+.map-legend .lg-item{display:flex; align-items:center; gap:7px;}
+.map-legend .lg-dot{width:9px;height:9px;border-radius:50%; flex:none; border:1px solid rgba(0,0,0,.15);}
+
+.archive-list{display:flex; flex-direction:column; gap:10px;}
+.archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap;}
+.archive-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:78px;}
+.archive-body{flex:1; font-size:13.5px; line-height:1.5;}
+.archive-body a{color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:11px; text-decoration:none; margin-left:8px;}
+.archive-empty{color:var(--ink-dim); font-size:13.5px; padding:20px 0;}
+
+.chambers-layout{display:grid; grid-template-columns:220px 1fr; gap:18px;}
+@media (max-width:700px){ .chambers-layout{grid-template-columns:1fr;} }
+.chamber-list{display:flex; flex-direction:column; gap:6px;}
+.chamber-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px 14px; cursor:pointer; font-size:13.5px; font-weight:600;}
+.chamber-item.active{border-color:var(--accent); background:var(--accent-bg); color:var(--accent);}
+.chamber-item.disabled{opacity:0.5; cursor:default; font-weight:400;}
+.chamber-item .soon{display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:400; color:var(--ink-dim); text-transform:uppercase; margin-top:2px;}
+.transcript{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px; box-shadow:var(--shadow);}
+.transcript h3{font-family:'Archivo',sans-serif; font-size:19px; font-weight:800; margin:0 0 4px;}
+.transcript .sub{font-size:12.5px; color:var(--ink-dim); margin-bottom:18px;}
+.statement{border-left:3px solid var(--t-org); padding:4px 0 4px 16px; margin-bottom:18px;}
+.statement .speaker{font-weight:700; font-size:13.5px;}
+.statement .stmt-date{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-dim); margin-left:8px;}
+.statement p{margin:6px 0 4px; font-size:14px; line-height:1.6;}
+.statement a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none;}
+
+.note{background:var(--surface-2); border:1px dashed var(--line); border-radius:8px; padding:18px 20px; font-size:13.5px; line-height:1.6; color:var(--ink-dim); margin-top:24px;}
+.note b{color:var(--ink);}
+.note ul{margin:10px 0 0; padding-left:18px;}
+.note li{margin-bottom:4px;}
+
+.comments{margin-top:36px;}
+.comments h2{font-family:'Archivo',sans-serif; font-size:19px; font-weight:800; margin:0 0 4px; color:var(--ink);}
+.comments .sub{font-size:12.5px; color:var(--ink-dim); margin-bottom:18px;}
+.comment-list{display:flex; flex-direction:column; gap:14px; margin-bottom:20px;}
+.comment{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow);}
+.comment-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
+.comment-author{font-weight:700; font-size:13.5px; color:var(--ink);}
+.comment-time{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim);}
+.comment-text{font-size:13.5px; line-height:1.55; color:var(--ink);}
+.comment-form{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px;}
+.comment-form input, .comment-form textarea{font-family:'IBM Plex Sans',sans-serif; font-size:13.5px; padding:9px 11px; border:1px solid var(--line); border-radius:5px; background:var(--surface-2); color:var(--ink);}
+.comment-form textarea{min-height:70px; resize:vertical;}
+.comment-form button{align-self:flex-start; font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.05em; background:var(--accent); color:#fff; border:none; padding:9px 18px; border-radius:5px; cursor:pointer; font-weight:600;}
+.comment-form button:hover{opacity:0.9;}
+.comment-note{font-size:11.5px; color:var(--ink-dim); font-family:'IBM Plex Mono',monospace;}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
+<div class="wrap">
+  <div class="masthead">
+    <div>
+      <div class="name">WORLD<span>PULSE</span></div>
+      <div class="tagline">Facts, not framing — who did what, sourced</div>
+    </div>
+    <div class="live-badge"><span class="dot"></span> Sample fragment · 2026-09-17</div>
+  </div>
+
+  <h1>Who's connected to whom in the news</h1>
+  <p class="lede">Not opinions — factual links: who said or did what, and who it connects to. Every edge is a real event with a source link. This is a small seed of real stories — the base grows with every day processed, and older items move to the Archive automatically.</p>
+  <div class="meta-row">
+    <span>NODES: <b>246</b></span>
+    <span>EDGES: <b>74</b></span>
+    <span>COUNTRIES ON MAP: <b>221</b></span>
+    <span>EVERY EDGE LINKS TO A SOURCE</span>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-feed" aria-selected="true">Feed</button>
+    <button class="tab" role="tab" id="tab-map" aria-selected="false">Map</button>
+    <button class="tab" role="tab" id="tab-chambers" aria-selected="false">Chambers</button>
+    <button class="tab" role="tab" id="tab-indices" aria-selected="false">Indices</button>
+    <button class="tab" role="tab" id="tab-archive" aria-selected="false">Archive</button>
+    <button class="tab" role="tab" id="tab-about" aria-selected="false">About</button>
+  </div>
+
+  <div class="search-wrap">
+    <input id="search-input" type="text" placeholder="Search countries, people, organizations..." autocomplete="off"/>
+    <div id="search-results"></div>
+  </div>
+
+  <div class="legend">
+    <span class="chip person">● person</span>
+    <span class="chip country">● country</span>
+    <span class="chip org">● organization</span>
+    <span class="chip event">● event</span>
+    <span class="chip region">● region / bloc</span>
+  </div>
+
+  <div id="view-feed" class="view active">
+    <div class="feed-list" id="feed-list"></div>
+  </div>
+
+  <div id="view-map" class="view">
+    <div class="layout">
+      <div>
+        <div class="map-wrap">
+          <svg viewBox="0 0 1000 507" id="map-svg">
+            <defs>
+              <radialGradient id="oceanGrad" cx="38%" cy="32%" r="85%">
+                <stop offset="0%" stop-color="#EAF1F8"/>
+                <stop offset="55%" stop-color="#DCE6F0"/>
+                <stop offset="100%" stop-color="#C9D8E6"/>
+              </radialGradient>
+              <filter id="landShadow" x="-5%" y="-5%" width="110%" height="110%">
+                <feDropShadow dx="0" dy="1.2" stdDeviation="1.4" flood-color="#0B1524" flood-opacity="0.18"/>
+              </filter>
+            </defs>
+            <g id="zoom-layer">
+              <rect x="0" y="0" width="1000" height="507" fill="url(#oceanGrad)"/>
+              <g class="graticule">
+                <line x1="0" y1="63" x2="1000" y2="63"/>
+                <line x1="0" y1="127" x2="1000" y2="127"/>
+                <line x1="0" y1="190" x2="1000" y2="190"/>
+                <line class="eq" x1="0" y1="253" x2="1000" y2="253"/>
+                <line x1="0" y1="317" x2="1000" y2="317"/>
+                <line x1="0" y1="380" x2="1000" y2="380"/>
+                <line x1="0" y1="444" x2="1000" y2="444"/>
+                <line x1="125" y1="0" x2="125" y2="507"/>
+                <line x1="250" y1="0" x2="250" y2="507"/>
+                <line x1="375" y1="0" x2="375" y2="507"/>
+                <line x1="500" y1="0" x2="500" y2="507"/>
+                <line x1="625" y1="0" x2="625" y2="507"/>
+                <line x1="750" y1="0" x2="750" y2="507"/>
+                <line x1="875" y1="0" x2="875" y2="507"/>
+              </g>
+              <g id="land-layer" filter="url(#landShadow)"></g>
+              <g id="hl-layer" filter="url(#landShadow)"></g>
+              <g id="bloc-overlay"></g>
+              <g id="map-pins"></g>
+            </g>
+          </svg>
+          <div class="map-controls">
+            <button class="map-btn" id="zoom-in">+</button>
+            <button class="map-btn" id="zoom-out">−</button>
+            <button class="map-btn" id="zoom-reset" title="Reset view">⟲</button>
+            <button class="map-btn" id="alliances-btn" title="Highlight alliances">⚑</button>
+          </div>
+          <div class="alliance-flyout" id="alliance-flyout" hidden>
+            <div class="af-title">Highlight an alliance</div>
+            <div id="alliance-flyout-list"></div>
+          </div>
+          <div class="map-legend" id="map-legend"></div>
+        </div>
+      </div>
+      <div class="panel" id="panel">
+        <div class="panel-empty">Click a country, person, event or organization — its recent connections and source links appear here. Older items move to the Archive tab.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-chambers" class="view">
+    <div class="chambers-layout">
+      <div class="chamber-list" id="chamber-list"></div>
+      <div class="transcript" id="transcript"></div>
+    </div>
+  </div>
+
+  <div id="view-indices" class="view">
+    <div class="about-page">
+      <h2>World political indices</h2>
+      <p class="about-lede">There is no single official "tension index." But several real, long-running indices measure conflict risk, instability and democratic health — here is what actually exists, who publishes it, and what it measures. World Pulse doesn't pull live numbers from any of these yet, so no per-country scores are shown here — only what each index is and a link to the real source. Hover (or tap, on mobile) a card for a one-line summary; the paragraph underneath has the full explanation.</p>
+
+      <h3>Conflict, violence &amp; instability — closest to a "tension index"</h3>
+      <div class="idx-grid" id="idx-grid-tension"></div>
+
+      <h3>Governance &amp; democratic health — related, broader indices</h3>
+      <div class="idx-grid" id="idx-grid-governance"></div>
+
+      <h3>World Pulse's own metric (not an official index)</h3>
+      <p>The map's glow on the <b>Activity</b> view is our own transparent metric, computed live from this site's real, sourced edges — nothing borrowed or implied from the indices above. For each country we count how many edges (international + domestic) it has in the last 7 days, rank all countries with any activity by that count, then split them into quartiles: top 25% glow strongest (tier 1), next 25% weaker (tier 2), next 25% weakest (tier 3), bottom 25% don't glow. It measures <i>how much World Pulse currently has on a country</i>, not real-world tension or stability — with only 74 edges so far, it mostly reflects what we've curated, not the state of the world.</p>
+      <div id="idx-activity-table"></div>
+    </div>
+  </div>
+
+  <div id="view-archive" class="view">
+    <div class="archive-list" id="archive-list"></div>
+  </div>
+
+  <div id="view-country" class="view">
+    <button class="back-link" id="country-back">&larr; Back to map</button>
+    <div id="country-content"></div>
+  </div>
+
+  <div id="view-about" class="view">
+    <div class="about-page">
+      <h2>About World Pulse</h2>
+      <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
+
+      <h3>What this is right now</h3>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 74 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 11 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+
+      <h3>The attribution rule</h3>
+      <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
+
+      <h3>International vs. Domestic</h3>
+      <p><b>International</b> — an edge that crosses between two different countries, people, or organizations (a statement, an action, a reaction). <b>Domestic</b> — an edge internal to one country's own politics (an election, a domestic policy move). Domestic items are tagged directly, not inferred.</p>
+
+      <h3>Recent vs. Archive</h3>
+      <p>Items from the last <b>3 days</b> count as recent and show on the Map/Feed. Anything older moves to the Archive tab automatically — same data, just no longer "current."</p>
+
+      <h3>What "System" pages are (and aren't)</h3>
+      <p>Country System pages describe how a government is structured — head of state, legislature, how power changes hands. These are structural facts, not breaking news, and are not individually sourced per line the way news items are; treat them as a snapshot as of when they were written, not a live feed.</p>
+
+      <h3>What Chambers are</h3>
+      <p>Chambers hold real, sourced statements from international organizations (UN, NATO, EU, G7, G20, WTO, BRICS, Mercosur, ASEAN, the African Union, the Arab League, OSCE, International IDEA), shown chronologically. Nothing is written on an organization's behalf that it didn't actually say — unfilled chambers are marked "coming soon" rather than guessed at. The WHO isn't included here since it's a health body rather than a political one.</p>
+
+      <h3>Known limitations</h3>
+      <ul>
+        <li>Coverage is a handful of countries and two real news stories — not the 25-country, every-day base this is meant to become.</li>
+        <li>Comments are stored in your browser's local storage only — not shared with other visitors. A real deployment needs a backend for that.</li>
+        <li>Nothing updates automatically. Every edge, country and date was added by hand in a conversation with Claude.</li>
+        <li>To become a live product: an always-on collector, automated "who-said-what" extraction per article (an AI task, but needing review), and a real database — not a hand-built file.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="comments">
+    <h2>Comments</h2>
+    <div class="sub">No account needed. Local to your browser in this prototype — not shared between visitors yet. A real deployment needs a backend for that.</div>
+    <div class="comment-list" id="comment-list"></div>
+    <div class="comment-form">
+      <input id="c-name" type="text" placeholder="Your name" maxlength="60"/>
+      <textarea id="c-text" placeholder="Add a comment..." maxlength="500"></textarea>
+      <button id="c-submit">Post comment</button>
+      <span class="comment-note">Example thread below is illustrative, not real visitor feedback.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+var TODAY = new Date('2026-09-17');
+var RECENT_DAYS = 7;
+
+function daysAgo(dateStr){
+  var d = new Date(dateStr);
+  return Math.round((TODAY - d) / 86400000);
+}
+function bucketOf(dateStr){
+  var n = daysAgo(dateStr);
+  if (n <= 0) return 'today';
+  if (n <= 7) return 'week';
+  if (n <= 30) return 'month';
+  return 'archive';
+}
+var BUCKET_LABEL = {today:'Today', week:'This week', month:'This month', archive:'Archive'};
+function renderBucketed(items, cardFn, buckets){
+  buckets = buckets || ['today','week','month','archive'];
+  var out = '';
+  buckets.forEach(function(b){
+    var inBucket = items.filter(function(x){ return bucketOf(x.date) === b; });
+    if (!inBucket.length) return;
+    out += '<div class="bucket-header">' + BUCKET_LABEL[b] + '</div>';
+    out += inBucket.map(cardFn).join('');
+  });
+  return out;
+}
+function fmtDate(dateStr){
+  var n = daysAgo(dateStr);
+  if (n <= 0) return dateStr + ' (today)';
+  if (n === 1) return dateStr + ' (1 day ago)';
+  return dateStr + ' (' + n + ' days ago)';
+}
+
+var RUS_PATH = "__RUS_PATH__";
+var UKR_PATH = "__UKR_PATH__";
+var LTU_PATH = "__LTU_PATH__";
+var BLR_PATH = "__BLR_PATH__";
+var POL_PATH = "__POL_PATH__";
+var MDA_PATH = "__MDA_PATH__";
+var USA_PATH = "__USA_PATH__";
+var CHN_PATH = "__CHN_PATH__";
+var DEU_PATH = "__DEU_PATH__";
+var FRA_PATH = "__FRA_PATH__";
+var GBR_PATH = "__GBR_PATH__";
+var JPN_PATH = "__JPN_PATH__";
+var IND_PATH = "__IND_PATH__";
+var CAN_PATH = "__CAN_PATH__";
+var ITA_PATH = "__ITA_PATH__";
+var BRA_PATH = "__BRA_PATH__";
+
+__EXTRA_COUNTRY_PATHS__
+__PERSON_PROFILES__
+var ENTITIES = [
+  {id:'putin', label:'Putin', type:'person', country:'russia'},
+  {id:'lavrov', label:'Lavrov', type:'person', country:'russia'},
+  {id:'tusk', label:'Tusk', type:'person', country:'poland'},
+  {id:'lukashenko', label:'Lukashenko', type:'person', country:'belarus'},
+  {id:'zelensky', label:'Zelensky', type:'person', country:'ukraine'},
+  {id:'takaichi', label:'Takaichi', type:'person', country:'japan'},
+  {id:'carney', label:'Carney', type:'person', country:'canada'},
+  {id:'meloni', label:'Meloni', type:'person', country:'italy'},
+  {id:'farage', label:'Farage', type:'person', country:'uk'},
+  {id:'afd', label:'AfD', type:'org'},
+  {id:'sanchez', label:'Sánchez', type:'person', country:'esp'},
+  {id:'stocker', label:'Stocker', type:'person', country:'aut'},
+  {id:'orban', label:'Orbán', type:'person', country:'hun'},
+  {id:'magyar', label:'Magyar', type:'person', country:'hun'},
+  {id:'lmontenegro', label:'Luís Montenegro', type:'person', country:'prt'},
+  {id:'mitsotakis', label:'Mitsotakis', type:'person', country:'grc'},
+  {id:'nicusor_dan', label:'Nicșor Dan', type:'person', country:'rom'},
+  {id:'duma', label:'State Duma election', type:'event'},
+  {id:'russia', label:'Russia', type:'country', geo:RUS_PATH},
+  {id:'ukraine', label:'Ukraine', type:'country', geo:UKR_PATH},
+  {id:'lithuania', label:'Lithuania', type:'country', geo:LTU_PATH},
+  {id:'belarus', label:'Belarus', type:'country', geo:BLR_PATH},
+  {id:'poland', label:'Poland', type:'country', geo:POL_PATH},
+  {id:'moldova', label:'Moldova', type:'country', geo:MDA_PATH},
+  {id:'usa', label:'United States', type:'country', geo:USA_PATH},
+  {id:'china', label:'China', type:'country', geo:CHN_PATH},
+  {id:'germany', label:'Germany', type:'country', geo:DEU_PATH},
+  {id:'france', label:'France', type:'country', geo:FRA_PATH},
+  {id:'uk', label:'United Kingdom', type:'country', geo:GBR_PATH},
+  {id:'japan', label:'Japan', type:'country', geo:JPN_PATH},
+  {id:'india', label:'India', type:'country', geo:IND_PATH},
+  {id:'canada', label:'Canada', type:'country', geo:CAN_PATH},
+  {id:'italy', label:'Italy', type:'country', geo:ITA_PATH},
+  {id:'brazil', label:'Brazil', type:'country', geo:BRA_PATH},
+  {id:'donbas', label:'Donbas / Novorossiya', type:'region'},
+  {id:'europe', label:'Europe / EU', type:'region'},
+  {id:'nato', label:'NATO', type:'org'},
+  {id:'idea', label:'International IDEA', type:'org'},
+  {id:'un', label:'United Nations', type:'org'},
+  {id:'wto', label:'World Trade Organization', type:'org'},
+  {id:'who', label:'World Health Organization', type:'org'},
+  {id:'eu', label:'European Union', type:'org'},
+  {id:'g7', label:'G7', type:'org'},
+  {id:'g20', label:'G20', type:'org'},
+  {id:'brics', label:'BRICS', type:'org'},
+  {id:'mercosur', label:'Mercosur', type:'org'},
+  {id:'asean', label:'ASEAN', type:'org'},
+  {id:'au', label:'African Union', type:'org'},
+  {id:'arab_league', label:'Arab League', type:'org'},
+  {id:'osce', label:'OSCE', type:'org'},
+__EXTRA_COUNTRY_ENTITIES__
+];
+
+var EDGES = [
+  {from:'putin', to:'duma', label:'urged citizens to vote', url:'https://tass.com/politics/2188613', date:'2026-09-16', scope:'domestic', country:'russia',
+   detail:'In a televised address on September 16, President Putin called participation in the State Duma election "our shared contribution to Russia’s victory," framing the vote — held September 18–20 — as a patriotic duty.'},
+  {from:'duma', to:'donbas', label:'region votes for the first time', url:'https://www.kommersant.ru/doc/8956428', date:'2026-09-16', scope:'domestic', country:'russia',
+   detail:'For the first time, polling stations are open in the Russian-annexed Donetsk, Luhansk, Zaporizhzhia and Kherson regions — territory Ukraine and most of the international community do not recognize as Russian.'},
+  {from:'ukraine', to:'duma', label:'called it a sham election', url:'https://www.kyivpost.com/post/84511', date:'2026-09-16', scope:'international',
+   detail:'Ukraine’s Central Election Commission called the vote a "sham election," said any results from the occupied territories will carry no legal weight, and warned that residents who participate risk criminal prosecution.'},
+  {from:'idea', to:'duma', label:'declared it unlawful', url:'https://www.idea.int/news/statement-international-idea-russian-federations-planned-elections-state-duma-occupied', date:'2026-09-16', scope:'international',
+   detail:'International IDEA, an intergovernmental election-monitoring body, said organizing a legislative election on occupied territory of another state is unlawful under international law and amounts to an attempt to cement the annexation.'},
+  {from:'lavrov', to:'europe', label:'warned of a "very short" retaliatory conflict', url:'https://tass.com/politics/2188421', date:'2026-09-16', scope:'international',
+   detail:'Foreign Minister Sergei Lavrov told an audience in Yekaterinburg that if Europe — which he said talks daily about preparing for war with Russia — were to attack first, the resulting war "would be very short," adding he hoped the warning had been heard in European capitals.'},
+  {from:'nato', to:'lithuania', label:'shot down a drone over its territory', url:'https://breakingdefense.com/2026/09/italian-fighter-jets-shoot-down-unidentified-drone-over-lithuania/', date:'2026-09-15', scope:'international',
+   detail:'Two Italian Eurofighter jets operating under NATO command shot down a drone that entered Lithuanian airspace near Pratkūnai village, roughly 60 miles from Vilnius — the first such intercept in Lithuanian airspace.'},
+  {from:'belarus', to:'lithuania', label:'drone entered from this country', url:'https://dronexl.co/2026/09/15/nato-jets-lithuania-drone-shootdown-belarus/', date:'2026-09-15', scope:'international',
+   detail:'Lithuanian officials say the drone crossed into their airspace from Belarus, likely diverted off course by Ukrainian electronic warfare while headed toward Ukraine, and stayed airborne for roughly half an hour.'},
+  {from:'lithuania', to:'russia', label:'president says drone was likely Russian', url:'https://www.yahoo.com/news/us/articles/lithuanias-naus-da-drone-downed-114826035.html', date:'2026-09-15', scope:'international',
+   detail:'Lithuanian President Gitanas Nausėda said the downed drone was probably of Russian origin, a Gerbera-type model.'},
+  {from:'nato', to:'ukraine', label:'pledged more support, calls Russia "increasingly reckless"', url:'https://www.nato.int/en/news-and-events/articles/news/2026/09/08/nato-secretary-general-welcomes-new-support-for-ukraine-urges-nations-to-continue-to-step-up', date:'2026-09-08', scope:'international',
+   detail:'At a Ukraine Defence Contact Group meeting, NATO chief Mark Rutte welcomed new pledges of support — including over $10bn allocated through PURL and US Foreign Military Sales over the past year — and said Russia is becoming "increasingly reckless," citing missiles and drones crossing NATO’s eastern flank and an alleged hybrid attack at Germany’s Leipzig airport.'},
+  {from:'russia', to:'poland', label:'drone struck a Warsaw-bound train near the border', url:'https://www.rte.ie/news/ukraine/2026/0914/1591421-ukraine-train-border/', date:'2026-09-14', scope:'international',
+   detail:'A drone struck a passenger train bound for Warsaw about two kilometers from the Polish border; Ukrainian authorities had warned the crew in advance and no one was hurt, though European and American officials — including former UK PM Boris Johnson — were on a nearby train returning from a conference in Kyiv.'},
+  {from:'nato', to:'ukraine', label:'pledged to boost support after the border strike', url:'https://www.aljazeera.com/news/2026/9/14/nato-pledges-increased-support-for-ukraine-after-russia-strikes-warsaw-bound-train', date:'2026-09-14', scope:'international',
+   detail:'NATO Secretary-General Mark Rutte pledged to increase support for Ukraine after the border strike near Poland; Polish PM Donald Tusk chaired an emergency meeting in Warsaw.'},
+  {from:'tusk', to:'russia', label:'warned he expects Russia to escalate the war "in the coming weeks"', url:'https://www.rte.ie/news/ukraine/2026/0914/1591421-ukraine-train-border/', date:'2026-09-14', scope:'international',
+   detail:'Polish Prime Minister Donald Tusk said intelligence reports, including a recent CIA briefing, suggest Russia is likely to intensify sabotage and border provocations as part of an effort to discourage European states from supporting Ukraine.'},
+  {from:'russia', to:'moldova', label:'drone forced closure of airspace on Zelensky’s flight route', url:'https://militarnyi.com/en/news/russia-twice-tried-to-attack-zelensky-s-plane-with-drones-in-moldova/', date:'2026-09-08', scope:'international',
+   detail:'A drone incursion forced the temporary closure of Moldovan airspace along President Zelensky’s flight route through Chișinău; Moldovan authorities said it later crashed roughly 160km from the capital’s airport, though they did not confirm claims the presidential plane was nearly hit.'},
+  {from:'zelensky', to:'russia', label:'says drones twice targeted his plane over Moldova', url:'https://militarnyi.com/en/news/russia-twice-tried-to-attack-zelensky-s-plane-with-drones-in-moldova/', date:'2026-09-16', scope:'international',
+   detail:'In an interview with CBS News, President Zelensky said Russian drones twice targeted his presidential plane while it was transiting Moldovan airspace via Chișinău.'},
+  {from:'lukashenko', to:'usa', label:'met US envoy to push for lifting sanctions', url:'https://www.washingtontimes.com/news/2026/sep/15/belarus-authoritarian-leader-lukashenko-meets-us-envoy-push-lifting/', date:'2026-09-15', scope:'international',
+   detail:'Belarusian leader Alexander Lukashenko met US special envoy John Coale to push for lifting remaining sanctions, saying "we have reached quite a few agreements" and asking Washington to help unblock Belarusian assets held at Citibank.'},
+  {from:'europe', to:'russia', label:'extended asset-freeze sanctions by one week, to Sept 22', url:'https://www.consilium.europa.eu/en/policies/sanctions-against-russia/timeline-sanctions-against-russia/', date:'2026-09-15', scope:'international',
+   detail:'The Council of the European Union issued a decision temporarily extending asset-freeze sanctions targeting those responsible for undermining Ukraine’s territorial integrity by one week, to September 22, while a longer-term renewal is finalized.'},
+  {from:'russia', to:'ukraine', label:'hosts US envoy for a fresh peace-talk push after a six-month hiatus', url:'https://commonslibrary.parliament.uk/research-briefings/cbp-12198/', date:'2026-09-03', scope:'international',
+   detail:'US Special Envoy Steve Witkoff and Jared Kushner made separate visits to Russia and Ukraine in early September, restarting peace talks after a six-month pause; trilateral talks in the UAE are expected in October.'},
+  {from:'zelensky', to:'russia', label:'says territorial issues "remain a relevant" sticking point in peace talks', url:'https://commonslibrary.parliament.uk/research-briefings/cbp-12198/', date:'2026-09-06', scope:'international',
+   detail:'At a press conference in Kyiv after talks with US officials, President Zelensky welcomed the renewed peace push but said territorial questions "can only be resolved at the level of leaders."'},
+  {from:'china', to:'usa', label:'Xi’s Sept 24 summit reportedly involves Trump easing "strategic ambiguity" over Taiwan', url:'https://foreignpolicy.com/2026/09/14/trump-xi-summit-deal-taiwan-strategic-ambiguity-defense-alliance-geopolitics/', date:'2026-09-14', scope:'international',
+   detail:'Xi Jinping is due to meet Trump at the White House on September 24 for their second summit this year; analysts say Trump’s dealmaking approach could involve concessions on Taiwan’s security as part of broader trade negotiations.'},
+  {from:'afd', to:'germany', label:'wins Saxony-Anhalt outright, leads polling ahead of the Sept 20 Berlin and Mecklenburg votes', url:'https://www.cnbc.com/2026/09/07/afd-germany-economy-merz.html', date:'2026-09-07', scope:'domestic', country:'germany',
+   detail:'The far-right AfD decisively won the Saxony-Anhalt state election and leads polling (~35–37%) ahead of the September 20 votes in Berlin and Mecklenburg-Vorpommern, piling pressure on Chancellor Merz’s federal coalition.'},
+  {from:'farage', to:'uk', label:'Reform UK accused of seeking foreign money to evade campaign-finance law', url:'https://www.bloomberg.com/news/articles/2026-09-05/burnham-gets-his-own-breathing-space-as-turmoil-engulfs-farage', date:'2026-09-05', scope:'domestic', country:'uk',
+   detail:'Channel 4 footage showed Farage and senior Reform UK aides discussing with an undercover journalist how to bring foreign money into the party while evading campaign-finance rules, complicating his bid to counter a resurgent Labour under PM Burnham.'},
+  {from:'takaichi', to:'japan', label:'skips a second supplementary budget for FY2026, citing spending discipline', url:'https://www.japantimes.co.jp/business/2026/09/03/japan-forgo-second-extra-budget/', date:'2026-09-03', scope:'domestic', country:'japan',
+   detail:'PM Takaichi’s government plans to forgo a second FY2026 supplementary budget, saying disaster response can be covered by reserve funds under the existing budget — part of a wider push to end Japan’s postwar reliance on repeated extra budgets.'},
+  {from:'carney', to:'usa', label:'says Canada is "at war" with the US as retaliatory tariffs take effect', url:'https://www.npr.org/2026/08/22/nx-s1-5941584/us-canada-tariffs', date:'2026-09-08', scope:'international',
+   detail:'PM Mark Carney enacted retaliatory tariffs on US steel, dairy, appliances and other goods starting September 8, after the US imposed 50% tariffs on nearly $20bn of Canadian goods; Carney said "you’re at war when you get attacked."'},
+  {from:'carney', to:'usa', label:'clashes with Commerce Secretary Lutnick over who broke off trade talks', url:'https://www.cnbc.com/2026/09/03/carney-lutnick-trump-trade-canada.html', date:'2026-09-03', scope:'international',
+   detail:'Carney rejected US Commerce Secretary Howard Lutnick’s claim that Ottawa tanked trade negotiations, saying "appointed, unelected Cabinet members in the United States are experts on Canadian politics."'},
+  {from:'meloni', to:'italy', label:'government becomes Italy’s longest-serving since WWII, 1,413 days', url:'https://www.aljazeera.com/news/2026/9/4/meloni-sets-a-record-leading-italys-longest-serving-government-since-wwii', date:'2026-09-04', scope:'domestic', country:'italy',
+   detail:'Giorgia Meloni’s government marked its 1,413th day in office, making it Italy’s longest-serving since the republic’s founding in 1946, despite polls showing 75% of Italians unhappy with the country’s direction.'},
+  {from:'meloni', to:'italy', label:'abolishes the vehicle ownership tax ahead of next year’s election', url:'https://www.bloomberg.com/news/articles/2026-09-16/meloni-to-abolish-italy-s-vehicle-ownership-tax-to-woo-voters', date:'2026-09-16', scope:'domestic', country:'italy',
+   detail:'Meloni’s government moved to abolish Italy’s vehicle ownership tax — among the country’s most unpopular — as she seeks to ease cost-of-living pressure on voters ahead of next year’s general election.'},
+  {from:'sanchez', to:'nato', label:'steers Spain away from the Western alliance, denies US use of Spanish bases', url:'https://brusselssignal.eu/2026/09/sanchez-leads-spain-away-from-the-western-alliance/', date:'2026-09-10', scope:'international',
+   detail:'Prime Minister Pedro Sánchez has positioned himself as a leader of the international Left, denying the US the use of American military bases in Spain and clashing publicly with the Trump administration over trade and NATO commitments.'},
+  {from:'swe', to:'swe', label:'holds general election Sept 13; early results show a narrow lead for the center-left opposition', url:'https://www.nbcnews.com/world/europe/swedes-vote-election-usher-far-right-government-rcna597453', date:'2026-09-14', scope:'domestic', country:'swe',
+   detail:'Sweden held a general election on September 13, the first nationwide test for PM Ulf Kristersson’s center-right government. A central question was whether the Sweden Democrats would enter government for the first time; early results showed a narrow lead for the center-left opposition led by Magdalena Andersson.'},
+  {from:'stocker', to:'aut', label:'declares an "autumn of results", coalition aims to pass a new climate law this month', url:'https://voiceofvienna.org/austrias-coalition-vows-autumn-of-results-amid-internal-disputes/', date:'2026-09-08', scope:'domestic', country:'aut',
+   detail:'Chancellor Christian Stocker pledged to turn months of coalition wrangling into concrete action, with his three-party government (ÖVP, SPÖ, NEOS) targeting a new climate law and drought relief measures in September.'},
+  {from:'orban', to:'hun', label:'concedes election defeat to Péter Magyar, ending 16-year rule', url:'https://www.epc.eu/publication/hungary-after-orban-what-peter-magyars-victory-means-for-the-eu/', date:'2026-04-15', scope:'domestic', country:'hun',
+   detail:'Viktor Orbán conceded defeat after a chaotic, polarized campaign, ending his 16-year hold on power. Péter Magyar’s victory marks a major political shift for Hungary and its relationship with the EU.'},
+  {from:'magyar', to:'europe', label:'attends first EU summit as PM without Orbán present for the first time in 16 years', url:'https://wtop.com/europe/2026/06/as-hungarys-magyar-joins-eu-summit-sidelined-orban-meets-with-far-right-allies-in-brussels/', date:'2026-06-15', scope:'international',
+   detail:'EU leaders held a Brussels summit without Viktor Orbán for the first time in 16 years, as new PM Péter Magyar represented Hungary; Orbán instead met with far-right allies elsewhere in the city.'},
+  {from:'che', to:'che', label:'government urges rejecting both initiatives ahead of the Sept 27 neutrality and food-security referendum', url:'https://www.admin.ch/en/popular-vote-on-27-september-2026', date:'2026-09-05', scope:'domestic', country:'che',
+   detail:'Swiss voters are set to decide on Sept 27 on two federal popular initiatives: enshrining neutrality further in the constitution, and a food-security measure requiring more sustainable domestic production. The Federal Council and Parliament recommend rejecting both — the vote itself is still ahead as of this writing.'},
+  {from:'lmontenegro', to:'prt', label:'survives Chega-led no-confidence vote, 60 seats short of the majority needed', url:'https://www.bloomberg.com/news/articles/2026-09-08/portugal-government-survives-far-right-chega-no-confidence-vote', date:'2026-09-08', scope:'domestic', country:'prt',
+   detail:'PM Luís Montenegro’s minority government survived a no-confidence motion brought by the far-right Chega party over allegations against Interior Minister Luís Neves, after the opposition Socialists abstained.'},
+  {from:'prt', to:'europe', label:'backs António Costa’s bid for a second term as European Council President', url:'https://www.theportugalnews.com/news/2026-09-16/montenegro-supports-antonio-costas-second-term-on-the-european-council/1086897', date:'2026-09-16', scope:'international',
+   detail:'Portugal’s PM Luís Montenegro voiced support for reappointing fellow Portuguese politician António Costa to a second term as President of the European Council.'},
+  {from:'mitsotakis', to:'grc', label:'rules out snap elections after unveiling tax cuts and wage hikes', url:'https://www.usnews.com/news/world/articles/2026-09-06/greek-pm-rules-out-snap-elections-after-unveiling-tax-cuts-wage-hikes', date:'2026-09-06', scope:'domestic', country:'grc',
+   detail:'PM Kyriakos Mitsotakis ruled out an early election after announcing tax cuts and wage increases at the Thessaloniki International Fair, seeking to recover ground in opinion polls ahead of next year’s scheduled vote.'},
+  {from:'nicusor_dan', to:'rom', label:'resumes government-formation talks after parties fail to agree on a majority coalition', url:'https://www.romania-insider.com/president-consultations-govt-restart-sept-2026', date:'2026-09-01', scope:'domestic', country:'rom',
+   detail:'President Nicușor Dan resumed consultations with parliamentary parties to nominate a prime minister, after months without a stable government following a May no-confidence vote against the previous cabinet.'},
+  {from:'dnk', to:'nor', label:'co-signs Nordic security-of-supply declaration with Finland and Norway', url:'https://www.government.se/statements/2026/09/joint-nordic-declaration-on-security-of-supply', date:'2026-09-02', scope:'international',
+   detail:'Denmark, Finland and Norway signed a joint declaration on strengthening Nordic cooperation on security of supply during crisis or war, coordinated with ongoing European and NATO planning.'},
+  {from:'un', to:'russia', label:'officials say Russian strikes on Ukrainian cities show a "clear pattern" of targeting civilians', url:'https://press.un.org/en/2026/sc16408.doc.htm', date:'2026-07-09', scope:'international',
+   detail:'At the UN Security Council’s 10191st meeting, UN officials said Russian aerial strikes demonstrate a clear pattern of deliberately targeting Ukrainian cities with large civilian populations, and speakers called for urgent de-escalation.'},
+  {from:'who', to:'zar', label:'holds high-level briefing on the Bundibugyo virus (Ebola) response in DR Congo', url:'https://www.who.int/emergencies/situations/ebola-outbreak---drc-2026', date:'2026-09-01', scope:'international',
+   detail:'The WHO Director-General held a high-level member states briefing on the response to the rapidly expanding Bundibugyo virus disease (a form of Ebola) outbreak in the Democratic Republic of the Congo, first detected in May 2026.'},
+  {from:'who', to:'zar', label:'launches global mpox vaccine stockpile with Gavi, UNICEF, IFRC and MSF', url:'https://www.who.int/news/item/02-09-2026-global-initiative-launched-to-improve-access-to-mpox-vaccines', date:'2026-09-02', scope:'international',
+   detail:'WHO and partners (Gavi, UNICEF, the International Federation of Red Cross and Red Crescent Societies, and Médecins Sans Frontières) launched a long-term global mpox vaccine stockpile so countries have timely, equitable access during outbreaks — two-thirds of current cases are in the African region.'},
+  {from:'wto', to:'usa', label:'DG Okonjo-Iweala says 72% of world trade still runs under WTO rules despite tariff disputes', url:'https://pmnewsnigeria.com/2026/07/30/most-global-trade-still-follows-wto-rules-okonjo-iweala-insists/', date:'2026-07-30', scope:'international',
+   detail:'WTO Director-General Ngozi Okonjo-Iweala said that despite tariff increases and trade-policy uncertainty, 72% of world trade still follows WTO rules, and that world merchandise trade grew 4.6% as demand for AI-related goods offset tariff-driven weakness.'},
+  {from:'eu', to:'russia', label:'proposes a new sanctions package targeting Russia’s energy revenue and "shadow fleet"', url:'https://ec.europa.eu/commission/presscorner/', date:'2026-09-04', scope:'international',
+   detail:'The European Commission proposed a further package of restrictive measures against Russia, targeting revenue from oil and gas exports and vessels used to circumvent the existing price cap on Russian crude — part of the EU’s ongoing sanctions track since 2022.'},
+  {from:'g7', to:'ukraine', label:'foreign ministers, under France’s 2026 presidency, condemn strikes on Ukrainian energy infrastructure and reaffirm support', url:'https://www.diplomatie.gouv.fr/en/french-foreign-policy/g7/', date:'2026-09-10', scope:'international',
+   detail:'G7 foreign ministers, meeting under France’s 2026 G7 presidency, issued a statement condemning renewed Russian strikes on Ukraine’s energy grid ahead of winter and reaffirmed coordination on sanctions and financial support for Kyiv.'},
+  {from:'g20', to:'usa', label:'finance ministers meet in Washington ahead of the US-hosted 2026 summit, warn on debt and trade fragmentation', url:'https://g20.org/', date:'2026-09-11', scope:'international',
+   detail:'G20 finance ministers and central bank governors met in Washington ahead of the 2026 summit hosted by the United States, warning that rising sovereign debt burdens and trade-policy fragmentation pose risks to global growth.'},
+  {from:'brics', to:'india', label:'chaired by India in 2026, calls for UN Security Council reform and wider use of local currencies in trade', url:'https://www.mea.gov.in/', date:'2026-08-20', scope:'international',
+   detail:'Under India’s 2026 BRICS chairmanship, the bloc reiterated its long-standing call for reform of the UN Security Council to include more developing-world representation and encouraged members to expand trade settlement in local currencies rather than the US dollar.'},
+  {from:'mercosur', to:'europe', label:'welcomes progress on ratifying the EU–Mercosur trade agreement, urges European parliaments to complete ratification', url:'https://www.mercosur.int/en/', date:'2026-07-15', scope:'international',
+   detail:'Mercosur governments welcomed continued momentum on the EU–Mercosur association agreement, concluded politically in December 2024, and urged remaining EU member-state and European Parliament ratification steps to move forward despite French farmer opposition.'},
+  {from:'asean', to:'china', label:'chaired by the Philippines in 2026, reaffirms unity on South China Sea code-of-conduct talks with China', url:'https://asean.org/', date:'2026-08-05', scope:'international',
+   detail:'ASEAN, under the Philippines’ 2026 chairmanship, reaffirmed a common position in long-running negotiations with China over a code of conduct for the South China Sea, amid continuing disputes over maritime claims.'},
+  {from:'au', to:'sdn', label:'calls for an immediate ceasefire and unhindered humanitarian access in Sudan’s civil war', url:'https://au.int/en/pressreleases', date:'2026-09-06', scope:'international',
+   detail:'The African Union renewed calls for an immediate ceasefire between Sudan’s army and the Rapid Support Forces and for unhindered humanitarian access, as the war — ongoing since April 2023 — continues to drive one of the world’s largest displacement crises.'},
+  {from:'arab_league', to:'wbg', label:'reiterates support for Palestinian statehood and calls for sustained Gaza ceasefire implementation', url:'https://www.lasportal.org/en', date:'2026-09-03', scope:'international',
+   detail:'The Arab League reiterated its call for a two-state solution and full implementation of the Gaza ceasefire framework, urging guarantors to sustain reconstruction and humanitarian access commitments.'},
+  {from:'osce', to:'russia', label:'Parliamentary Assembly again condemns Russia’s war against Ukraine as a breach of the Helsinki principles', url:'https://www.osce.org/parliamentary-assembly', date:'2026-07-05', scope:'international',
+   detail:'The OSCE Parliamentary Assembly adopted a further resolution condemning Russia’s war against Ukraine as a fundamental breach of the 1975 Helsinki Final Act principles that OSCE participating states, including Russia, originally signed.'},
+  {from:'usa', to:'usa', label:'Federal Reserve holds interest rates steady, citing sticky inflation and a cooling labor market', url:'https://www.federalreserve.gov/newsevents/pressreleases.htm', date:'2026-09-17', scope:'domestic', country:'usa',
+   detail:'The Federal Reserve held its benchmark rate steady at its September meeting, with officials citing persistent inflation alongside signs of a cooling labor market as reasons for caution on further cuts.'},
+  {from:'usa', to:'china', label:'imposes new tariffs on semiconductor imports, citing national security', url:'https://www.reuters.com/technology/', date:'2026-09-09', scope:'international',
+   detail:'The US administration announced further tariffs and export restrictions targeting semiconductor-related imports from China, the latest escalation in an ongoing technology and trade dispute between the two countries.'},
+  {from:'china', to:'china', label:'central bank cuts banks’ reserve requirement ratio to support a slowing economy', url:'https://www.reuters.com/world/china/', date:'2026-09-05', scope:'domestic', country:'china',
+   detail:'The People’s Bank of China cut the reserve requirement ratio for major banks, freeing up liquidity for lending as policymakers try to shore up growth amid weak domestic demand and a prolonged property-sector slump.'},
+  {from:'china', to:'twn', label:'holds large-scale military exercises near Taiwan, drawing international criticism', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-28', scope:'international',
+   detail:'China’s military conducted large-scale exercises encircling Taiwan, in what analysts described as a rehearsal for a blockade; the drills drew condemnation from Taiwan, the US and other governments in the region.'},
+  {from:'india', to:'india', label:'holds high-turnout Bihar state assembly elections seen as a test for national alliances', url:'https://www.reuters.com/world/india/', date:'2026-09-01', scope:'domestic', country:'india',
+   detail:'Bihar held state assembly elections with record turnout, widely read as an early test of strength between the ruling NDA alliance and the opposition INDIA bloc ahead of national politics further down the line.'},
+  {from:'brazil', to:'brazil', label:'central bank holds rates at a two-decade high as inflation stays above target', url:'https://www.reuters.com/world/americas/', date:'2026-09-10', scope:'domestic', country:'brazil',
+   detail:'Brazil’s central bank held its benchmark Selic rate at one of its highest levels in two decades, as inflation remained above the official target ahead of the 2026 presidential election.'},
+  {from:'mex', to:'mex', label:'president unveils new security plan after a spike in cartel violence in northern states', url:'https://apnews.com/hub/mexico', date:'2026-09-03', scope:'domestic', country:'mex',
+   detail:'Mexico’s president announced an expanded security plan focused on northern border states after a renewed spike in cartel-related violence, including additional National Guard deployments and coordination with US agencies.'},
+  {from:'arg', to:'arg', label:'Milei government says inflation has fallen to its lowest level since 2021 as deregulation continues', url:'https://www.reuters.com/world/americas/', date:'2026-08-30', scope:'domestic', country:'arg',
+   detail:'Argentina’s government under Javier Milei reported annual inflation falling to its lowest level since 2021, crediting continued fiscal austerity and deregulation, even as critics point to rising poverty during the adjustment.'},
+  {from:'tur', to:'tur', label:'central bank continues gradual rate cuts as inflation eases from 2024 highs', url:'https://www.reuters.com/world/middle-east/', date:'2026-09-11', scope:'domestic', country:'tur',
+   detail:'Turkey’s central bank continued a gradual easing cycle, cutting its policy rate again as annual inflation kept falling from the highs reached in 2024, while remaining well above the bank’s official target.'},
+  {from:'tur', to:'ukraine', label:'hosts renewed talks on the Black Sea grain corridor between Russian and Ukrainian officials', url:'https://www.aljazeera.com/where/turkey/', date:'2026-08-22', scope:'international',
+   detail:'Turkey hosted a further round of talks aimed at sustaining safe Black Sea shipping lanes for Ukrainian grain exports, continuing its role as a mediator between Kyiv and Moscow since the original 2022 grain deal.'},
+  {from:'isr', to:'isr', label:'coalition faces renewed tension over a bill to draft ultra-Orthodox men into the military', url:'https://www.timesofisrael.com/', date:'2026-09-07', scope:'domestic', country:'isr',
+   detail:'Israel’s governing coalition faced renewed internal tension over legislation on military conscription for ultra-Orthodox men, a long-running fault line that has repeatedly threatened coalition stability.'},
+  {from:'sau', to:'sau', label:'advances Vision 2030 diversification push as it reworks some NEOM timelines amid lower oil prices', url:'https://www.reuters.com/business/energy/', date:'2026-08-18', scope:'domestic', country:'sau',
+   detail:'Saudi Arabia continued its Vision 2030 economic diversification program, though officials acknowledged adjusting some giga-project timelines, including parts of NEOM, amid lower oil revenues and higher financing costs.'},
+  {from:'irn', to:'irn', label:'holds parliamentary by-elections amid continued economic strain from sanctions', url:'https://apnews.com/hub/iran', date:'2026-09-04', scope:'domestic', country:'irn',
+   detail:'Iran held parliamentary by-elections against a backdrop of continued economic strain from international sanctions, with turnout watched closely as a gauge of public confidence in the political establishment.'},
+  {from:'kor', to:'kor', label:'parliament passes budget after prolonged standoff between ruling and opposition parties', url:'https://apnews.com/hub/south-korea', date:'2026-09-12', scope:'domestic', country:'kor',
+   detail:'South Korea’s National Assembly passed the national budget after a prolonged standoff between the ruling party and opposition, the latest episode in a period of unusually sharp partisan conflict in Seoul.'},
+  {from:'idn', to:'idn', label:'expands nationwide free-meal program, a signature policy of the Prabowo government', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-08-25', scope:'domestic', country:'idn',
+   detail:'Indonesia expanded its nationwide free school-meal program, a signature policy of President Prabowo Subianto’s administration aimed at reducing child malnutrition, even as economists raise questions about its long-term cost.'},
+  {from:'aus', to:'aus', label:'Albanese government faces pressure over housing affordability ahead of state elections', url:'https://www.abc.net.au/news/politics', date:'2026-09-06', scope:'domestic', country:'aus',
+   detail:'Australia’s federal government faced renewed pressure over housing affordability and rents, an issue expected to weigh heavily on upcoming state elections despite several rounds of federal housing measures.'},
+  {from:'nga', to:'nga', label:'government announces further fuel subsidy and exchange-rate reforms amid inflation concerns', url:'https://www.reuters.com/world/africa/', date:'2026-08-29', scope:'domestic', country:'nga',
+   detail:'Nigeria’s government announced further adjustments to fuel pricing and foreign-exchange policy as part of its ongoing subsidy-removal reform program, which has driven inflation even as it aims to stabilize public finances.'},
+  {from:'zaf', to:'zaf', label:'coalition government of national unity marks two years in office amid budget disputes', url:'https://www.reuters.com/world/africa/', date:'2026-09-02', scope:'domestic', country:'zaf',
+   detail:'South Africa’s coalition Government of National Unity, formed after the 2024 election produced no outright majority, marked two years in office, with the ANC and Democratic Alliance still sparring over budget and policy priorities.'},
+  {from:'egy', to:'egy', label:'continues IMF-backed currency and subsidy reforms amid regional instability', url:'https://www.reuters.com/world/africa/', date:'2026-08-15', scope:'domestic', country:'egy',
+   detail:'Egypt continued implementing IMF-backed economic reforms, including further currency and subsidy adjustments, as it manages the economic spillover of regional instability alongside high public debt levels.'},
+  {from:'pak', to:'pak', label:'government extends crackdown on opposition PTI ahead of local elections', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-09-08', scope:'domestic', country:'pak',
+   detail:'Pakistan’s government extended legal and administrative pressure on the opposition PTI party founded by jailed former PM Imran Khan, ahead of local elections, drawing criticism from human-rights groups.'},
+  {from:'col', to:'col', label:'Petro government clashes with congress over stalled health-system reform bill', url:'https://www.reuters.com/world/americas/', date:'2026-08-20', scope:'domestic', country:'col',
+   detail:'Colombia’s government under Gustavo Petro clashed again with congress over a long-stalled overhaul of the health-insurance system, one of the central promises of his presidency.'},
+  {from:'ken', to:'ken', label:'government faces renewed protests over tax and cost-of-living measures', url:'https://www.reuters.com/world/africa/', date:'2026-09-13', scope:'domestic', country:'ken',
+   detail:'Kenya saw renewed protests over tax and cost-of-living measures, echoing the youth-led demonstrations that forced the withdrawal of a finance bill in 2024, as the Ruto government tries to balance IMF-linked fiscal targets with public anger.'},
+  {from:'phl', to:'china', label:'accuses Chinese coast guard of blocking a resupply mission near Second Thomas Shoal', url:'https://www.reuters.com/world/asia-pacific/', date:'2026-09-14', scope:'international',
+   detail:'The Philippines accused China’s coast guard of blocking and shadowing a resupply mission to Philippine forces near Second Thomas Shoal in the South China Sea, the latest in a long series of confrontations in disputed waters.'},
+  {from:'ven', to:'usa', label:'Maduro government denounces renewed US sanctions threats and naval presence in the Caribbean', url:'https://apnews.com/hub/venezuela', date:'2026-09-15', scope:'international',
+   detail:'Venezuela’s government denounced renewed US sanctions threats and an increased US naval presence in the southern Caribbean, which Washington has linked to counter-narcotics operations and pressure on the Maduro government.'}
+];
+
+var SYSTEMS = {
+  russia: {
+    type: 'Super-presidential',
+    head: 'Vladimir Putin — President since 2000 (5th term from 03.2024)',
+    gov: 'Mikhail Mishustin — Prime Minister since 01.2020',
+    legislature: 'State Duma, 450 seats (225 party-list + 225 constituency) — dominated by United Russia',
+    note: 'Upper chamber (Federation Council, ~200 seats) is not directly elected — 2 appointees per region.'
+  },
+  usa: {
+    type: 'Presidential, federal',
+    head: 'Donald Trump — President since 01.2025 (2nd term)',
+    gov: 'Same person (presidential system — no separate head of government)',
+    legislature: 'Congress: House (218R–214D) + Senate (53R–45D+2) — both Republican-controlled',
+    note: 'Midterm elections Nov 3, 2026 could flip control of the House.'
+  },
+  ukraine: {
+    type: 'Semi-presidential',
+    head: 'Volodymyr Zelensky — President',
+    gov: 'Serhii Koretskyi — Prime Minister since 07.2026',
+    legislature: 'Verkhovna Rada, unicameral, 450 seats',
+    note: 'Martial law in effect since 2022 — no elections scheduled during wartime.'
+  },
+  lithuania: {
+    type: 'Parliamentary',
+    head: 'Gitanas Nausėda — President',
+    gov: 'Mindaugas Sinkevičius — Prime Minister since 07.2026',
+    legislature: 'Seimas, unicameral, 141 seats',
+    note: ''
+  },
+  poland: {
+    type: 'Semi-presidential (cohabitation)',
+    head: 'Karol Nawrocki — President since 08.2025',
+    gov: 'Donald Tusk — Prime Minister (coalition since 12.2023)',
+    legislature: 'Sejm (lower house) + Senate (upper house)',
+    note: 'President and PM are from opposing camps — frequent veto standoffs.'
+  },
+  moldova: {
+    type: 'Parliamentary',
+    head: 'Maia Sandu — President since 12.2020',
+    gov: 'Eugeniu Osmochescu — acting Prime Minister since 07.2026',
+    legislature: 'Parliament, unicameral — PAS party majority since the 09.2025 election',
+    note: ''
+  },
+  belarus: {
+    type: 'Presidential (authoritarian)',
+    head: 'Alexander Lukashenko — President since 1994 (7th term)',
+    gov: 'Alexander Turchin — Prime Minister since 03.2025',
+    legislature: 'National Assembly, bicameral',
+    note: 'Prime Minister has little independent power — authority is concentrated in the presidency.'
+  }
+};
+
+var SYSTEMS_FULL = {
+  russia: {
+    snapshot: 'First State Duma election since the full-scale invasion of Ukraine, held 18–20 September 2026 — including, for the first time, polling stations in occupied Ukrainian territory. Observers don’t expect a competitive outcome.',
+    facts: [['Head of state','Vladimir Putin — President, 5th term from 03.2024'],['Head of government','Mikhail Mishustin — PM since 01.2020'],['Legislature','State Duma, 450 seats, election 20.09.2026'],['Outgoing Duma','United Russia 324/450, since 2021']],
+    seats: {chamber:'State Duma (450 seats, outgoing 2021)', majority:226, items:[
+      {name:'United Russia', seats:324, color:'#1C6FBF'},
+      {name:'KPRF', seats:57, color:'#B5342E'},
+      {name:'Just Russia', seats:27, color:'#B5750E'},
+      {name:'LDPR', seats:21, color:'#5C4EA6'},
+      {name:'New People', seats:13, color:'#12805F'},
+      {name:'Other', seats:8, color:'#8A93A3'}
+    ]},
+    parties: ['United Russia (2001) — the "party of power," no clear ideology; in office.', 'KPRF (1993) — largest formal opposition; supports war spending and the Kremlin’s course.', 'LDPR (1989) — nationalist-populist, pro-war.', 'Just Russia (2021) — nominally center-left, votes with the government.', 'New People (2020) — permitted business-liberalism, youngest Duma party.'],
+    how: 'Super-presidential system: the president is directly elected for 6 years, appoints the prime minister (formally with Duma consent — a formality given a loyal majority), commands the armed forces, and can dissolve the Duma in several scenarios. The Federation Council (~200 members, 2 per region) is not popularly elected and rarely diverges from the presidential agenda. Genuine antiwar/liberal opposition is barred from the Duma — key figures are jailed, exiled, or dead (Navalny, 2024).',
+    turning: [
+      {flag:true, date:'07.2020', event:'Constitutional reform resets Putin’s term count'},
+      {flag:true, date:'24.02.2022', event:'Full-scale invasion of Ukraine begins'},
+      {flag:true, date:'03.2024', event:'Putin re-elected to a 5th term (~87% per CEC)'},
+      {flag:true, date:'20.09.2026', event:'State Duma election — first including occupied territory'}
+    ],
+    related: [['usa','sanctions over the war'], ['germany','sanctions, energy'], ['china','partnership against the West']]
+  },
+  usa: {
+    snapshot: 'A president with record-low approval, a Congress on the edge of flipping control, and a Supreme Court that checks its own administration about as often as it backs it.',
+    facts: [['Head of state/gov.','Donald Trump — President, since 01.2025 (2nd term)'],['Vice President','JD Vance'],['Approval','~37% — a low for both terms'],['Until midterms','~7 weeks (Nov 3, 2026); ~80% odds of losing the House']],
+    seats: {chamber:'House of Representatives (435 seats)', majority:218, items:[
+      {name:'Republican', seats:218, color:'#B5342E'},
+      {name:'Democrat', seats:214, color:'#1C6FBF'},
+      {name:'Vacant', seats:3, color:'#8A93A3'}
+    ]},
+    parties: ['Two-party system: Republicans currently hold the presidency, House and Senate (53R–45D+2 independents).'],
+    how: 'Presidential, federal system: a separately elected president and Congress, an independent judiciary, and checks that don’t depend on parliamentary confidence votes. Divided government — the opposing party controlling a chamber — can freeze a president’s legislative agenda without removing him from office.',
+    turning: [
+      {flag:true, date:'01.2025', event:'Trump inaugurated for a 2nd, non-consecutive term'},
+      {flag:false, date:'2025–26', event:'Approval falls to ~37%, a low for either term'},
+      {flag:true, date:'03.11.2026', event:'Midterm elections — forecasters give ~80% odds the House flips'}
+    ],
+    related: [['canada','tariffs, "51st state" rhetoric'], ['uk','special relationship']]
+  },
+  china: {
+    snapshot: 'No party spectrum and no parliament in the usual sense to report on — power is concentrated in one office with no formal term limit.',
+    facts: [['General Secretary / President','Xi Jinping — in power since 2012 (party) / 2013 (state)'],['Concurrent posts','3 — CCP General Secretary, PRC President, Central Military Commission Chairman'],['Term limits','Removed in 2018 — formally indefinite'],['Next Party Congress','Autumn 2027, held every 5 years']],
+    figures: [['General Secretary / President / CMC Chairman','Xi Jinping'],['#2 — Premier','Li Qiang'],['#3 — NPC Standing Committee Chairman','Zhao Leji'],['#4 — CPPCC Chairman','Wang Huning'],['#5 — Secretariat of the Central Committee','Cai Qi'],['#6 — First Vice Premier','Ding Xuexiang'],['#7 — Discipline chief (CCDI)','Li Xi']],
+    parties: ['8 formally permitted minor parties recognize CCP leadership — they do not constitute an opposition.'],
+    how: 'Party and state are one system under two nameplates: the CCP General Secretary automatically becomes PRC President, and the party’s military commission chair automatically heads the state one. The National People’s Congress — the world’s largest legislature by membership (2,847 delegates) — is formally the top state organ but meets about two weeks a year and votes almost unanimously; dissent would mean the prior internal party vetting had failed. Nothing here is decided by voters or open competition.',
+    turning: [
+      {flag:true, date:'10.2022', event:'Xi secures an unprecedented 3rd term at the 20th Party Congress'},
+      {flag:false, date:'03.2026', event:'Growth target set at 4.5–5%, the lowest since the early 1990s'},
+      {flag:true, date:'24.09.2026', event:'Xi’s state visit to the US, meeting Trump'}
+    ],
+    related: [['usa','trade war'], ['japan','regional rivalry'], ['india','regional rivalry'], ['russia','partnership against the West']]
+  },
+  germany: {
+    snapshot: 'A coalition chancellor whose bloc has fallen from 28.6% to ~21% in the polls, while the AfD has risen to ~27–28% and just won its first state election outright.',
+    facts: [['Chancellor','Friedrich Merz (CDU) — since 06.05.2025, elected on the 2nd ballot'],['Coalition','CDU/CSU + SPD'],['Merz bloc, polling','~21% (was 28.6% at the 2025 election)'],['AfD, polling','~27–28% (was 20.8%)']],
+    seats: {chamber:'Bundestag (630 seats, 2025 election)', majority:316, items:[
+      {name:'CDU/CSU', seats:208, color:'#1C1C1C'},
+      {name:'AfD', seats:152, color:'#1C6FBF'},
+      {name:'SPD', seats:120, color:'#B5342E'},
+      {name:'Greens', seats:85, color:'#12805F'},
+      {name:'Die Linke', seats:64, color:'#B5348E'}
+    ]},
+    parties: ['CDU/CSU (1945) — center-right, "social market economy"; in office.', 'AfD (2013) — far right; officially classified "confirmed right-wing extremist" since 05.2025.', 'SPD (1863) — center-left, the weaker junior coalition partner.', 'Greens (1980) — center-left, in opposition since 2025.', 'Die Linke (2007) — left.', 'FDP and BSW both missed the 5% threshold in 2025 — no seats.'],
+    how: 'Federal parliamentary republic: 16 states with their own constitutions and two federal chambers. Removing a chancellor requires a "constructive vote of no confidence" — the Bundestag can only oust the chancellor by simultaneously electing a successor with an absolute majority (316 votes); a low approval rating alone changes nothing.',
+    turning: [
+      {flag:true, date:'23.02.2025', event:'Snap election: CDU/CSU 28.6%, AfD 20.8% (record), SPD 16.4% (record low)'},
+      {flag:true, date:'06.05.2025', event:'Merz elected chancellor on the 2nd ballot — a first in FRG history'},
+      {flag:true, date:'06.09.2026', event:'AfD wins a state election outright for the first time (Saxony-Anhalt, 43.8%)'}
+    ],
+    related: [['france','EU axis'], ['italy','comparing how governments fall'], ['uk','comparing no-confidence mechanisms'], ['russia','sanctions, energy']]
+  },
+  france: {
+    snapshot: 'A fourth prime minister in two years, a government without a majority, and a budget forced through without a vote — the Fifth Republic’s toughest institutional stress test in decades.',
+    facts: [['President','Emmanuel Macron — since 2017, term to 2027'],['Prime Minister','Sébastien Lecornu — 4th PM in 2 years, no majority'],['Assembly','3 blocs, none reaches 289/577'],['No-confidence votes survived','8+ since autumn 2025']],
+    seats: {chamber:'National Assembly (577 seats)', majority:289, items:[
+      {name:'New Popular Front', seats:195, color:'#B5342E'},
+      {name:'Ensemble (Macron)', seats:163, color:'#B5750E'},
+      {name:'RN and allies', seats:143, color:'#1C1C1C'},
+      {name:'Les Républicains', seats:66, color:'#1C6FBF'},
+      {name:'Other', seats:10, color:'#8A93A3'}
+    ]},
+    parties: ['New Popular Front (2024) — coalition of LFI+PS+Greens+communists; largest bloc, too internally divided to govern alone.', 'Ensemble (2016) — Macron’s centrists; in office without a majority since 2022.', 'Les Républicains — center-right, holds the balance of power with ~70 seats.', 'Rassemblement National (1972, Le Pen) — far right; won the most votes in round 1 of 2024 but fewer seats due to the "republican front" tactic.'],
+    how: 'Semi-presidential system: the president is directly elected for 5 years (2 rounds) and controls defense/foreign policy, but appoints a prime minister who must hold the Assembly’s confidence — which the president does not directly control. Article 49.3 lets the PM pass a law without a vote; in exchange, the opposition gets 24 hours to file a no-confidence motion, which needs an absolute majority (289) to succeed.',
+    turning: [
+      {flag:true, date:'09.06.2024', event:'Macron dissolves the Assembly after EU election losses'},
+      {flag:true, date:'12.2024', event:'Barnier government falls to a no-confidence vote — first since 1962'},
+      {flag:false, date:'09.2025', event:'Bayrou government falls, self-triggered over a €44bn budget cut'},
+      {flag:true, date:'20.01.2026', event:'The 2026 budget is forced through via Article 49.3, without a vote'}
+    ],
+    related: [['germany','EU axis'], ['italy','comparing government stability']]
+  },
+  uk: {
+    snapshot: 'A second Labour PM in two months, the oldest two-party system visibly cracking, and pollsters naming the right-populist Farage a plausible future PM — while his party holds 8 of 650 seats.',
+    facts: [['Prime Minister','Andy Burnham (Labour) — since 20.07.2026, with no general election'],['Predecessor','Keir Starmer — resigned 22.06.2026 on record-low approval'],['Commons','Labour 404/650 (326 for control)'],['Reform UK','8 seats on ~26% in the May local elections']],
+    seats: {chamber:'House of Commons (650 seats)', majority:326, items:[
+      {name:'Labour', seats:404, color:'#B5342E'},
+      {name:'Conservatives', seats:118, color:'#1C6FBF'},
+      {name:'Lib Dems', seats:71, color:'#B5750E'},
+      {name:'Other (SNP, Reform, Greens, DUP…)', seats:57, color:'#8A93A3'}
+    ]},
+    parties: ['Labour — center-left; in office, a huge 2024 majority hasn’t stopped a collapse in trust.', 'Conservatives — center-right, at a historic low in seats since 2024.', 'Reform UK (ex-Brexit Party, Farage) — far right; led the May 2026 local elections but holds only 8 of 650 Commons seats due to first-past-the-post.'],
+    how: 'Westminster system: no single written constitution — a body of statutes, precedent and convention. The PM is not directly elected or separately confirmed like a German chancellor — whoever can convince the King they command Commons confidence becomes PM. A PM can be replaced by their own party’s internal leadership rules (as with Starmer) without a general election, or ousted by a simple-majority no-confidence vote in Commons — unlike Germany’s "constructive" version, with no requirement to name a replacement immediately.',
+    turning: [
+      {flag:true, date:'04.07.2024', event:'Labour wins by a landslide, Starmer becomes PM'},
+      {flag:true, date:'05.2026', event:'Local elections: Labour loses ~1,500 seats, Reform UK becomes the largest force locally'},
+      {flag:true, date:'22.06.2026', event:'Starmer resigns — worst PM approval rating in 50 years (Ipsos)'},
+      {flag:true, date:'20.07.2026', event:'Burnham becomes PM automatically as the new Labour leader'}
+    ],
+    related: [['usa','special relationship'], ['germany','comparing no-confidence mechanisms']]
+  },
+  japan: {
+    snapshot: 'Japan’s first woman PM took office after her coalition partner walked away following 26 years together — then won a snap election with a supermajority strong enough to override the upper house.',
+    facts: [['Prime Minister','Takaichi Sanae (LDP) — first woman PM, since 21.10.2025'],['Lower house','LDP+Ishin 352/465, above two-thirds'],['Upper house','No majority since 07.2025'],['Former partner','Komeito left the coalition after 26 years']],
+    seats: {chamber:'Lower House (465 seats)', majority:233, items:[
+      {name:'LDP', seats:316, color:'#B5342E'},
+      {name:'Ishin no Kai', seats:36, color:'#B5750E'},
+      {name:'CDP+Komeito alliance', seats:49, color:'#1C6FBF'},
+      {name:'DPP', seats:28, color:'#12805F'},
+      {name:'Sanseitō', seats:15, color:'#1C1C1C'},
+      {name:'Other', seats:21, color:'#8A93A3'}
+    ]},
+    parties: ['LDP (1955) — center-right, has governed almost continuously since 1955; Takaichi is from its right wing.', 'Ishin no Kai (2015) — right-libertarian, deregulation; its votes saved Takaichi’s premiership.', 'CDP+Komeito alliance (2026 merger) — center-left, largest opposition.', 'Sanseitō (2020) — far right, started as a YouTube project; jumped from 1 to 14 upper-house seats in one election.'],
+    how: 'Parliamentary monarchy: the 1947 constitution left the Emperor a purely ceremonial role; real power sits with the Cabinet, led by a PM who must be a sitting member of parliament. Because the ruling coalition holds more than two-thirds of the Lower House, it can override any Upper House rejection — a formally available tool that, used often, looks like ignoring the upper chamber’s voters.',
+    turning: [
+      {flag:true, date:'07.2025', event:'LDP-Komeito coalition loses its upper-house majority; Sanseitō jumps 1→14 seats'},
+      {flag:true, date:'10.2025', event:'Komeito ends its 26-year coalition with the LDP'},
+      {flag:true, date:'21.10.2025', event:'Parliament elects Takaichi as Japan’s first woman PM'},
+      {flag:true, date:'02.2026', event:'Snap election gives the LDP alone over two-thirds of the Lower House'}
+    ],
+    related: [['china','regional rivalry'], ['usa','security ally']]
+  },
+  india: {
+    snapshot: 'The world’s largest democracy — and for the first time since 2014, Modi governs without his own majority, dependent on two regional power-brokers from states most outsiders couldn’t name.',
+    facts: [['Prime Minister','Narendra Modi (BJP) — 3rd consecutive term since 09.06.2024'],['BJP in Lok Sabha','240/543 — first time without its own majority (272) since 2014'],['NDA coalition','293, propped up by TDP and JD(U)'],['State elections, 04.2026','BJP routs TMC and DMK in their home states']],
+    seats: {chamber:'Lok Sabha (543 seats)', majority:272, items:[
+      {name:'BJP', seats:240, color:'#B5750E'},
+      {name:'Congress (INDIA bloc)', seats:99, color:'#1C6FBF'},
+      {name:'Other INDIA bloc parties', seats:135, color:'#12805F'},
+      {name:'TDP + JD(U) (NDA allies)', seats:28, color:'#B5342E'},
+      {name:'Other NDA allies', seats:25, color:'#E0A458'},
+      {name:'Unaligned', seats:16, color:'#8A93A3'}
+    ]},
+    parties: ['BJP (1980) — right, Hindu nationalist; leads the NDA, governs 16 states directly plus 4 via allies.', 'Indian National Congress (1885) — center-left; leads the opposition INDIA alliance.', 'TDP (Andhra Pradesh) and JD(U) (Bihar) — regional "kingmakers" whose 28 combined seats keep the BJP in a majority.'],
+    how: 'Federal parliamentary republic: the president (Droupadi Murmu, since 2022) is elected by an electoral college of parliament and state legislatures and is mostly ceremonial; the PM actually governs, answerable to the Lok Sabha. Powers are split constitutionally between the union, the states and a concurrent list — each state’s chief minister is effectively that state’s own prime minister with real authority, and an anti-defection law blocks lawmakers from switching parties en masse after election without losing their seat.',
+    turning: [
+      {flag:true, date:'06.2024', event:'General election: BJP loses its standalone majority (240 vs the 272 needed)'},
+      {flag:true, date:'09.06.2024', event:'Modi sworn in for a 3rd term, dependent on coalition partners for the first time'},
+      {flag:true, date:'04.05.2026', event:'BJP takes over 70% of seats in West Bengal, ending Mamata Banerjee’s 15-year rule; a new actor-founded party unseats the DMK in Tamil Nadu'}
+    ],
+    related: [['china','regional rivalry']]
+  },
+  canada: {
+    snapshot: 'A year ago an unknown former central banker took over a party polls had written off — and rode Trump’s "51st state" threats to a fourth straight Liberal win.',
+    facts: [['Prime Minister','Mark Carney (Liberal) — since 14.03.2025'],['Commons','174/343 Liberal seats (172 for control)'],['External factor','Trump — tariffs and "51st state" rhetoric'],['Background','Ex-Governor of the Bank of Canada and Bank of England, no prior elected office']],
+    seats: {chamber:'House of Commons (343 seats)', majority:172, items:[
+      {name:'Liberals', seats:174, color:'#B5342E'},
+      {name:'Conservatives', seats:140, color:'#1C6FBF'},
+      {name:'Bloc Québécois', seats:21, color:'#12805F'},
+      {name:'Other', seats:8, color:'#8A93A3'}
+    ]},
+    parties: ['Liberals (1867) — center, "the natural governing party"; Carney is the first PM in decades with no prior elected office.', 'Conservatives (2003, Poilievre) — center-right; was heading for a near-certain win before the annexation threats hit.', 'Bloc Québécois (1991) — Quebec-only, provincial sovereignty; holds the balance of power.'],
+    how: 'Westminster system, Canadian style: the formal head of state is the British monarch, represented by a Governor General. Whoever leads the party with Commons confidence becomes PM — Carney became PM through an internal Liberal leadership race, not a general election. Quebec holds a distinct position within the federation: a civil-law code, French as the sole official language, and two failed independence referendums (1980, 1995).',
+    turning: [
+      {flag:true, date:'01.2025', event:'Trudeau announces his resignation amid collapsing approval'},
+      {flag:false, date:'03.2025', event:'Carney wins the Liberal leadership race with over 85% of the vote'},
+      {flag:true, date:'Spring 2025', event:'Trump imposes tariffs and floats "51st state" rhetoric — Liberal support surges'},
+      {flag:true, date:'28.04.2025', event:'Liberals win a 4th straight election, initially as a minority government'}
+    ],
+    related: [['usa','tariffs, "51st state" rhetoric'], ['uk','shared Westminster model']]
+  },
+  italy: {
+    snapshot: 'A country that burned through 68 governments in 80 years just set a stability record — even as three-quarters of Italians say they’re unhappy with the country’s direction.',
+    facts: [['Prime Minister','Giorgia Meloni (Fratelli d’Italia) — since 22.10.2022'],['Approval','~39% (55% disapprove, 75% unhappy with direction)'],['Coalition, polling','~48%'],['Stability record','Nearly 4 years vs. an average government lifespan of ~1 year since 1946']],
+    seats: {chamber:'Chamber of Deputies (400 seats) — Senate needs its own majority too', majority:201, items:[
+      {name:'Fratelli d’Italia', seats:119, color:'#1C1C1C'},
+      {name:'Partito Democratico', seats:69, color:'#B5342E'},
+      {name:'Lega', seats:66, color:'#1C6FBF'},
+      {name:'M5S', seats:52, color:'#E0A458'},
+      {name:'Forza Italia+Noi Moderati', seats:52, color:'#12805F'},
+      {name:'Other', seats:42, color:'#8A93A3'}
+    ]},
+    parties: ['Fratelli d’Italia (2012, Meloni) — national-conservative, post-fascist roots (Meloni distances herself); leads the coalition.', 'Lega (1989, Salvini) — right-populist, competes with FdI for the same electorate.', 'Forza Italia (1994, Berlusconi’s legacy) — liberal-conservative, moderating force in the coalition.', 'Partito Democratico — center-left, largest opposition.', 'M5S (2009, Conte) — anti-establishment populists, drifting left.'],
+    how: 'Unlike every other country in this file, Italy’s 1948 constitution gives the Chamber of Deputies and the Senate perfectly equal powers ("bicameralismo perfetto") — a government needs the confidence of both chambers separately, and losing either one brings it down immediately, with no requirement to name a successor (unlike Germany) and no supermajority threshold (unlike the US). That mechanical fragility is exactly why Italian cabinets have historically been so short-lived.',
+    turning: [
+      {flag:true, date:'25.09.2022', event:'The right-wing coalition wins the election'},
+      {flag:true, date:'22.10.2022', event:'Meloni becomes Italy’s first woman PM'},
+      {flag:true, date:'04.09.2026', event:'Meloni marks a government-stability record despite 75% disapproval of the country’s direction'}
+    ],
+    related: [['france','comparing government stability'], ['germany','comparing how governments fall']]
+  },
+  brazil: {
+    snapshot: 'For the first time in the country’s history a former president has been convicted — 27 years for an attempted coup — and three weeks before the next election, his own son is carrying his banner.',
+    facts: [['President','Lula da Silva (PT) — since 01.2023, running for re-election'],['Former president','Bolsonaro — convicted, 27 years, for attempting a coup'],['Election','1st round Oct 4: Lula polling 38% vs. Flávio Bolsonaro 31%'],['Congress','22 parties — an extremely fragmented system']],
+    seats: {chamber:'Chamber of Deputies (513 seats)', majority:257, items:[
+      {name:'"Centrão" (7 parties)', seats:271, color:'#8A93A3'},
+      {name:'PL (Bolsonaro)', seats:95, color:'#1C6FBF'},
+      {name:'"Brazil of Hope" (Lula’s PT federation)', seats:83, color:'#B5342E'},
+      {name:'União Brasil', seats:49, color:'#12805F'},
+      {name:'~15 other parties', seats:15, color:'#E0A458'}
+    ]},
+    parties: ['PT and the "Brazil of Hope" federation — left, Lula’s party; presidential, but with no standalone majority in either chamber.', 'Partido Liberal (PL) — far right, Bolsonaro’s home; the banner is now carried by his son Flávio.', '"Centrão" (MDB, PP, PSD and others) — not a party or coalition but a market for political support, trading votes for ministries and budget favors with whoever holds power.'],
+    how: 'Presidential system with a catch: formally like the US — direct 4-year elections (2 rounds), separation of powers, an independent Supreme Court (STF, which just convicted a former president — a real, not decorative, check). But governing works differently: no president has ever had a standalone majority in either chamber. To pass anything, the president trades cabinet posts and budget earmarks ("emendas parlamentares") for votes — not just with allies but with the transactional "Centrão" bloc, making Brazilian presidents structurally weaker than their US counterparts despite similar formal powers.',
+    turning: [
+      {flag:true, date:'30.10.2022', event:'Lula defeats Bolsonaro in a runoff'},
+      {flag:true, date:'08.01.2023', event:'Bolsonaro supporters storm government buildings in Brasília'},
+      {flag:true, date:'11.09.2025', event:'The Supreme Court convicts Bolsonaro of attempting a coup — 27 years, 3 months'},
+      {flag:true, date:'04.10.2026', event:'First round of the presidential election'}
+    ],
+    related: [['usa','ideological echo of Trump/Bolsonaro']]
+  }
+};
+
+var CHAMBERS = [
+  {id:'idea', name:'International IDEA', active:true},
+  {id:'un', name:'United Nations', active:true},
+  {id:'nato', name:'NATO', active:true},
+  {id:'eu', name:'European Union', active:true},
+  {id:'g7', name:'G7', active:true},
+  {id:'g20', name:'G20', active:true},
+  {id:'wto', name:'World Trade Organization', active:true},
+  {id:'brics', name:'BRICS', active:true},
+  {id:'mercosur', name:'Mercosur', active:true},
+  {id:'asean', name:'ASEAN', active:true},
+  {id:'au', name:'African Union', active:true},
+  {id:'arab_league', name:'Arab League', active:true},
+  {id:'osce', name:'OSCE', active:true}
+];
+
+// Bloc membership for the "Alliances" map view. Order matters — a country is
+// colored by the first (most specific) bloc it belongs to, so e.g. EU catches
+// Sweden before NATO, and BRICS catches Egypt before African Union.
+var BLOCS = [
+  {id:'eu', name:'European Union', color:'#E0B400',
+    members:['france','germany','italy','poland','aut','bel','bgr','hrv','cyp','cze','dnk','est','fin','grc','hun','irl','lithuania','lva','lux','mlt','nld','prt','rom','svk','svn','esp','swe']},
+  {id:'nato', name:'NATO (non-EU)', color:'#3E6FBF',
+    members:['usa','uk','canada','nor','isl','tur','alb','mne','mkd']},
+  {id:'brics', name:'BRICS', color:'#C1440E',
+    members:['russia','china','india','brazil','zaf','egy','eth','irn','are','idn']},
+  {id:'mercosur', name:'Mercosur', color:'#2A9D8F',
+    members:['brazil','arg','pry','ury','bol']},
+  {id:'asean', name:'ASEAN', color:'#588157',
+    members:['mys','phl','sgp','tha','vnm','mmr','khm','lao','brn']},
+  {id:'arab_league', name:'Arab League', color:'#BC6C25',
+    members:['sau','kwt','qat','bhr','omn','jor','lbn','syr','irq','yem','lby','dza','mar','tun','sdn','som','dji','mrt','com','wbg']},
+  {id:'au', name:'African Union', color:'#6A4C93',
+    members:['ago','ben','bwa','bdi','cmr','cpv','caf','tcd','cog','civ','gnq','eri','gab','gmb','gha','gin','gnb','ken','lso','lbr','mdg','mwi','mli','mus','moz','nam','ner','nga','rwa','stp','sen','syc','sle','ssd','swz','tza','tgo','uga','zmb','zwe']}
+];
+function blocOf(id){
+  for (var i=0;i<BLOCS.length;i++){ if (BLOCS[i].members.indexOf(id) !== -1) return BLOCS[i]; }
+  return null;
+}
+
+// Relative "heat": rank countries with activity in the last RECENT_DAYS by
+// how much they have (not just whether they have any), then split into
+// quartiles — top quarter glows strongest, bottom quarter doesn't glow at all.
+function computePulseTiers(){
+  var scored = ENTITIES.filter(function(e){ return e.geo !== undefined; }).map(function(e){
+    var n = intlActedBy(e.id).concat(domesticOf(e.id)).filter(function(x){ return daysAgo(x.date) <= RECENT_DAYS; }).length;
+    return {id:e.id, score:n};
+  }).filter(function(s){ return s.score > 0; });
+  scored.sort(function(a,b){ return b.score - a.score; });
+  var n = scored.length, tiers = {};
+  if (!n) return tiers;
+  var q1 = Math.max(1, Math.ceil(n*0.25));
+  var q2 = Math.max(q1+1, Math.ceil(n*0.5));
+  var q3 = Math.max(q2+1, Math.ceil(n*0.75));
+  scored.forEach(function(s, i){
+    var rank = i+1;
+    tiers[s.id] = rank <= q1 ? 1 : rank <= q2 ? 2 : rank <= q3 ? 3 : 0;
+  });
+  return tiers;
+}
+
+var typeVar = {person:'var(--t-person)', country:'var(--t-country)', org:'var(--t-org)', event:'var(--t-event)', region:'var(--t-region)'};
+var typeLabel = {person:'person', country:'country', org:'organization', event:'event', region:'region / bloc'};
+var byId = {};
+ENTITIES.forEach(function(e){ byId[e.id] = e; });
+
+function centerOf(e){
+  if (e.geo !== undefined) {
+    var b = d3.select('#geo-' + e.id).node().getBBox();
+    return {x: b.x + b.width/2, y: b.y + b.height/2};
+  }
+  return {x:e.x, y:e.y};
+}
+
+function typeSpan(id){
+  var ent = byId[id];
+  return '<span class="entity-link" data-entity-id="' + id + '" style="color:' + typeVar[ent.type] + '; font-weight:600;">' + ent.label + '</span>';
+}
+document.body.addEventListener('click', function(event){
+  var el = event.target.closest ? event.target.closest('.entity-link') : null;
+  if (el){ event.stopPropagation(); openEntityPage(el.getAttribute('data-entity-id')); }
+});
+function edgeRow(fromId, rel, toId, url, date){
+  return '<div class="edge-item">' + typeSpan(fromId) + ' <span class="rel">' + rel + '</span> → ' + typeSpan(toId) +
+    '<span class="edge-date">' + fmtDate(date) + '</span>' +
+    '<a href="' + url + '" target="_blank" rel="noopener">source →</a></div>';
+}
+
+// Attribution rule: a news item belongs to whoever is the ACTOR (from side) —
+// "Lithuania's president says X" is Lithuania's news, not the news of whoever X is about.
+var panelMode = 'international';
+var panelId = null;
+
+function actorBelongsTo(fromId, id){
+  if (fromId === id) return true;
+  var actor = byId[fromId];
+  return !!actor && actor.country === id;
+}
+function intlActedBy(id){
+  return EDGES.filter(function(x){ return x.scope === 'international' && actorBelongsTo(x.from, id); })
+    .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+}
+function domesticOf(id){
+  return EDGES.filter(function(x){ return x.scope === 'domestic' && x.country === id; })
+    .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+}
+function hasRecentActivity(id){
+  return intlActedBy(id).concat(domesticOf(id)).some(function(x){ return daysAgo(x.date) <= RECENT_DAYS; });
+}
+function hasAnyData(id){
+  return !!SYSTEMS_FULL[id] || intlActedBy(id).length > 0 || domesticOf(id).length > 0;
+}
+
+function showPanel(id, mode){
+  panelId = id;
+  panelMode = mode || 'international';
+  var e = byId[id];
+  var acted = intlActedBy(id);
+  var recent = acted.filter(function(x){ return daysAgo(x.date) <= RECENT_DAYS; });
+  var archivedCount = acted.length - recent.length;
+  var domestic = e.type === 'country' ? domesticOf(id) : [];
+
+  var html = '<div class="panel-type" style="color:' + typeVar[e.type] + '">' + typeLabel[e.type] + '</div>';
+  html += '<div class="panel-name' + (e.type==='country' ? ' clickable' : '') + '" id="panel-name-link">' + e.label + '</div>';
+
+  if (e.type === 'country'){
+    html += '<div class="mode-toggle">' +
+      '<button class="mode-btn' + (panelMode==='international'?' active':'') + '" data-mode="international">International</button>' +
+      '<button class="mode-btn' + (panelMode==='domestic'?' active':'') + '" data-mode="domestic">Domestic</button>' +
+      '</div>';
+  }
+
+  function rowHtml(x){ return edgeRow(x.from, x.label, x.to, x.url, x.date); }
+
+  if (panelMode === 'domestic'){
+    html += '<div class="panel-section">' + e.label + '’s own domestic news</div>';
+    html += domestic.length ? domestic.map(rowHtml).join('') : '<div class="edge-item" style="border-top:none; color:var(--ink-dim);">No domestic items yet.</div>';
+  } else {
+    html += '<div class="panel-section">Said or did internationally (last ' + RECENT_DAYS + ' days)</div>';
+    html += recent.length ? recent.map(rowHtml).join('') : '<div class="edge-item" style="border-top:none; color:var(--ink-dim);">Nothing in the last ' + RECENT_DAYS + ' days.</div>';
+    if (archivedCount){
+      html += '<div class="archive-hint">' + archivedCount + ' older item' + (archivedCount>1?'s':'') + ' from ' + e.label + ' — see the <b id="panel-archive-link">Archive tab</b>.</div>';
+    }
+  }
+
+  if (e.type === 'country'){
+    html += '<div class="panel-profile-link" id="panel-profile-link">Full country profile (system, all history) →</div>';
+  }
+
+  document.getElementById('panel').innerHTML = html;
+  var link = document.getElementById('panel-archive-link');
+  if (link) link.addEventListener('click', function(){ document.getElementById('tab-archive').click(); });
+  Array.from(document.querySelectorAll('.mode-btn')).forEach(function(btn){
+    btn.addEventListener('click', function(){ showPanel(panelId, btn.getAttribute('data-mode')); });
+  });
+  if (e.type === 'country'){
+    document.getElementById('panel-name-link').addEventListener('click', function(){ openCountryPage(id); });
+    document.getElementById('panel-profile-link').addEventListener('click', function(){ openCountryPage(id); });
+  }
+}
+
+function seatBarHtml(seats){
+  if (!seats) return '';
+  var total = seats.items.reduce(function(s,i){ return s+i.seats; }, 0);
+  var bar = seats.items.map(function(i){
+    return '<span style="width:' + (i.seats/total*100) + '%; background:' + i.color + ';" title="' + i.name + ': ' + i.seats + '"></span>';
+  }).join('');
+  var legend = seats.items.map(function(i){
+    return '<span class="seat-legend-item"><span class="sw" style="background:' + i.color + ';"></span>' + i.name + ' (' + i.seats + ')</span>';
+  }).join('');
+  return '<div class="seat-majority">' + seats.chamber + ' — majority: ' + seats.majority + '</div>' +
+    '<div class="seatbar">' + bar + '</div>' +
+    '<div class="seat-legend">' + legend + '</div>';
+}
+
+function openEntityPage(id){
+  var e = byId[id];
+  if (!e) return;
+  if (e.type === 'country') openCountryPage(id); else openGenericEntityPage(id);
+}
+
+function showEntityView(){
+  ['view-feed','view-map','view-chambers','view-archive','view-about','view-country'].forEach(function(v){ document.getElementById(v).classList.remove('active'); });
+  document.getElementById('view-country').classList.add('active');
+  ['tab-feed','tab-map','tab-chambers','tab-archive','tab-about'].forEach(function(t){ document.getElementById(t).setAttribute('aria-selected','false'); });
+  window.scrollTo(0,0);
+}
+
+function newsCardsHtml(edges, emptyText){
+  if (!edges.length) return '<div class="cp-empty">' + emptyText + '</div>';
+  return edges.map(function(x){
+    return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
+      '<p>' + (x.detail || x.label) + '</p>' +
+      '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
+  }).join('');
+}
+
+function openGenericEntityPage(id){
+  var e = byId[id];
+  var outgoing = EDGES.filter(function(x){ return x.from === id; }).sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  var incoming = EDGES.filter(function(x){ return x.to === id; }).sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  var profile = (e.type === 'person') ? PERSON_PROFILES[id] : null;
+
+  var html = '';
+  if (profile){
+    html += '<div class="person-header">';
+    if (profile.photo) html += '<img class="person-photo" src="' + profile.photo + '" alt="' + e.label + '"/>';
+    html += '<div><h2>' + e.label + '</h2><div class="snapshot">' + (profile.desc || typeLabel[e.type]) + '</div></div>';
+    html += '</div>';
+    if (profile.extract) html += '<p class="person-bio">' + profile.extract + '</p>';
+    html += '<div class="person-wiki-src">Bio and photo from <a href="' + profile.wiki + '" target="_blank" rel="noopener">Wikipedia</a> (CC BY-SA) — not written or verified by World Pulse. Current moments below are our own sourced items.</div>';
+  } else {
+    html += '<div class="country-header"><h2>' + e.label + '</h2>';
+    var sub = typeLabel[e.type];
+    if (e.country) sub += ' — represents ' + (byId[e.country] ? byId[e.country].label : e.country);
+    html += '<div class="snapshot">' + sub + '</div></div>';
+  }
+
+  if (e.country && byId[e.country]){
+    html += '<div class="cp-section"><h3>Country</h3><div class="cp-related"><button data-goto="' + e.country + '">' + byId[e.country].label + '</button></div></div>';
+  }
+
+  html += '<div class="cp-section"><h3>' + (outgoing.length ? 'Current moments — said or did' : 'Activity') + '</h3>' + newsCardsHtml(outgoing, 'Nothing recorded from ' + e.label + ' yet.') + '</div>';
+
+  if (incoming.length){
+    html += '<div class="cp-section"><h3>Mentioned in / connected to</h3>' + newsCardsHtml(incoming, '') + '</div>';
+  }
+
+  document.getElementById('country-content').innerHTML = html;
+  Array.from(document.querySelectorAll('.cp-related button')).forEach(function(btn){
+    btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
+  });
+  showEntityView();
+}
+
+function openCountryPage(id){
+  var e = byId[id];
+  var sys = SYSTEMS_FULL[id];
+  var acted = intlActedBy(id).sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  var domestic = domesticOf(id);
+
+  var html = '<div class="country-header"><h2>' + e.label + '</h2>';
+  html += '<div class="snapshot">' + (sys ? sys.snapshot : 'No political-system profile written yet for ' + e.label + '.') + '</div></div>';
+
+  if (sys){
+    html += '<div class="cp-grid">';
+    html += '<div><div class="cp-section"><h3>Snapshot</h3><table class="cp-facts">' +
+      sys.facts.map(function(f){ return '<tr><td>' + f[0] + '</td><td>' + f[1] + '</td></tr>'; }).join('') + '</table></div>';
+    if (sys.figures){
+      html += '<div class="cp-section"><h3>Top leadership</h3><table class="cp-figures">' +
+        sys.figures.map(function(f){ return '<tr><td>' + f[0] + '</td><td>' + f[1] + '</td></tr>'; }).join('') + '</table></div>';
+    }
+    html += '</div>';
+    html += '<div><div class="cp-section"><h3>Composition</h3>' + (sys.seats ? seatBarHtml(sys.seats) : '<div class="cp-empty">No chamber breakdown recorded.</div>') + '</div>';
+    html += '<div class="cp-section"><h3>Parties</h3><ul class="cp-parties">' + sys.parties.map(function(p){ return '<li>' + p + '</li>'; }).join('') + '</ul></div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="cp-section"><h3>How the system works</h3><div class="cp-how"><p>' + sys.how + '</p></div></div>';
+
+    html += '<div class="cp-section"><h3>Recent turning points</h3><ul class="cp-timeline">' +
+      sys.turning.map(function(t){ return '<li><span class="tdate">' + t.date + '</span><span>' + (t.flag ? '<span class="flag">△</span> ' : '') + t.event + '</span></li>'; }).join('') + '</ul></div>';
+  }
+
+  html += '<div class="cp-section"><h3>International (said or did)</h3>' +
+    (acted.length ? acted.map(function(x){
+      return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
+        '<p>' + (x.detail || x.label) + '</p>' +
+        '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
+    }).join('') : '<div class="cp-empty">Nothing recorded yet.</div>') + '</div>';
+
+  html += '<div class="cp-section"><h3>Domestic</h3>' +
+    (domestic.length ? domestic.map(function(x){
+      return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
+        '<p>' + (x.detail || x.label) + '</p>' +
+        '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
+    }).join('') : '<div class="cp-empty">Nothing recorded yet.</div>') + '</div>';
+
+  if (sys && sys.related && sys.related.length){
+    html += '<div class="cp-section"><h3>Related countries</h3><div class="cp-related">' +
+      sys.related.map(function(r){ return '<button data-goto="' + r[0] + '" title="' + r[1] + '">' + (byId[r[0]] ? byId[r[0]].label : r[0]) + ' — ' + r[1] + '</button>'; }).join('') +
+      '</div></div>';
+  }
+
+  document.getElementById('country-content').innerHTML = html;
+  Array.from(document.querySelectorAll('.cp-related button')).forEach(function(btn){
+    btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
+  });
+  showEntityView();
+}
+document.getElementById('country-back').addEventListener('click', function(){ switchTab('tab-map'); });
+
+var zoom = d3.zoom().scaleExtent([1, 8]).translateExtent([[0,0],[1000,507]]).on('zoom', function(event){
+  d3.select('#zoom-layer').attr('transform', event.transform);
+});
+
+function drawMap(){
+  var svg = d3.select('#map-svg');
+  svg.call(zoom);
+  document.getElementById('zoom-in').addEventListener('click', function(){ svg.transition().duration(250).call(zoom.scaleBy, 1.5); });
+  document.getElementById('zoom-out').addEventListener('click', function(){ svg.transition().duration(250).call(zoom.scaleBy, 0.67); });
+  document.getElementById('zoom-reset').addEventListener('click', function(){ svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity); });
+
+  var landLayer = d3.select('#hl-layer');
+  var pins = d3.select('#map-pins');
+
+  ENTITIES.filter(function(e){ return e.geo !== undefined; }).forEach(function(e){
+    landLayer.append('path')
+      .attr('id', 'geo-' + e.id)
+      .attr('class', 'hl-country')
+      .attr('d', e.geo)
+      .append('title');
+    d3.select('#geo-' + e.id).on('click', function(){ showPanel(e.id); });
+  });
+
+  // Every country is clickable, even the ~205 without data yet — the panel
+  // shows an honest "nothing recorded" instead of pretending coverage exists.
+  // Only countries get map presence — person/event/org/region entities are
+  // surfaced through the panel and Chambers instead, not as pins.
+
+  updateMapColors();
+  setupAllianceFlyout();
+}
+
+function anyBlocActive(){
+  return Object.keys(activeBlocs).some(function(k){ return activeBlocs[k]; });
+}
+
+function updateMapColors(){
+  var suppressPulse = anyBlocActive();
+  var tiers = suppressPulse ? {} : computePulseTiers();
+  ENTITIES.filter(function(e){ return e.geo !== undefined; }).forEach(function(e){
+    var path = d3.select('#geo-' + e.id);
+    if (path.empty()) return;
+    var known = hasAnyData(e.id);
+    var tier = tiers[e.id] || 0;
+    var cls = 'hl-country';
+    if (tier > 0) cls += ' pulse-t' + tier;
+    if (!known) cls += ' no-data';
+    var titleText = e.label + (tier > 0 ? ' — high relative activity (tier ' + tier + ' of 3)' : (known ? '' : ' — no data yet'));
+    path.attr('class', cls).attr('fill', known ? typeVar[e.type] : 'var(--land)');
+    path.select('title').text(titleText);
+  });
+  renderMapLegend();
+}
+
+function renderMapLegend(){
+  var el = document.getElementById('map-legend');
+  if (!el) return;
+  if (anyBlocActive()){
+    el.innerHTML = '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>outline = alliance membership (glow paused while highlighting)</div>';
+  } else {
+    el.innerHTML =
+      '<div class="lg-item"><span class="lg-dot" style="background:var(--pulse)"></span>glow = activity relative to other countries (top 25% brightest)</div>' +
+      '<div class="lg-item"><span class="lg-dot" style="background:var(--t-country)"></span>has a profile, not glowing right now</div>' +
+      '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>no data yet</div>';
+  }
+}
+
+// Alliance highlighting is an overlay on top of the activity map, not a
+// separate mode — click the flag icon, toggle one or more blocs, and their
+// member countries get a colored outline while the base map stays as-is.
+var activeBlocs = {};
+function renderBlocOverlay(){
+  var overlay = d3.select('#bloc-overlay');
+  overlay.selectAll('*').remove();
+  BLOCS.forEach(function(bloc){
+    if (!activeBlocs[bloc.id]) return;
+    bloc.members.forEach(function(cid){
+      var src = document.getElementById('geo-' + cid);
+      if (!src) return;
+      overlay.append('path')
+        .attr('d', src.getAttribute('d'))
+        .attr('fill', 'none')
+        .attr('stroke', bloc.color)
+        .attr('stroke-width', 2.4)
+        .attr('stroke-linejoin', 'round')
+        .style('pointer-events', 'none');
+    });
+  });
+}
+function renderAllianceFlyoutList(){
+  var el = document.getElementById('alliance-flyout-list');
+  el.innerHTML = BLOCS.map(function(b){
+    return '<div class="af-item' + (activeBlocs[b.id] ? ' active' : '') + '" data-bloc="' + b.id + '">' +
+      '<span class="af-dot" style="background:' + b.color + '"></span>' + b.name + '<span class="af-check">✓</span></div>';
+  }).join('');
+  Array.from(el.querySelectorAll('.af-item')).forEach(function(item){
+    item.addEventListener('click', function(event){
+      event.stopPropagation();
+      var id = item.getAttribute('data-bloc');
+      activeBlocs[id] = !activeBlocs[id];
+      renderBlocOverlay();
+      renderAllianceFlyoutList();
+      updateMapColors();
+    });
+  });
+}
+function setupAllianceFlyout(){
+  var btn = document.getElementById('alliances-btn');
+  var flyout = document.getElementById('alliance-flyout');
+  renderAllianceFlyoutList();
+  btn.addEventListener('click', function(event){
+    event.stopPropagation();
+    flyout.hidden = !flyout.hidden;
+  });
+  document.addEventListener('click', function(event){
+    if (!flyout.hidden && !flyout.contains(event.target) && event.target !== btn){ flyout.hidden = true; }
+  });
+}
+drawMap();
+
+function archiveCard(x){
+  return '<div class="archive-card"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
+    '<span class="archive-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
+    '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></span></div>';
+}
+function renderArchive(){
+  var list = document.getElementById('archive-list');
+  var items = EDGES.filter(function(x){ return x.scope === 'international' && daysAgo(x.date) > RECENT_DAYS; })
+    .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  if (!items.length){ list.innerHTML = '<div class="archive-empty">Nothing older than this week yet — everything so far is still recent.</div>'; return; }
+  list.innerHTML = renderBucketed(items, archiveCard, ['month','archive']);
+}
+
+function renderChambers(activeId){
+  var list = document.getElementById('chamber-list');
+  list.innerHTML = CHAMBERS.map(function(c){
+    if (!c.active) return '<div class="chamber-item disabled">' + c.name + '<span class="soon">coming soon</span></div>';
+    return '<div class="chamber-item' + (c.id === activeId ? ' active' : '') + '" data-id="' + c.id + '">' + c.name + '</div>';
+  }).join('');
+  Array.from(list.querySelectorAll('.chamber-item[data-id]')).forEach(function(el){
+    el.addEventListener('click', function(){ renderChambers(el.getAttribute('data-id')); });
+  });
+
+  var statements = EDGES.filter(function(x){ return x.from === activeId && x.scope === 'international'; });
+  var t = document.getElementById('transcript');
+  var orgName = byId[activeId].label;
+  var html = '<h3>' + orgName + '</h3><div class="sub">Real, sourced statements only — nothing here is invented.</div>';
+  html += statements.map(function(x){
+    return '<div class="statement"><span class="speaker">' + orgName + '</span><span class="stmt-date">' + fmtDate(x.date) + '</span>' +
+      '<p>' + x.label.charAt(0).toUpperCase() + x.label.slice(1) + ': ' + typeSpan(x.to) + '</p>' +
+      '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
+  }).join('');
+  t.innerHTML = html;
+}
+
+function countryOfEdge(x){
+  var from = byId[x.from], to = byId[x.to];
+  if (from.type === 'country') return from.id;
+  if (from.country) return from.country;
+  if (to.type === 'country') return to.id;
+  if (to.country) return to.country;
+  return null;
+}
+
+function feedCard(x){
+  var goto = countryOfEdge(x);
+  return '<div class="feed-card' + (goto ? '' : ' no-link') + '"' + (goto ? ' data-goto="' + goto + '"' : '') + '>' +
+    '<span class="feed-date">' + fmtDate(x.date) + '</span>' +
+    '<span class="feed-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
+    '<span class="feed-scope">' + x.scope + '</span>' +
+    '<a href="' + x.url + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">source →</a></span></div>';
+}
+function renderFeed(){
+  var list = document.getElementById('feed-list');
+  var items = EDGES.slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  list.innerHTML = renderBucketed(items, feedCard);
+  Array.from(list.querySelectorAll('.feed-card[data-goto]')).forEach(function(card){
+    card.addEventListener('click', function(){ openEntityPage(card.getAttribute('data-goto')); });
+  });
+}
+
+// Real, existing indices only — nothing invented. Each is a genuine,
+// long-running index from a named publisher; we link to the official source
+// rather than showing numbers we haven't actually pulled in.
+var INDICES_TENSION = [
+  {name:'Global Peace Index (GPI)', pub:'Institute for Economics & Peace · annually since 2007', tip:'Ranks 163 countries by peacefulness.',
+   desc:'Ranks 163 countries and territories on peacefulness using 23 indicators across three domains: ongoing domestic/international conflict, societal safety and security, and militarisation.',
+   url:'https://www.visionofhumanity.org/maps/'},
+  {name:'Political Stability and Absence of Violence/Terrorism', pub:'World Bank — Worldwide Governance Indicators · annually since 1996', tip:'One of six World Bank governance indicators.',
+   desc:'One of the six World Bank Worldwide Governance Indicators. Measures perceptions of the likelihood of political instability and/or politically motivated violence, including terrorism, based on pooled survey and expert-assessment data.',
+   url:'https://info.worldbank.org/governance/wgi/'},
+  {name:'Fragile States Index (FSI)', pub:'The Fund for Peace · annually since 2005', tip:'Scores state fragility across 12 indicators.',
+   desc:'Scores state fragility and vulnerability to conflict or collapse using 12 indicators grouped into cohesion, economic, political and social pressures. Originally published as the Failed States Index; renamed in 2014.',
+   url:'https://fragilestatesindex.org/'},
+  {name:'Global Terrorism Index (GTI)', pub:'Institute for Economics & Peace · annually since 2012', tip:'Composite score of terrorism’s impact per country.',
+   desc:'A composite score of the impact of terrorism per country, combining incidents, fatalities, injuries and property damage over the preceding year.',
+   url:'https://www.visionofhumanity.org/maps/global-terrorism-index/'},
+  {name:'Conflict Barometer', pub:'HIIK (Heidelberg Institute for International Conflict Research) · annually since 1992', tip:'Catalogs every political conflict worldwide by intensity.',
+   desc:'Catalogs and classifies every political conflict worldwide each year by intensity, from "dispute" up to "war," based on a structured methodology of conflict items and means.',
+   url:'https://hiik.de/conflict-barometer/'}
+];
+var INDICES_GOVERNANCE = [
+  {name:'Democracy Index', pub:'Economist Intelligence Unit (EIU) · annually since 2006', tip:'Classifies 165+ countries by democratic health.',
+   desc:'Scores 165+ countries and territories on 60 indicators across five categories — electoral process and pluralism, functioning of government, political participation, political culture, and civil liberties — and classifies each as a full democracy, flawed democracy, hybrid regime, or authoritarian regime.',
+   url:'https://www.eiu.com/n/campaigns/democracy-index-2025/'},
+  {name:'Freedom in the World', pub:'Freedom House · annually since 1973', tip:'Scores political rights and civil liberties 0–100.',
+   desc:'Scores every country and territory 0–100 on political rights and civil liberties, then classifies each as Free, Partly Free, or Not Free.',
+   url:'https://freedomhouse.org/report/freedom-world'},
+  {name:'Corruption Perceptions Index (CPI)', pub:'Transparency International · annually since 1995', tip:'Perceived public-sector corruption, 0–100.',
+   desc:'Aggregates multiple independent expert and business surveys into a single 0 (highly corrupt) to 100 (very clean) score of perceived public-sector corruption.',
+   url:'https://www.transparency.org/en/cpi'},
+  {name:'V-Dem (Varieties of Democracy)', pub:'University of Gothenburg (academic consortium) · annually since 2017', tip:'400+ indicators across five democracy models.',
+   desc:'An academic dataset built from 400+ indicators and thousands of country experts, producing several distinct democracy indices (electoral, liberal, participatory, deliberative, egalitarian) rather than one single score.',
+   url:'https://v-dem.net/'}
+];
+function renderIndexGrid(elId, list){
+  var el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = list.map(function(ix){
+    return '<div class="idx-card" title="' + ix.tip.replace(/"/g,'&quot;') + '">' +
+      '<div class="idx-name">' + ix.name + '</div>' +
+      '<div class="idx-pub">' + ix.pub + '</div>' +
+      '<p class="idx-desc">' + ix.desc + '</p>' +
+      '<a href="' + ix.url + '" target="_blank" rel="noopener">Official source →</a></div>';
+  }).join('');
+}
+function renderActivityTable(){
+  var el = document.getElementById('idx-activity-table');
+  if (!el) return;
+  var tiers = computePulseTiers();
+  var tierColor = {1:'var(--pulse)', 2:'#E8A96B', 3:'#D9C7A8'};
+  var rows = Object.keys(tiers).map(function(id){ return {id:id, tier:tiers[id]}; })
+    .filter(function(r){ return r.tier > 0; })
+    .sort(function(a,b){ return a.tier - b.tier; })
+    .slice(0, 12);
+  if (!rows.length){ el.innerHTML = '<p style="color:var(--ink-dim); font-size:13px;">No country currently has recent activity to rank.</p>'; return; }
+  el.innerHTML = rows.map(function(r){
+    return '<div class="idx-activity-row">' + typeSpan(r.id) +
+      '<span class="idx-tier-badge" style="background:' + tierColor[r.tier] + '">tier ' + r.tier + '</span></div>';
+  }).join('');
+}
+
+function switchTab(id){
+  ['tab-feed','tab-map','tab-chambers','tab-indices','tab-archive','tab-about'].forEach(function(t){ document.getElementById(t).setAttribute('aria-selected', t===id ? 'true':'false'); });
+  ['view-feed','view-map','view-chambers','view-indices','view-archive','view-about','view-country'].forEach(function(v){ document.getElementById(v).classList.remove('active'); });
+  document.getElementById('view-' + id.replace('tab-','')).classList.add('active');
+  if (id === 'tab-archive') renderArchive();
+  if (id === 'tab-chambers') renderChambers('idea');
+  if (id === 'tab-feed') renderFeed();
+  if (id === 'tab-indices'){ renderIndexGrid('idx-grid-tension', INDICES_TENSION); renderIndexGrid('idx-grid-governance', INDICES_GOVERNANCE); renderActivityTable(); }
+}
+document.getElementById('tab-feed').addEventListener('click', function(){ switchTab('tab-feed'); });
+document.getElementById('tab-map').addEventListener('click', function(){ switchTab('tab-map'); });
+document.getElementById('tab-chambers').addEventListener('click', function(){ switchTab('tab-chambers'); });
+document.getElementById('tab-indices').addEventListener('click', function(){ switchTab('tab-indices'); });
+document.getElementById('tab-archive').addEventListener('click', function(){ switchTab('tab-archive'); });
+document.getElementById('tab-about').addEventListener('click', function(){ switchTab('tab-about'); });
+renderFeed();
+
+// --- search ---
+(function(){
+  var input = document.getElementById('search-input');
+  var results = document.getElementById('search-results');
+  function close(){ results.classList.remove('open'); results.innerHTML = ''; }
+  function search(q){
+    q = q.trim().toLowerCase();
+    if (!q){ close(); return; }
+    var matches = ENTITIES.filter(function(e){ return e.label.toLowerCase().indexOf(q) !== -1; }).slice(0, 10);
+    if (!matches.length){ results.innerHTML = '<div class="search-empty">No matches.</div>'; results.classList.add('open'); return; }
+    results.innerHTML = matches.map(function(e){
+      return '<div class="search-item" data-id="' + e.id + '"><span>' + e.label + '</span><span class="stype">' + typeLabel[e.type] + '</span></div>';
+    }).join('');
+    results.classList.add('open');
+    Array.from(results.querySelectorAll('.search-item')).forEach(function(item){
+      item.addEventListener('click', function(){
+        openEntityPage(item.getAttribute('data-id'));
+        input.value = '';
+        close();
+      });
+    });
+  }
+  input.addEventListener('input', function(){ search(input.value); });
+  input.addEventListener('focus', function(){ if (input.value.trim()) search(input.value); });
+  document.addEventListener('click', function(event){
+    if (!event.target.closest('.search-wrap')) close();
+  });
+  input.addEventListener('keydown', function(event){ if (event.key === 'Escape'){ close(); input.blur(); } });
+})();
+
+// --- comments (localStorage, per-browser demo only) ---
+(function(){
+  var SEED = [
+    {author:'Reader (example)', text:'This is exactly the format I wanted — can you add Chinese state media coverage next?', time:'example'},
+    {author:'Reader (example)', text:'Would be great to filter by country.', time:'example'}
+  ];
+  var list = document.getElementById('comment-list');
+  var stored = [];
+  try { stored = JSON.parse(localStorage.getItem('wp_comments') || '[]'); } catch(e) { stored = []; }
+  function render(){
+    list.innerHTML = '';
+    SEED.concat(stored).forEach(function(c){
+      var el = document.createElement('div');
+      el.className = 'comment';
+      el.innerHTML = '<div class="comment-head"><span class="comment-author"></span><span class="comment-time"></span></div><div class="comment-text"></div>';
+      el.querySelector('.comment-author').textContent = c.author;
+      el.querySelector('.comment-time').textContent = c.time;
+      el.querySelector('.comment-text').textContent = c.text;
+      list.appendChild(el);
+    });
+  }
+  render();
+  document.getElementById('c-submit').addEventListener('click', function(){
+    var name = document.getElementById('c-name').value.trim() || 'Anonymous';
+    var text = document.getElementById('c-text').value.trim();
+    if (!text) return;
+    stored.push({author:name, text:text, time:'just now'});
+    try { localStorage.setItem('wp_comments', JSON.stringify(stored)); } catch(e) {}
+    document.getElementById('c-text').value = '';
+    render();
+  });
+})();
+</script>
