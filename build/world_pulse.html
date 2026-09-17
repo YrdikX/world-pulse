@@ -335,7 +335,6 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
               </g>
               <g id="land-layer" filter="url(#landShadow)"></g>
               <g id="hl-layer" filter="url(#landShadow)"></g>
-              <g id="bloc-overlay"></g>
               <g id="map-pins"></g>
             </g>
           </svg>
@@ -1592,23 +1591,26 @@ var CHAMBERS = [
 // colored by the first (most specific) bloc it belongs to, so e.g. EU catches
 // Sweden before NATO, and BRICS catches Egypt before African Union.
 var BLOCS = [
-  {id:'eu', name:'European Union', color:'#E0B400',
+  {id:'eu', name:'European Union', color:'#FFC300',
     members:['france','germany','italy','poland','aut','bel','bgr','hrv','cyp','cze','dnk','est','fin','grc','hun','irl','lithuania','lva','lux','mlt','nld','prt','rom','svk','svn','esp','swe']},
-  {id:'nato', name:'NATO (non-EU)', color:'#3E6FBF',
-    members:['usa','uk','canada','nor','isl','tur','alb','mne','mkd']},
-  {id:'brics', name:'BRICS', color:'#C1440E',
+  {id:'nato', name:'NATO', color:'#2962FF',
+    members:['usa','uk','canada','france','germany','italy','poland','lithuania','bel','bgr','hrv','cze','dnk','est','grc','hun','isl','lva','lux','mne','nld','mkd','nor','prt','rom','svk','svn','esp','swe','tur','alb']},
+  {id:'brics', name:'BRICS', color:'#E63946',
     members:['russia','china','india','brazil','zaf','egy','eth','irn','are','idn']},
-  {id:'mercosur', name:'Mercosur', color:'#2A9D8F',
+  {id:'mercosur', name:'Mercosur', color:'#00BFA6',
     members:['brazil','arg','pry','ury','bol']},
-  {id:'asean', name:'ASEAN', color:'#588157',
+  {id:'asean', name:'ASEAN', color:'#2ECC71',
     members:['mys','phl','sgp','tha','vnm','mmr','khm','lao','brn']},
-  {id:'arab_league', name:'Arab League', color:'#BC6C25',
+  {id:'arab_league', name:'Arab League', color:'#F4511E',
     members:['sau','kwt','qat','bhr','omn','jor','lbn','syr','irq','yem','lby','dza','mar','tun','sdn','som','dji','mrt','com','wbg']},
-  {id:'au', name:'African Union', color:'#6A4C93',
+  {id:'au', name:'African Union', color:'#8E24AA',
     members:['ago','ben','bwa','bdi','cmr','cpv','caf','tcd','cog','civ','gnq','eri','gab','gmb','gha','gin','gnb','ken','lso','lbr','mdg','mwi','mli','mus','moz','nam','ner','nga','rwa','stp','sen','syc','sle','ssd','swz','tza','tgo','uga','zmb','zwe']}
 ];
-function blocOf(id){
-  for (var i=0;i<BLOCS.length;i++){ if (BLOCS[i].members.indexOf(id) !== -1) return BLOCS[i]; }
+// Only used while highlighting: which active bloc (by priority order above)
+// claims this country. Blocs the user hasn't checked never affect color, so
+// a country can belong to several blocs on paper without any visual clash.
+function activeBlocOf(id){
+  for (var i=0;i<BLOCS.length;i++){ if (activeBlocs[BLOCS[i].id] && BLOCS[i].members.indexOf(id) !== -1) return BLOCS[i]; }
   return null;
 }
 
@@ -1900,6 +1902,10 @@ function anyBlocActive(){
   return Object.keys(activeBlocs).some(function(k){ return activeBlocs[k]; });
 }
 
+// The base map is deliberately one flat neutral land tone for every country,
+// known or not — color is reserved entirely for signal (activity glow, or an
+// active alliance's own bright fill), never for "we have a profile on this."
+var activeBlocs = {};
 function updateMapColors(){
   var suppressPulse = anyBlocActive();
   var tiers = suppressPulse ? {} : computePulseTiers();
@@ -1907,12 +1913,18 @@ function updateMapColors(){
     var path = d3.select('#geo-' + e.id);
     if (path.empty()) return;
     var known = hasAnyData(e.id);
-    var tier = tiers[e.id] || 0;
     var cls = 'hl-country';
-    if (tier > 0) cls += ' pulse-t' + tier;
-    if (!known) cls += ' no-data';
-    var titleText = e.label + (tier > 0 ? ' — high relative activity (tier ' + tier + ' of 3)' : (known ? '' : ' — no data yet'));
-    path.attr('class', cls).attr('fill', known ? typeVar[e.type] : 'var(--land)');
+    var fill = 'var(--land)';
+    var titleText = e.label;
+    if (suppressPulse){
+      var bloc = activeBlocOf(e.id);
+      if (bloc){ fill = bloc.color; titleText += ' — ' + bloc.name; }
+    } else {
+      var tier = tiers[e.id] || 0;
+      if (tier > 0){ cls += ' pulse-t' + tier; titleText += ' — high relative activity (tier ' + tier + ' of 3)'; }
+      else if (!known){ titleText += ' — no data yet'; }
+    }
+    path.attr('class', cls).attr('fill', fill);
     path.select('title').text(titleText);
   });
   renderMapLegend();
@@ -1922,37 +1934,16 @@ function renderMapLegend(){
   var el = document.getElementById('map-legend');
   if (!el) return;
   if (anyBlocActive()){
-    el.innerHTML = '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>outline = alliance membership (glow paused while highlighting)</div>';
+    el.innerHTML = BLOCS.filter(function(b){ return activeBlocs[b.id]; }).map(function(b){
+      return '<div class="lg-item"><span class="lg-dot" style="background:' + b.color + '"></span>' + b.name + '</div>';
+    }).join('') + '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>everyone else (glow paused while highlighting)</div>';
   } else {
     el.innerHTML =
       '<div class="lg-item"><span class="lg-dot" style="background:var(--pulse)"></span>glow = activity relative to other countries (top 25% brightest)</div>' +
-      '<div class="lg-item"><span class="lg-dot" style="background:var(--t-country)"></span>has a profile, not glowing right now</div>' +
-      '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>no data yet</div>';
+      '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>quiet right now (may still have a profile — click to check)</div>';
   }
 }
 
-// Alliance highlighting is an overlay on top of the activity map, not a
-// separate mode — click the flag icon, toggle one or more blocs, and their
-// member countries get a colored outline while the base map stays as-is.
-var activeBlocs = {};
-function renderBlocOverlay(){
-  var overlay = d3.select('#bloc-overlay');
-  overlay.selectAll('*').remove();
-  BLOCS.forEach(function(bloc){
-    if (!activeBlocs[bloc.id]) return;
-    bloc.members.forEach(function(cid){
-      var src = document.getElementById('geo-' + cid);
-      if (!src) return;
-      overlay.append('path')
-        .attr('d', src.getAttribute('d'))
-        .attr('fill', 'none')
-        .attr('stroke', bloc.color)
-        .attr('stroke-width', 2.4)
-        .attr('stroke-linejoin', 'round')
-        .style('pointer-events', 'none');
-    });
-  });
-}
 function renderAllianceFlyoutList(){
   var el = document.getElementById('alliance-flyout-list');
   el.innerHTML = BLOCS.map(function(b){
@@ -1964,7 +1955,6 @@ function renderAllianceFlyoutList(){
       event.stopPropagation();
       var id = item.getAttribute('data-bloc');
       activeBlocs[id] = !activeBlocs[id];
-      renderBlocOverlay();
       renderAllianceFlyoutList();
       updateMapColors();
     });
