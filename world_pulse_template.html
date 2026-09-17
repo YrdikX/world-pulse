@@ -149,9 +149,15 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-timeline li{display:flex; gap:14px; padding:9px 0; border-top:1px solid var(--line); font-size:13.5px;}
 .cp-timeline .tdate{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-dim); min-width:90px;}
 .cp-timeline .flag{color:var(--live);}
-.cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow);}
+.cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); cursor:pointer; transition:border-color .15s;}
+.cp-news-item:hover{border-color:var(--accent);}
 .cp-news-item .who-line{font-size:12.5px; margin-bottom:6px;}
 .cp-news-item p{margin:0 0 8px; font-size:14px; line-height:1.6;}
+.event-meta{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 0;}
+.event-meta span{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; background:var(--surface-2); border:1px solid var(--line); border-radius:20px; padding:4px 11px; color:var(--ink-dim);}
+.event-detail{font-size:15.5px; line-height:1.65; margin:0 0 8px; max-width:70ch;}
+.event-source{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--accent); text-decoration:none;}
+.event-source:hover{text-decoration:underline;}
 .cp-news-item a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none;}
 .cp-related{display:flex; flex-wrap:wrap; gap:8px;}
 .cp-related button{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent-bg); border-radius:100px; padding:6px 14px; cursor:pointer;}
@@ -214,7 +220,8 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 .map-legend .lg-dot{width:9px;height:9px;border-radius:50%; flex:none; border:1px solid rgba(0,0,0,.15);}
 
 .archive-list{display:flex; flex-direction:column; gap:10px;}
-.archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap;}
+.archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; cursor:pointer; transition:border-color .15s;}
+.archive-card:hover{border-color:var(--accent);}
 .archive-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:78px;}
 .archive-body{flex:1; font-size:13.5px; line-height:1.5;}
 .archive-body a{color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:11px; text-decoration:none; margin-left:8px;}
@@ -394,6 +401,11 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <div id="view-country" class="view">
     <button class="back-link" id="country-back">&larr; Back to map</button>
     <div id="country-content"></div>
+  </div>
+
+  <div id="view-event" class="view">
+    <button class="back-link" id="event-back">&larr; Back</button>
+    <div id="event-content"></div>
   </div>
 
   <div id="view-about" class="view">
@@ -1406,26 +1418,47 @@ function seatBarHtml(seats){
     '<div class="seat-legend">' + legend + '</div>';
 }
 
-function openEntityPage(id){
+var ALL_VIEWS = ['view-feed','view-map','view-chambers','view-indices','view-archive','view-about','view-country','view-event'];
+var ALL_TABS = ['tab-feed','tab-map','tab-chambers','tab-indices','tab-archive','tab-about'];
+function activateView(viewId){
+  ALL_VIEWS.forEach(function(v){ document.getElementById(v).classList.remove('active'); });
+  document.getElementById(viewId).classList.add('active');
+  ALL_TABS.forEach(function(t){ document.getElementById(t).setAttribute('aria-selected','false'); });
+  window.scrollTo(0,0);
+}
+
+function openEntityPage(id, skipHash){
   var e = byId[id];
   if (!e) return;
+  if (!skipHash) location.hash = '#/entity/' + id;
   if (e.type === 'country') openCountryPage(id); else openGenericEntityPage(id);
 }
 
-function showEntityView(){
-  ['view-feed','view-map','view-chambers','view-archive','view-about','view-country'].forEach(function(v){ document.getElementById(v).classList.remove('active'); });
-  document.getElementById('view-country').classList.add('active');
-  ['tab-feed','tab-map','tab-chambers','tab-archive','tab-about'].forEach(function(t){ document.getElementById(t).setAttribute('aria-selected','false'); });
-  window.scrollTo(0,0);
+function showEntityView(){ activateView('view-country'); }
+
+// A stable-ish id for an edge, derived from its own content rather than its
+// array position (which would shift as edges are added), so a link to an
+// event keeps working even after the dataset grows.
+function simpleHash(str){
+  var h = 0;
+  for (var i = 0; i < str.length; i++){ h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
+  return (h >>> 0).toString(36);
 }
+function edgeId(x){ return simpleHash(x.from + '|' + x.to + '|' + x.date + '|' + x.label); }
+function findEdgeById(id){ return EDGES.filter(function(x){ return edgeId(x) === id; })[0]; }
 
 function newsCardsHtml(edges, emptyText){
   if (!edges.length) return '<div class="cp-empty">' + emptyText + '</div>';
   return edges.map(function(x){
-    return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
+    return '<div class="cp-news-item" data-event="' + edgeId(x) + '"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
       '<p>' + (x.detail || x.label) + '</p>' +
-      '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
+      '<a href="' + x.url + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">source →</a></div>';
   }).join('');
+}
+function wireEventCards(container){
+  Array.from(container.querySelectorAll('.cp-news-item[data-event]')).forEach(function(card){
+    card.addEventListener('click', function(){ openEventPage(card.getAttribute('data-event')); });
+  });
 }
 
 function openGenericEntityPage(id){
@@ -1463,6 +1496,7 @@ function openGenericEntityPage(id){
   Array.from(document.querySelectorAll('.cp-related button')).forEach(function(btn){
     btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
   });
+  wireEventCards(document.getElementById('country-content'));
   showEntityView();
 }
 
@@ -1495,19 +1529,9 @@ function openCountryPage(id){
       sys.turning.map(function(t){ return '<li><span class="tdate">' + t.date + '</span><span>' + (t.flag ? '<span class="flag">△</span> ' : '') + t.event + '</span></li>'; }).join('') + '</ul></div>';
   }
 
-  html += '<div class="cp-section"><h3>International (said or did)</h3>' +
-    (acted.length ? acted.map(function(x){
-      return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
-        '<p>' + (x.detail || x.label) + '</p>' +
-        '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
-    }).join('') : '<div class="cp-empty">Nothing recorded yet.</div>') + '</div>';
+  html += '<div class="cp-section"><h3>International (said or did)</h3>' + newsCardsHtml(acted, 'Nothing recorded yet.') + '</div>';
 
-  html += '<div class="cp-section"><h3>Domestic</h3>' +
-    (domestic.length ? domestic.map(function(x){
-      return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
-        '<p>' + (x.detail || x.label) + '</p>' +
-        '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
-    }).join('') : '<div class="cp-empty">Nothing recorded yet.</div>') + '</div>';
+  html += '<div class="cp-section"><h3>Domestic</h3>' + newsCardsHtml(domestic, 'Nothing recorded yet.') + '</div>';
 
   if (sys && sys.related && sys.related.length){
     html += '<div class="cp-section"><h3>Related countries</h3><div class="cp-related">' +
@@ -1519,9 +1543,39 @@ function openCountryPage(id){
   Array.from(document.querySelectorAll('.cp-related button')).forEach(function(btn){
     btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
   });
+  wireEventCards(document.getElementById('country-content'));
   showEntityView();
 }
 document.getElementById('country-back').addEventListener('click', function(){ switchTab('tab-map'); });
+
+// A "related event" shares an actor or a target with the current one --
+// on either side, since e.g. an edge FROM Lithuania and an edge TO Lithuania
+// are both part of the same story about Lithuania. Sorted by recency, not
+// by any notion of "importance" we haven't earned the right to claim.
+function relatedEvents(x, excludeId){
+  return EDGES.filter(function(o){
+    if (edgeId(o) === excludeId) return false;
+    return o.from === x.from || o.to === x.to || o.from === x.to || o.to === x.from;
+  }).sort(function(a,b){ return new Date(b.date) - new Date(a.date); }).slice(0, 15);
+}
+
+function openEventPage(id, skipHash){
+  var x = findEdgeById(id);
+  if (!x) return;
+  if (!skipHash) location.hash = '#/event/' + id;
+  var related = relatedEvents(x, id);
+  var html = '<div class="country-header"><h2>' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) + '</h2>' +
+    '<div class="event-meta"><span>' + fmtDate(x.date) + '</span><span>' + x.scope + '</span>' +
+    (x.country && byId[x.country] ? '<span>' + byId[x.country].label + '</span>' : '') + '</div></div>';
+  html += '<p class="event-detail">' + (x.detail || x.label) + '</p>';
+  html += '<a class="event-source" href="' + x.url + '" target="_blank" rel="noopener">Source →</a>';
+  html += '<div class="cp-section" style="margin-top:32px;"><h3>Related events</h3>' +
+    newsCardsHtml(related, 'No other documented events involving ' + byId[x.from].label + ' or ' + byId[x.to].label + ' yet.') + '</div>';
+  document.getElementById('event-content').innerHTML = html;
+  wireEventCards(document.getElementById('event-content'));
+  activateView('view-event');
+}
+document.getElementById('event-back').addEventListener('click', function(){ switchTab('tab-feed'); });
 
 var zoom = d3.zoom().scaleExtent([1, 8]).translateExtent([[0,0],[1000,507]]).on('zoom', function(event){
   d3.select('#zoom-layer').attr('transform', event.transform);
@@ -1632,10 +1686,10 @@ function setupAllianceFlyout(){
 drawMap();
 
 function archiveCard(x){
-  return '<div class="archive-card"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
+  return '<div class="archive-card" data-event="' + edgeId(x) + '"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
     '<span class="archive-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
-    '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></span></div>';
+    '<a href="' + x.url + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">source →</a></span></div>';
 }
 function renderArchive(){
   var list = document.getElementById('archive-list');
@@ -1653,6 +1707,9 @@ function renderArchive(){
   if (olderItems.length) html += renderArchiveGrouped(olderItems, archiveCard, true);
   list.innerHTML = html;
   wireMonthToggles(list);
+  Array.from(list.querySelectorAll('.archive-card[data-event]')).forEach(function(card){
+    card.addEventListener('click', function(){ openEventPage(card.getAttribute('data-event')); });
+  });
 }
 
 function renderChambers(activeId){
@@ -1677,18 +1734,8 @@ function renderChambers(activeId){
   t.innerHTML = html;
 }
 
-function countryOfEdge(x){
-  var from = byId[x.from], to = byId[x.to];
-  if (from.type === 'country') return from.id;
-  if (from.country) return from.country;
-  if (to.type === 'country') return to.id;
-  if (to.country) return to.country;
-  return null;
-}
-
 function feedCard(x){
-  var goto = countryOfEdge(x);
-  return '<div class="feed-card' + (goto ? '' : ' no-link') + '"' + (goto ? ' data-goto="' + goto + '"' : '') + '>' +
+  return '<div class="feed-card" data-event="' + edgeId(x) + '">' +
     '<span class="feed-date">' + fmtDate(x.date) + '</span>' +
     '<span class="feed-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
@@ -1703,8 +1750,8 @@ function renderFeed(){
   if (olderItems.length) html += '<div class="bucket-header">Archive</div>' + renderArchiveGrouped(olderItems, feedCard, false);
   list.innerHTML = html;
   wireMonthToggles(list);
-  Array.from(list.querySelectorAll('.feed-card[data-goto]')).forEach(function(card){
-    card.addEventListener('click', function(){ openEntityPage(card.getAttribute('data-goto')); });
+  Array.from(list.querySelectorAll('.feed-card[data-event]')).forEach(function(card){
+    card.addEventListener('click', function(){ openEventPage(card.getAttribute('data-event')); });
   });
 }
 
@@ -1769,10 +1816,11 @@ function renderActivityTable(){
   }).join('');
 }
 
-function switchTab(id){
-  ['tab-feed','tab-map','tab-chambers','tab-indices','tab-archive','tab-about'].forEach(function(t){ document.getElementById(t).setAttribute('aria-selected', t===id ? 'true':'false'); });
-  ['view-feed','view-map','view-chambers','view-indices','view-archive','view-about','view-country'].forEach(function(v){ document.getElementById(v).classList.remove('active'); });
+function switchTab(id, skipHash){
+  ALL_TABS.forEach(function(t){ document.getElementById(t).setAttribute('aria-selected', t===id ? 'true':'false'); });
+  ALL_VIEWS.forEach(function(v){ document.getElementById(v).classList.remove('active'); });
   document.getElementById('view-' + id.replace('tab-','')).classList.add('active');
+  if (!skipHash) location.hash = '#/' + id.replace('tab-','');
   if (id === 'tab-archive') renderArchive();
   if (id === 'tab-chambers') renderChambers('idea');
   if (id === 'tab-feed') renderFeed();
@@ -1848,4 +1896,17 @@ renderFeed();
     render();
   });
 })();
+
+// --- direct links: #/event/<id>, #/entity/<id>, #/feed, #/map, ... ---
+function route(){
+  var hash = location.hash.replace(/^#\/?/, '');
+  var parts = hash.split('/').filter(Boolean);
+  if (!parts.length) return false;
+  if (parts[0] === 'event' && parts[1] && findEdgeById(parts[1])){ openEventPage(parts[1], true); return true; }
+  if (parts[0] === 'entity' && parts[1] && byId[parts[1]]){ openEntityPage(parts[1], true); return true; }
+  if (document.getElementById('tab-' + parts[0])){ switchTab('tab-' + parts[0], true); return true; }
+  return false;
+}
+window.addEventListener('hashchange', route);
+route();
 </script>
