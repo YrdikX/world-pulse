@@ -30,6 +30,11 @@ RSS_FEEDS = [
     "https://feeds.bbci.co.uk/news/world/rss.xml",
     "https://www.aljazeera.com/xml/rss/all.xml",
     "https://www.theguardian.com/world/rss",
+    "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
+    "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+    "https://www.france24.com/en/rss",
+    "https://rss.dw.com/xml/rss-en-world",
+    "https://news.un.org/feed/subscribe/en/news/all/rss.xml",
 ]
 
 GDELT_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
