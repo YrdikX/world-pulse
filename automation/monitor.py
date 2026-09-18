@@ -45,6 +45,10 @@ RSS_FEEDS = [
 # what keep bad extractions off the site, same as for any other source.
 TELEGRAM_CHANNELS = [
     "toporlive",
+    "cnnbrk", "guardian", "france24_en", "apnews", "cbsnews", "politico",
+    "bloomberg", "bbcworld", "skynews", "thetimes", "aljazeeraenglish",
+    "kyivindependent", "scmpnews", "nhkworld", "trtworld", "timesofisrael",
+    "straitstimes", "ukrpravda_news", "almayadeen",
 ]
 
 GDELT_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
