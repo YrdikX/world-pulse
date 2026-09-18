@@ -117,8 +117,10 @@ def main():
 
     for c in todo:
         text, err = fetch_article_text(c["url"])
-        processed.add(c["url"])
         if err:
+            # A permanent characteristic of this URL (paywalled, JS-rendered,
+            # dead link) -- retrying later won't change that, safe to mark done.
+            processed.add(c["url"])
             print(f"  skip ({err}): {c['url']}")
             continue
 
@@ -131,9 +133,17 @@ def main():
         try:
             raw = call_claude(SYSTEM_PROMPT, user_content)
         except Exception as e:
+            # Likely a systemic issue (bad/expired key, quota, network) rather
+            # than anything about this specific candidate. Stop here instead
+            # of burning through every remaining one with the same failure --
+            # and leave this candidate (and the rest) unmarked so the next
+            # run retries them once the underlying problem is fixed.
             print(f"  API error for {c['url']}: {e}", file=sys.stderr)
-            continue
+            print("  Stopping this run early; nothing processed so far will be lost.", file=sys.stderr)
+            break
 
+        # Only now, after an actual model response, is this candidate done.
+        processed.add(c["url"])
         result = extract_json(raw)
         if not result:
             print(f"  unparseable model output for {c['url']}")
