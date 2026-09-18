@@ -40,6 +40,13 @@ with open(OUT, "w", encoding="utf-8") as f:
     f.write(html)
 print("wrote", OUT, "size:", os.path.getsize(OUT))
 
+# Also refresh the root-level copy used for quick local preview (e.g. a
+# `python3 -m http.server` in the repo root) -- this used to silently drift
+# out of sync since only build/world_pulse.html was written here.
+ROOT_COPY = os.path.join(BASE, "world_pulse.html")
+with open(ROOT_COPY, "w", encoding="utf-8") as f:
+    f.write(html)
+
 # Extract a plain {id, label, type} index of every entity for the automation
 # scripts (monitor.py etc.) to use, so it never drifts out of sync with the
 # actual dataset -- it's regenerated from the built page every time.
