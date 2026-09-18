@@ -43,13 +43,21 @@ print("wrote", OUT, "size:", os.path.getsize(OUT))
 # Extract a plain {id, label, type} index of every entity for the automation
 # scripts (monitor.py etc.) to use, so it never drifts out of sync with the
 # actual dataset -- it's regenerated from the built page every time.
+#
+# The label alternation is quote-delimiter-aware (single vs double) rather
+# than excluding both quote characters from the content -- a label like
+# "Cote d'Ivoire" (double-quoted, containing an apostrophe) was silently
+# dropped by the old single-pattern version, since it excluded ' from the
+# content class even though ' wasn't the string's actual delimiter.
 entity_re = re.compile(
-    r"\{id:\s*['\"]([^'\"]+)['\"],\s*label:\s*['\"]((?:[^'\"\\]|\\.)*)['\"],\s*type:\s*['\"]([^'\"]+)['\"]"
+    r"\{id:\s*['\"]([^'\"]+)['\"],\s*label:\s*(?:'((?:[^'\\]|\\.)*)'|\"((?:[^\"\\]|\\.)*)\"),\s*type:\s*['\"]([^'\"]+)['\"]"
 )
 seen_ids = set()
 entities_index = []
 for m in entity_re.finditer(html):
-    eid, label, etype = m.group(1), m.group(2), m.group(3)
+    eid = m.group(1)
+    label = m.group(2) if m.group(2) is not None else m.group(3)
+    etype = m.group(4)
     if eid in seen_ids:
         continue
     seen_ids.add(eid)

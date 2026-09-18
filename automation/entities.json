@@ -415,6 +415,11 @@
   "type": "country"
  },
  {
+  "id": "civ",
+  "label": "Cote d'Ivoire",
+  "type": "country"
+ },
+ {
   "id": "cmr",
   "label": "Cameroon",
   "type": "country"
@@ -801,7 +806,7 @@
  },
  {
   "id": "maf",
-  "label": "St. Martin (French part)",
+  "label": "Saint Martin",
   "type": "country"
  },
  {
@@ -980,6 +985,11 @@
   "type": "country"
  },
  {
+  "id": "prk",
+  "label": "North Korea",
+  "type": "country"
+ },
+ {
   "id": "prt",
   "label": "Portugal",
   "type": "country"
@@ -1061,7 +1071,7 @@
  },
  {
   "id": "som",
-  "label": "Somalia, Fed. Rep.",
+  "label": "Somalia",
   "type": "country"
  },
  {

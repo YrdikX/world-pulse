@@ -187,6 +187,15 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .person-wiki-src{font-size:11.5px; color:var(--ink-dim); font-style:italic; margin-bottom:24px;}
 .person-wiki-src a{color:var(--accent); font-style:normal;}
 
+.glance-header{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:0 0 10px;}
+.glance-header span{color:var(--ink-dim); text-transform:none; letter-spacing:0; font-size:11px;}
+.glance-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:26px;}
+@media (max-width:820px){ .glance-grid{grid-template-columns:1fr 1fr;} }
+.glance-tile{background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:14px 16px; box-shadow:var(--shadow); cursor:pointer; transition:border-color .15s;}
+.glance-tile:hover{border-color:var(--accent);}
+.glance-value{font-family:'Archivo',sans-serif; font-weight:800; font-size:19px; color:var(--ink); line-height:1.2;}
+.glance-label{font-size:12px; color:var(--ink-dim); line-height:1.4; margin:4px 0 6px;}
+.glance-src{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent);}
 .bucket-header{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:22px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line);}
 .bucket-header:first-child{margin-top:0;}
 .month-header{cursor:pointer; display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:9px 14px; margin:8px 0;}
@@ -214,7 +223,9 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .idx-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0 4px;}
 @media (max-width:720px){ .idx-grid{grid-template-columns:1fr;} }
 .idx-card{background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:14px 16px; box-shadow:var(--shadow); cursor:default;}
-.idx-name{font-family:'Archivo',sans-serif; font-weight:800; font-size:15px; color:var(--ink); margin-bottom:2px;}
+.idx-name{font-family:'Archivo',sans-serif; font-weight:800; font-size:15px; color:var(--ink); margin-bottom:2px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.idx-tier{font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-dim); background:var(--surface-2); border:1px solid var(--line); border-radius:20px; padding:2px 8px;}
+.idx-latest{font-size:13px; line-height:1.55; color:var(--ink-dim); font-style:italic; margin:0 0 10px; padding-left:10px; border-left:2px solid var(--accent);}
 .idx-pub{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;}
 .idx-desc{font-size:13px; line-height:1.55; color:var(--ink); margin:0 0 10px;}
 .idx-card a{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--accent); text-decoration:none;}
@@ -325,6 +336,8 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   </div>
 
   <div id="view-feed" class="view active">
+    <div class="glance-header">World at a glance <span>— from real published indices, not computed by us · click any for detail</span></div>
+    <div class="glance-grid" id="glance-grid"></div>
     <div class="feed-list" id="feed-list"></div>
   </div>
 
@@ -395,7 +408,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <div id="view-indices" class="view">
     <div class="about-page">
       <h2>World political indices</h2>
-      <p class="about-lede">There is no single official "tension index." But several real, long-running indices measure conflict risk, instability and democratic health — here is what actually exists, who publishes it, and what it measures. World Pulse doesn't pull live numbers from any of these yet, so no per-country scores are shown here — only what each index is and a link to the real source. Hover (or tap, on mobile) a card for a one-line summary; the paragraph underneath has the full explanation.</p>
+      <p class="about-lede">There is no single official "tension index." But several real, long-running indices measure conflict risk, instability and democratic health — here is what actually exists, who publishes it, and what it measures. The world-level headline figure from each index's latest edition is quoted below (also on the Feed tab) — hand-checked against the actual report, not pulled live, so it's only as current as the last time someone updated it here. No per-country scores are shown, since we don't have a live feed for those yet. Each card also names who publishes it and what kind of organization that is (think tank, NGO, academic, intergovernmental) — that's part of judging a source too. Hover (or tap, on mobile) a card for a one-line summary; the paragraph underneath has the full explanation.</p>
 
       <h3>Conflict, violence &amp; instability — closest to a "tension index"</h3>
       <div class="idx-grid" id="idx-grid-tension"></div>
@@ -1861,34 +1874,61 @@ function renderFeed(){
 // Real, existing indices only — nothing invented. Each is a genuine,
 // long-running index from a named publisher; we link to the official source
 // rather than showing numbers we haven't actually pulled in.
+// World-level headline figures from the same real indices catalogued in
+// Indices -- not our own computation, and not per-country. Pulled from each
+// index's actual latest published edition; re-check and update by hand
+// when a new edition comes out (roughly annual per index).
+var GLOBAL_METRICS = [
+  {value:'6th year running', label:'Global peacefulness worsened again in 2025 (−0.36%) — 59 active state conflicts, most since WWII', src:'Global Peace Index 2025'},
+  {value:'5.19 / 10', label:'World democracy average, first rise after 8 straight years of decline', src:'EIU Democracy Index 2025'},
+  {value:'20th year running', label:'Global freedom keeps declining — only 21% of people now live somewhere rated "Free"', src:'Freedom House 2026'},
+  {value:'42 / 100', label:'World corruption-perception average, a record low, first drop in 10+ years', src:'Transparency Int’l CPI 2025'}
+];
+function renderGlanceMetrics(){
+  var el = document.getElementById('glance-grid');
+  if (!el) return;
+  el.innerHTML = GLOBAL_METRICS.map(function(m){
+    return '<div class="glance-tile"><div class="glance-value">' + m.value + '</div>' +
+      '<div class="glance-label">' + m.label + '</div>' +
+      '<div class="glance-src">' + m.src + ' →</div></div>';
+  }).join('');
+  Array.from(el.querySelectorAll('.glance-tile')).forEach(function(tile){
+    tile.addEventListener('click', function(){ switchTab('tab-indices'); });
+  });
+}
+
 var INDICES_TENSION = [
-  {name:'Global Peace Index (GPI)', pub:'Institute for Economics & Peace · annually since 2007', tip:'Ranks 163 countries by peacefulness.',
+  {name:'Global Peace Index (GPI)', pub:'Institute for Economics & Peace · annually since 2007', tier:'Think tank', tip:'Ranks 163 countries by peacefulness.',
    desc:'Ranks 163 countries and territories on peacefulness using 23 indicators across three domains: ongoing domestic/international conflict, societal safety and security, and militarisation.',
+   latest:'2025 edition: peacefulness worsened for a 6th straight year (−0.36%) — 59 active state-based conflicts, the most since WWII, and ~152,000 conflict deaths in 2024.',
    url:'https://www.visionofhumanity.org/maps/'},
-  {name:'Political Stability and Absence of Violence/Terrorism', pub:'World Bank — Worldwide Governance Indicators · annually since 1996', tip:'One of six World Bank governance indicators.',
+  {name:'Political Stability and Absence of Violence/Terrorism', pub:'World Bank — Worldwide Governance Indicators · annually since 1996', tier:'Intergovernmental', tip:'One of six World Bank governance indicators.',
    desc:'One of the six World Bank Worldwide Governance Indicators. Measures perceptions of the likelihood of political instability and/or politically motivated violence, including terrorism, based on pooled survey and expert-assessment data.',
-   url:'https://info.worldbank.org/governance/wgi/'},
-  {name:'Fragile States Index (FSI)', pub:'The Fund for Peace · annually since 2005', tip:'Scores state fragility across 12 indicators.',
+   url:'https://info.worldbank.org/governance/WGI/'},
+  {name:'Fragile States Index (FSI)', pub:'The Fund for Peace · annually since 2005', tier:'NGO', tip:'Scores state fragility across 12 indicators.',
    desc:'Scores state fragility and vulnerability to conflict or collapse using 12 indicators grouped into cohesion, economic, political and social pressures. Originally published as the Failed States Index; renamed in 2014.',
    url:'https://fragilestatesindex.org/'},
-  {name:'Global Terrorism Index (GTI)', pub:'Institute for Economics & Peace · annually since 2012', tip:'Composite score of terrorism’s impact per country.',
+  {name:'Global Terrorism Index (GTI)', pub:'Institute for Economics & Peace · annually since 2012', tier:'Think tank', tip:'Composite score of terrorism’s impact per country.',
    desc:'A composite score of the impact of terrorism per country, combining incidents, fatalities, injuries and property damage over the preceding year.',
    url:'https://www.visionofhumanity.org/maps/global-terrorism-index/'},
-  {name:'Conflict Barometer', pub:'HIIK (Heidelberg Institute for International Conflict Research) · annually since 1992', tip:'Catalogs every political conflict worldwide by intensity.',
+  {name:'Conflict Barometer', pub:'HIIK (Heidelberg Institute for International Conflict Research) · annually since 1992', tier:'Academic', tip:'Catalogs every political conflict worldwide by intensity.',
    desc:'Catalogs and classifies every political conflict worldwide each year by intensity, from "dispute" up to "war," based on a structured methodology of conflict items and means.',
    url:'https://hiik.de/conflict-barometer/'}
 ];
 var INDICES_GOVERNANCE = [
-  {name:'Democracy Index', pub:'Economist Intelligence Unit (EIU) · annually since 2006', tip:'Classifies 165+ countries by democratic health.',
+  {name:'Democracy Index', pub:'Economist Intelligence Unit (EIU) · annually since 2006', tier:'Private research', tip:'Classifies 165+ countries by democratic health.',
    desc:'Scores 165+ countries and territories on 60 indicators across five categories — electoral process and pluralism, functioning of government, political participation, political culture, and civil liberties — and classifies each as a full democracy, flawed democracy, hybrid regime, or authoritarian regime.',
+   latest:'2025 edition: global average rose from 5.17 to 5.19/10 — the first improvement after 8 straight years of decline.',
    url:'https://www.eiu.com/n/campaigns/democracy-index-2025/'},
-  {name:'Freedom in the World', pub:'Freedom House · annually since 1973', tip:'Scores political rights and civil liberties 0–100.',
-   desc:'Scores every country and territory 0–100 on political rights and civil liberties, then classifies each as Free, Partly Free, or Not Free.',
+  {name:'Freedom in the World', pub:'Freedom House · annually since 1973', tier:'NGO (majority US government-funded)', tip:'Scores political rights and civil liberties 0–100.',
+   desc:'Scores every country and territory 0–100 on political rights and civil liberties, then classifies each as Free, Partly Free, or Not Free. Most of Freedom House’s funding comes from the US government, which its own materials disclose — worth knowing when weighing the source, same as for any other.',
+   latest:'2026 edition: 20th consecutive year of declining global freedom — 54 countries declined vs. 35 that improved; only 21% of the world’s population now lives in a "Free" country, down from 46% two decades ago.',
    url:'https://freedomhouse.org/report/freedom-world'},
-  {name:'Corruption Perceptions Index (CPI)', pub:'Transparency International · annually since 1995', tip:'Perceived public-sector corruption, 0–100.',
+  {name:'Corruption Perceptions Index (CPI)', pub:'Transparency International · annually since 1995', tier:'NGO', tip:'Perceived public-sector corruption, 0–100.',
    desc:'Aggregates multiple independent expert and business surveys into a single 0 (highly corrupt) to 100 (very clean) score of perceived public-sector corruption.',
+   latest:'2025 edition: global average fell to 42/100, a record low and the first drop in over a decade — 122 of 182 countries score below 50.',
    url:'https://www.transparency.org/en/cpi'},
-  {name:'V-Dem (Varieties of Democracy)', pub:'University of Gothenburg (academic consortium) · annually since 2017', tip:'400+ indicators across five democracy models.',
+  {name:'V-Dem (Varieties of Democracy)', pub:'University of Gothenburg (academic consortium) · annually since 2017', tier:'Academic', tip:'400+ indicators across five democracy models.',
    desc:'An academic dataset built from 400+ indicators and thousands of country experts, producing several distinct democracy indices (electoral, liberal, participatory, deliberative, egalitarian) rather than one single score.',
    url:'https://v-dem.net/'}
 ];
@@ -1897,9 +1937,10 @@ function renderIndexGrid(elId, list){
   if (!el) return;
   el.innerHTML = list.map(function(ix){
     return '<div class="idx-card" title="' + ix.tip.replace(/"/g,'&quot;') + '">' +
-      '<div class="idx-name">' + ix.name + '</div>' +
+      '<div class="idx-name">' + ix.name + '<span class="idx-tier">' + ix.tier + '</span></div>' +
       '<div class="idx-pub">' + ix.pub + '</div>' +
       '<p class="idx-desc">' + ix.desc + '</p>' +
+      (ix.latest ? '<p class="idx-latest">' + ix.latest + '</p>' : '') +
       '<a href="' + ix.url + '" target="_blank" rel="noopener">Official source →</a></div>';
   }).join('');
 }
@@ -1936,6 +1977,7 @@ document.getElementById('tab-indices').addEventListener('click', function(){ swi
 document.getElementById('tab-archive').addEventListener('click', function(){ switchTab('tab-archive'); });
 document.getElementById('tab-about').addEventListener('click', function(){ switchTab('tab-about'); });
 renderFeed();
+renderGlanceMetrics();
 
 // --- search ---
 (function(){

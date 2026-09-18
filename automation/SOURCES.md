@@ -21,6 +21,10 @@ without notice — re-check before wiring a new one into `monitor.py`.
 
 **Telegram** (via `t.me/s/<channel>`, no login needed — see below)
 - Топор Live (`toporlive`) — user-picked, general incident/news channel
+- CNN Breaking News (`cnnbrk`), The Guardian (`guardian`), France 24 English (`france24_en`), AP (`apnews`), CBS News (`cbsnews`), Politico (`politico`), Bloomberg (`bloomberg`), BBC News World (`bbcworld`), Sky News (`skynews`), The Times (`thetimes`), Al Jazeera English (`aljazeeraenglish`)
+- The Kyiv Independent (`kyivindependent`), Ukrainska Pravda (`ukrpravda_news`)
+- SCMP (`scmpnews`), NHK World (`nhkworld`), TRT World (`trtworld`), Straits Times (`straitstimes`)
+- Times of Israel (`timesofisrael`), Al Mayadeen (`almayadeen`) — note: Al Mayadeen is a Lebanese outlet with a well-known pro-Hezbollah/Iran-axis editorial lean; kept for the "who said what" record (their own stated position is itself a fact), not as a neutral source
 
 ### Telegram channels — a real, workable source after all
 
