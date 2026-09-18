@@ -482,7 +482,12 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 </div>
 
 <script>
-var TODAY = new Date('2026-09-17');
+// "Today" is New York's current calendar date, recomputed on every load --
+// not a fixed date. (It was previously hardcoded and had gone stale, which
+// is why two different days were both showing as "today".) Formatting via
+// en-CA gives a plain YYYY-MM-DD string, matching how edge dates are
+// written, so the day-granularity subtraction in daysAgo() lines up exactly.
+var TODAY = new Date(new Intl.DateTimeFormat('en-CA', {timeZone: 'America/New_York'}).format(new Date()));
 var RECENT_DAYS = 7;
 
 function daysAgo(dateStr){
@@ -1450,7 +1455,8 @@ function activeBlocOf(id){
 // quartiles — top quarter glows strongest, bottom quarter doesn't glow at all.
 function computePulseTiers(){
   var scored = ENTITIES.filter(function(e){ return e.geo !== undefined; }).map(function(e){
-    var n = intlActedBy(e.id).concat(domesticOf(e.id)).filter(function(x){ return daysAgo(x.date) <= RECENT_DAYS; }).length;
+    var edges = (INTL_BY_COUNTRY[e.id] || []).concat(DOMESTIC_BY_COUNTRY[e.id] || []);
+    var n = edges.filter(function(x){ return daysAgo(x.date) <= RECENT_DAYS; }).length;
     return {id:e.id, score:n};
   }).filter(function(s){ return s.score > 0; });
   scored.sort(function(a,b){ return b.score - a.score; });
@@ -1503,19 +1509,34 @@ function actorBelongsTo(fromId, id){
   var actor = byId[fromId];
   return !!actor && actor.country === id;
 }
+// Precomputed once so the map (221 countries, checked on every redraw) never
+// has to re-scan the full EDGES array per country -- that scan-per-country
+// pattern is what caused the map to stutter on bloc toggles as EDGES grew.
+var INTL_BY_COUNTRY = {}, DOMESTIC_BY_COUNTRY = {};
+(function buildEdgeIndex(){
+  EDGES.forEach(function(x){
+    if (x.scope === 'international'){
+      (INTL_BY_COUNTRY[x.from] = INTL_BY_COUNTRY[x.from] || []).push(x);
+      var actor = byId[x.from];
+      if (actor && actor.country && actor.country !== x.from){
+        (INTL_BY_COUNTRY[actor.country] = INTL_BY_COUNTRY[actor.country] || []).push(x);
+      }
+    } else if (x.scope === 'domestic' && x.country){
+      (DOMESTIC_BY_COUNTRY[x.country] = DOMESTIC_BY_COUNTRY[x.country] || []).push(x);
+    }
+  });
+})();
 function intlActedBy(id){
-  return EDGES.filter(function(x){ return x.scope === 'international' && actorBelongsTo(x.from, id); })
-    .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  return (INTL_BY_COUNTRY[id] || []).slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
 }
 function domesticOf(id){
-  return EDGES.filter(function(x){ return x.scope === 'domestic' && x.country === id; })
-    .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  return (DOMESTIC_BY_COUNTRY[id] || []).slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
 }
 function hasRecentActivity(id){
-  return intlActedBy(id).concat(domesticOf(id)).some(function(x){ return daysAgo(x.date) <= RECENT_DAYS; });
+  return (INTL_BY_COUNTRY[id] || []).concat(DOMESTIC_BY_COUNTRY[id] || []).some(function(x){ return daysAgo(x.date) <= RECENT_DAYS; });
 }
 function hasAnyData(id){
-  return !!SYSTEMS_FULL[id] || intlActedBy(id).length > 0 || domesticOf(id).length > 0;
+  return !!SYSTEMS_FULL[id] || (INTL_BY_COUNTRY[id]||[]).length > 0 || (DOMESTIC_BY_COUNTRY[id]||[]).length > 0;
 }
 
 function showPanel(id, mode){
@@ -1754,12 +1775,17 @@ function drawMap(){
   var pins = d3.select('#map-pins');
 
   ENTITIES.filter(function(e){ return e.geo !== undefined; }).forEach(function(e){
-    landLayer.append('path')
+    var pathSel = landLayer.append('path')
       .attr('id', 'geo-' + e.id)
       .attr('class', 'hl-country')
       .attr('d', e.geo)
-      .append('title');
-    d3.select('#geo-' + e.id).on('click', function(){ showPanel(e.id); });
+      .on('click', function(){ showPanel(e.id); });
+    var titleNode = pathSel.append('title').node();
+    // Cached so updateMapColors (run on every bloc toggle, called for all
+    // ~221 countries) never has to re-query the DOM by id -- that per-country
+    // id lookup, times two elements, was the main source of map jank as the
+    // page grew.
+    countryPathCache[e.id] = {path: pathSel.node(), title: titleNode};
   });
 
   // Every country is clickable, even the ~205 without data yet — the panel
@@ -1779,12 +1805,13 @@ function anyBlocActive(){
 // known or not — color is reserved entirely for signal (activity glow, or an
 // active alliance's own bright fill), never for "we have a profile on this."
 var activeBlocs = {};
+var countryPathCache = {};
 function updateMapColors(){
   var suppressPulse = anyBlocActive();
   var tiers = suppressPulse ? {} : computePulseTiers();
   ENTITIES.filter(function(e){ return e.geo !== undefined; }).forEach(function(e){
-    var path = d3.select('#geo-' + e.id);
-    if (path.empty()) return;
+    var cached = countryPathCache[e.id];
+    if (!cached) return;
     var known = hasAnyData(e.id);
     var cls = 'hl-country';
     var fill = 'var(--land)';
@@ -1797,8 +1824,9 @@ function updateMapColors(){
       if (tier > 0){ cls += ' pulse-t' + tier; titleText += ' — high relative activity (tier ' + tier + ' of 3)'; }
       else if (!known){ titleText += ' — no data yet'; }
     }
-    path.attr('class', cls).attr('fill', fill);
-    path.select('title').text(titleText);
+    cached.path.setAttribute('class', cls);
+    cached.path.setAttribute('fill', fill);
+    cached.title.textContent = titleText;
   });
   renderMapLegend();
 }
@@ -1807,13 +1835,14 @@ function renderMapLegend(){
   var el = document.getElementById('map-legend');
   if (!el) return;
   if (anyBlocActive()){
+    el.style.display = '';
     el.innerHTML = BLOCS.filter(function(b){ return activeBlocs[b.id]; }).map(function(b){
       return '<div class="lg-item"><span class="lg-dot" style="background:' + b.color + '"></span>' + b.name + '</div>';
     }).join('') + '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>everyone else (glow paused while highlighting)</div>';
   } else {
-    el.innerHTML =
-      '<div class="lg-item"><span class="lg-dot" style="background:var(--pulse)"></span>glow = activity relative to other countries (top 25% brightest)</div>' +
-      '<div class="lg-item"><span class="lg-dot" style="background:var(--land)"></span>quiet right now (may still have a profile — click to check)</div>';
+    // No legend needed for the default activity-glow state — self-explanatory.
+    el.style.display = 'none';
+    el.innerHTML = '';
   }
 }
 
