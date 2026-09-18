@@ -297,7 +297,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <p class="lede">Not opinions — factual links: who said or did what, and who it connects to. Every edge is a real event with a source link. This is a small seed of real stories — the base grows with every day processed, and older items move to the Archive automatically.</p>
   <div class="meta-row">
     <span>NODES: <b>246</b></span>
-    <span>EDGES: <b>154</b></span>
+    <span>EDGES: <b>155</b></span>
     <span>COUNTRIES ON MAP: <b>221</b></span>
     <span>EVERY EDGE LINKS TO A SOURCE</span>
   </div>
@@ -429,7 +429,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 154 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 155 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -922,7 +922,9 @@ var EDGES = [
   {from:'france', to:'france', label:'government seeks parliamentary support for the 2027 budget amid a fragmented Assembly', url:'https://www.reuters.com/world/europe/', date:'2026-08-25', scope:'domestic', country:'france',
    detail:'France’s government sought parliamentary support for the 2027 budget in a National Assembly with no majority bloc, the same structural fragility behind the no-confidence threat earlier in the month.'},
   {from:'russia', to:'ukraine', label:'continues drone and missile strikes on energy infrastructure ahead of winter', url:'https://www.reuters.com/world/europe/', date:'2026-08-30', scope:'international',
-   detail:'Russia continued drone and missile strikes targeting Ukrainian energy infrastructure ahead of winter, a recurring tactic through multiple years of the war.'}
+   detail:'Russia continued drone and missile strikes targeting Ukrainian energy infrastructure ahead of winter, a recurring tactic through multiple years of the war.'},
+  {from:'un', to:'usa', label:'fact-finding mission finds reasonable grounds the US committed war crimes in strikes on Iran', url:'https://www.bbc.co.uk/news/articles/cm9w4n5nverdo', date:'2026-09-17', scope:'international',
+   detail:'A UN Independent International Fact-Finding Mission on Iran found reasonable grounds to believe the US committed war crimes in February 2026 strikes that killed at least 177 civilians, including a Tomahawk missile strike on a primary school in Minab (156 dead, 120 of them children) and a strike on a sports complex in Lamerd. The US disputed the findings’ credibility; the mission also found Iranian security forces committed crimes against humanity in a crackdown on anti-government protests the same month.'}
 ];
 
 var SYSTEMS = {
