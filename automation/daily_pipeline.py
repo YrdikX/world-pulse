@@ -124,11 +124,13 @@ def main():
             print(f"  skip ({err}): {c['url']}")
             continue
 
+        published_date = (c.get("published") or "")[:10] or None
         user_content = (
             f"TRACKED ENTITY IDS:\n{entity_list_str}\n\n"
             f"ARTICLE TITLE: {c['title']}\n"
             f"ARTICLE URL: {c['url']}\n"
-            f"ARTICLE TEXT:\n{text}\n"
+            + (f"ARTICLE PUBLISHED: {published_date} (authoritative -- use this for relative dates like 'yesterday')\n" if published_date else "")
+            + f"ARTICLE TEXT:\n{text}\n"
         )
         try:
             raw = call_claude(SYSTEM_PROMPT, user_content)
@@ -162,7 +164,12 @@ def main():
             "to": result["to"],
             "label": result["label"],
             "url": c["url"],
-            "date": result["date"],
+            # The article's own real timestamp (captured by monitor.py) is
+            # authoritative when we have it -- the model's guess from article
+            # text alone, our previous approach, turned out to fabricate
+            # dates whenever the text didn't state one explicitly (Telegram
+            # posts especially), sometimes off by years.
+            "date": published_date or result["date"],
             "scope": result.get("scope", "international"),
             "detail": result.get("detail", ""),
             "source_title": c["title"],

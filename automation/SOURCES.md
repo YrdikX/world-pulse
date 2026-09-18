@@ -21,10 +21,21 @@ without notice — re-check before wiring a new one into `monitor.py`.
 
 **Telegram** (via `t.me/s/<channel>`, no login needed — see below)
 - Топор Live (`toporlive`) — user-picked, general incident/news channel
-- CNN Breaking News (`cnnbrk`), The Guardian (`guardian`), France 24 English (`france24_en`), AP (`apnews`), CBS News (`cbsnews`), Politico (`politico`), Bloomberg (`bloomberg`), BBC News World (`bbcworld`), Sky News (`skynews`), The Times (`thetimes`), Al Jazeera English (`aljazeeraenglish`)
-- The Kyiv Independent (`kyivindependent`), Ukrainska Pravda (`ukrpravda_news`)
-- SCMP (`scmpnews`), NHK World (`nhkworld`), TRT World (`trtworld`), Straits Times (`straitstimes`)
-- Times of Israel (`timesofisrael`), Al Mayadeen (`almayadeen`) — note: Al Mayadeen is a Lebanese outlet with a well-known pro-Hezbollah/Iran-axis editorial lean; kept for the "who said what" record (their own stated position is itself a fact), not as a neutral source
+- CNN Breaking News (`cnnbrk`), The Guardian (`guardian`), France 24 English (`france24_en`), AP (`apnews`), CBS News (`cbsnews`), Politico (`politico`), Bloomberg (`bloomberg`), BBC News World (`bbcworld`)
+- Ukrainska Pravda (`ukrpravda_news`)
+- SCMP (`scmpnews`), NHK World (`nhkworld`), TRT World (`trtworld`)
+- Al Mayadeen (`almayadeen`) — note: Al Mayadeen is a Lebanese outlet with a well-known pro-Hezbollah/Iran-axis editorial lean; kept for the "who said what" record (their own stated position is itself a fact), not as a neutral source
+
+**Removed 2026-09-18 — confirmed dead/abandoned channels.** Checking
+real timestamps recovered from the pages showed each channel's "recent"
+`t.me/s/` window was actually frozen months to years in the past, which
+had been silently feeding stale content into the pipeline with
+fabricated recent-looking dates: `thetimes` (stuck at Aug 2022),
+`kyivindependent` (stuck at May 2023 — almost certainly the wrong/old
+handle for that outlet, since the real one is far more active),
+`aljazeeraenglish`, `timesofisrael`, `straitstimes`, `skynews` (all
+several months to a year+ stale). Re-verify with a fresh `t.me/s/<name>`
+check before re-adding any of these under the same or a corrected handle.
 
 ### Telegram channels — a real, workable source after all
 

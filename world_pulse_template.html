@@ -307,9 +307,9 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
   <h1>Who's connected to whom in the news</h1>
   <p class="lede">Not opinions — factual links: who said or did what, and who it connects to. Every edge is a real event with a source link. This is a small seed of real stories — the base grows with every day processed, and older items move to the Archive automatically.</p>
   <div class="meta-row">
-    <span>NODES: <b>246</b></span>
-    <span>EDGES: <b>155</b></span>
-    <span>COUNTRIES ON MAP: <b>221</b></span>
+    <span>NODES: <b id="stat-nodes">246</b></span>
+    <span>EDGES: <b id="stat-edges">155</b></span>
+    <span>COUNTRIES ON MAP: <b id="stat-countries">221</b></span>
     <span>EVERY EDGE LINKS TO A SOURCE</span>
   </div>
 
@@ -417,7 +417,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <div class="idx-grid" id="idx-grid-governance"></div>
 
       <h3>World Pulse's own metric (not an official index)</h3>
-      <p>The map's glow on the <b>Activity</b> view is our own transparent metric, computed live from this site's real, sourced edges — nothing borrowed or implied from the indices above. For each country we count how many edges (international + domestic) it has in the last 7 days, rank all countries with any activity by that count, then split them into quartiles: top 25% glow strongest (tier 1), next 25% weaker (tier 2), next 25% weakest (tier 3), bottom 25% don't glow. It measures <i>how much World Pulse currently has on a country</i>, not real-world tension or stability — with only 74 edges so far, it mostly reflects what we've curated, not the state of the world.</p>
+      <p>The map's glow on the <b>Activity</b> view is our own transparent metric, computed live from this site's real, sourced edges — nothing borrowed or implied from the indices above. For each country we count how many edges (international + domestic) it has in the last 7 days, rank all countries with any activity by that count, then split them into quartiles: top 25% glow strongest (tier 1), next 25% weaker (tier 2), next 25% weakest (tier 3), bottom 25% don't glow. It measures <i>how much World Pulse currently has on a country</i>, not real-world tension or stability — with only <span id="stat-edges-inline-1"></span> edges so far, it mostly reflects what we've curated, not the state of the world.</p>
       <div id="idx-activity-table"></div>
     </div>
   </div>
@@ -442,7 +442,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. 155 real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, as a working prototype. Nothing here is an invented connection, date or quote. This is not an automated feed yet: it's a manually curated seed meant to prove out the format before investing in real infrastructure.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. <span id="stat-edges-inline-2"></span> real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, plus a growing set of edges pulled in automatically: news is checked every 30 minutes, an AI extraction pass runs every 6 hours, and nothing goes live without a human reviewing it first. Nothing here is an invented connection, date or quote.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -837,7 +837,153 @@ var EDGES = [
   {from:'russia', to:'ukraine', label:'continues drone and missile strikes on energy infrastructure ahead of winter', url:'https://www.cnbc.com/2026/08/31/russia-massive-strikes-ukraine-energy-infrastructure.html', date:'2026-08-31', scope:'international',
    detail:'Russia continued drone and missile strikes targeting Ukrainian energy infrastructure ahead of winter, a recurring tactic through multiple years of the war.'},
   {from:'un', to:'usa', label:'fact-finding mission finds reasonable grounds the US committed war crimes in strikes on Iran', url:'https://www.bbc.co.uk/news/articles/cm9w4n5nverdo', date:'2026-09-17', scope:'international',
-   detail:'A UN Independent International Fact-Finding Mission on Iran found reasonable grounds to believe the US committed war crimes in February 2026 strikes that killed at least 177 civilians, including a Tomahawk missile strike on a primary school in Minab (156 dead, 120 of them children) and a strike on a sports complex in Lamerd. The US disputed the findings’ credibility; the mission also found Iranian security forces committed crimes against humanity in a crackdown on anti-government protests the same month.'}
+   detail:'A UN Independent International Fact-Finding Mission on Iran found reasonable grounds to believe the US committed war crimes in February 2026 strikes that killed at least 177 civilians, including a Tomahawk missile strike on a primary school in Minab (156 dead, 120 of them children) and a strike on a sports complex in Lamerd. The US disputed the findings’ credibility; the mission also found Iranian security forces committed crimes against humanity in a crackdown on anti-government protests the same month.'},
+  {from:'aus', to:'aus', label:'announced crackdown on visa overstayers with new detention policy', url:'https://www.aljazeera.com/news/2026/9/18/australia-to-detain-tourists-who-overstay-visas-amid-immigration-crackdown?traffic_source=rss', date:'2026-09-18', scope:'domestic', country:'aus',
+   detail:'Australia\'s Home Affairs Minister Tony Burke announced plans to detain visa overstayers, expand the Australian Border Force by 100 compliance officers, and create 250 new detention beds as part of a broader immigration crackdown targeting roughly 77,000 people without valid visas.'},
+  {from:'italy', to:'yem', label:'announced deployment of warships to protect shipping through Bab al-Mandeb', url:'https://www.aljazeera.com/economy/2026/9/18/italy-to-deploy-warships-to-protect-shipping-through-bab-al-mandeb?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'Italy\'s Defence Minister Guido Crosetto said Italy will deploy warships to secure passage for its commercial vessels through the Bab al-Mandeb strait, without waiting for a joint EU decision, amid Houthi control of Yemen\'s Red Sea coast.'},
+  {from:'syr', to:'isr', label:'warned Israel poses \'the greatest threat\' to regional stability', url:'https://www.aljazeera.com/news/2026/9/18/syria-warns-israel-poses-the-greatest-threat-to-middle-east-stability?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'Syria\'s UN ambassador Ibrahim Olabi told the UN Security Council that Israel\'s incursions, air strikes and violations in Syria pose the greatest threat to the stability of the entire region, citing an Israeli leadership visit to Jabal al-Sheikh on September 9 condemned by 44 nations.'},
+  {from:'usa', to:'poland', label:'announced major progress toward establishing US military base in Poland', url:'https://www.france24.com/en/europe/20260918-trump-says-major-progress-made-toward-us-military-base-in-poland', date:'2026-09-18', scope:'international',
+   detail:'Trump said Washington and Warsaw were making \'major progress\' toward establishing a permanent US Army base in Poland, with the location to be announced soon.'},
+  {from:'nga', to:'nga', label:'governor launches inquiry into deaths of 37 illegal miners in civil defence custody', url:'https://www.france24.com/en/africa/20260918-37-suspected-illegal-miners-die-in-custody-in-central-nigeria', date:'2026-09-18', scope:'domestic', country:'nga',
+   detail:'Niger state governor Mohammed Umaru Bago announced that 37 suspected illegal miners died in custody of Nigeria\'s civil defence corps, set up a committee of inquiry, declared three days of mourning, and postponed election campaigning, as police launched a separate investigation into the deaths.'},
+  {from:'mex', to:'france', label:'pressed France for permanent return of the Codex Azcatitlan manuscript', url:'https://www.france24.com/en/americas/20260917-rare-aztec-manuscript-returns-to-mexico-on-loan-after-nearly-two-centuries-in-france', date:'2026-09-17', scope:'international',
+   detail:'Mexico\'s Foreign Minister Roberto Velasco spoke at the opening of an exhibition of the Codex Azcatitlan, an Aztec manuscript on loan from France\'s National Library, as Mexico continues pressing France for its permanent return after nearly two centuries. President Claudia Sheinbaum had previously raised the issue with French President Emmanuel Macron during his visit to Mexico.'},
+  {from:'usa', to:'eu', label:'threatened tariffs over EU\'s plan to make Canada an associate member', url:'https://www.france24.com/en/trump-threatens-eu-over-hostile-canada-association-plan', date:'2026-09-17', scope:'international',
+   detail:'US President Donald Trump threatened to impose serious tariffs or stop trading with the EU if it proceeds with a plan to make Canada its first associate member, calling the proposal a potentially hostile act.'},
+  {from:'canada', to:'eu', label:'Carney addresses EU Parliament, drawing praise from centrists and criticism from far-right MEPs', url:'https://www.france24.com/en/guess-who-didn-t-like-mark-carney-s-speech-today-the-far-right', date:'2026-09-17', scope:'international',
+   detail:'Canadian PM Mark Carney delivered a speech at the EU Parliament that received a standing ovation from centrist and far-left MEPs, while far-right MEPs grumbled and one chanted \'U-S-A\' during his address.'},
+  {from:'india', to:'usa', label:'warned that new US tariffs over Russian oil purchases could impact bilateral ties', url:'https://www.france24.com/en/india-vows-to-protect-energy-security-after-new-us-tariffs-over-russian-oil', date:'2026-09-17', scope:'international',
+   detail:'India\'s foreign ministry warned Washington that new US measures to impose tariffs over India\'s purchase of Russian oil could impact bilateral relations, after the US House of Representatives passed a sanctions and tariff bill targeting Russia over its invasion of Ukraine.'},
+  {from:'usa', to:'sau', label:'declined to back Saudi Arabia militarily against Houthis while US officials met Houthi representatives in Oman', url:'https://www.france24.com/en/trump-declines-to-back-saudi-arabia-as-us-officials-reportedly-meet-iran-backed-houthis-in-oman', date:'2026-09-17', scope:'international',
+   detail:'US President Donald Trump has rebuffed Saudi pleas for military support against the Houthis, as US officials reportedly met representatives of Yemen\'s Iran-backed Houthis in Oman over the weekend, days after the Houthis seized a stretch of Red Sea coast from Saudi-backed forces.'},
+  {from:'usa', to:'sau', label:'approved potential $24.3b sale of F-35 fighter jets to Saudi Arabia', url:'https://www.theguardian.com/us-news/live/2026/sep/18/us-politics-midterms-early-voting-cost-of-living-iran-war-trump-kennedy-center-institute-of-peace-latest-news-updates', date:'2026-09-18', scope:'international',
+   detail:'The Trump administration approved a potential sale of 48 advanced F-35 fighter jets to Saudi Arabia worth an estimated $24.3 billion, with the State Department saying it would strengthen Saudi homeland defense despite intelligence concerns about China gaining access to F-35 technology.'},
+  {from:'ukraine', to:'russia', label:'launched drone barrage on Moscow and other Russian regions', url:'https://www.aljazeera.com/news/2026/9/18/ukraine-fires-drone-barrage-as-russia-launches-elections?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'Ukraine launched over 350 drones targeting Moscow and other Russian regions as Russia opened polls for its first parliamentary elections since the war began, with Ukrainian forces also striking the Yaroslavl oil refinery and a military airfield in Rostov.'},
+  {from:'idn', to:'italy', label:'acquired its first aircraft carrier, a gift from Italy', url:'https://www.aljazeera.com/news/2026/9/18/indonesia-acquires-first-aircraft-carrier-amid-military-upgrade?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'Indonesia received the former Italian navy aircraft carrier Giuseppe Garibaldi, which docked in Jakarta after Italy agreed in March to give it to Indonesia to bolster defence ties between the two countries. The vessel will be renamed KRI Sriwijaya and used both for disaster relief and potential combat missions.'},
+  {from:'kor', to:'usa', label:'ruled out deploying troops to the Strait of Hormuz despite US pressure', url:'https://www.aljazeera.com/news/2026/9/18/south-korea-says-us-north-korea-talks-possible-rules-out-hormuz-deployment?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'South Korean President Lee Jae Myung said the US wants dialogue with North Korea while confirming Seoul will not send troops to the Strait of Hormuz to intervene in the Iran war, despite pressure from Washington.'},
+  {from:'japan', to:'japan', label:'raised main interest rate to 31-year high of 1.25%', url:'https://www.bbc.co.uk/news/articles/cqn74jeek06no?at_medium=RSS&at_campaign=rss', date:'2026-09-18', scope:'domestic', country:'japan',
+   detail:'The Bank of Japan raised its main interest rate from 1% to 1.25%, the highest level since 1995, as it continues moving away from ultra-low borrowing costs amid rising prices linked to higher energy costs from the Iran war.'},
+  {from:'kor', to:'usa', label:'refused to deploy military to support US war on Iran despite Trump pressure', url:'https://www.theguardian.com/world/2026/sep/18/south-korea-will-not-send-military-to-support-us-war-on-iran-defying-trump-pressure', date:'2026-09-18', scope:'international',
+   detail:'South Korea\'s president Lee Jae Myung said he would not deploy military assets in any form that could draw the country into war, resisting Trump\'s pressure to support the US war on Iran, while reviewing a lesser role in protecting shipping in the region.'},
+  {from:'china', to:'india', label:'said China is willing to work with India to manage differences as good neighbours', url:'https://www.theguardian.com/world/2026/sep/12/xi-jinping-brics-summit-delhi-india-china-relations', date:'2026-09-12', scope:'international',
+   detail:'China\'s foreign ministry said China was \'willing\' to work with India to properly manage differences and be \'good neighbours and friends,\' as Xi Jinping visited Delhi for the Brics summit, marking a thaw after the deadly 2020 border clash.'},
+  {from:'france', to:'russia', label:'warned of intensified Russian hybrid threats and ordered protective measures', url:'https://www.theguardian.com/politics/live/2026/sep/18/andy-burnham-ireland-john-healey-eu-made-in-europe-plan-uk-politics-latest-updates-news', date:'2026-09-18', scope:'international',
+   detail:'French President Emmanuel Macron said Russia\'s hybrid threat against Europe and France had intensified, and he ordered the government to prepare a plan to protect critical infrastructure and defence sites from drone and cyber-attacks. He vowed France would respond to the attacks while continuing to support Ukraine.'},
+  {from:'ven', to:'ven', label:'unblocked some previously censored news sites', url:'https://www.france24.com/en/video/20260918-venezuela-lifts-block-on-some-news-sites-as-transition-talks-resume', date:'2026-09-18', scope:'domestic', country:'ven',
+   detail:'Venezuela\'s telecom regulator confirmed that some news sites blocked for years are now accessible, coinciding with the resumption of US-backed political transition talks. A digital rights group verified access to 17 sites but noted at least 188 websites, including 79 news outlets, remain blocked.'},
+  {from:'russia', to:'ukraine', label:'held wartime parliamentary elections framed around support for military operation', url:'https://www.aljazeera.com/news/2026/9/18/the-view-from-russia-no-party-can-be-antiwar-in-parliamentary-election?traffic_source=rss', date:'2026-09-18', scope:'domestic', country:'russia',
+   detail:'Russia held its first parliamentary elections since the war began, with Putin stating the campaign takes place amid the \'special military operation\' and calling for public backing of the fighters, while Ukraine launched over 350 drones toward Moscow as voting began.'},
+  {from:'russia', to:'france', label:'seized Russian assets of French and Swiss companies', url:'https://www.france24.com/en/europe/20260918-russia-seizes-assets-of-swiss-food-giant-nestle-and-three-french-firms', date:'2026-09-18', scope:'international',
+   detail:'Russian President Vladimir Putin signed a decree transferring the Russian operations of Swiss company Nestle and French firms Auchan, Leroy Merlin (Lemana Pro) and FM Logistic to a newly created company, LEV Management, as part of Moscow\'s response to Western sanctions over the Ukraine war.'},
+  {from:'un', to:'yem', label:'reports over 57,000 children displaced by renewed Yemen conflict', url:'https://news.un.org/feed/view/en/story/2026/09/1168354', date:'2026-09-17', scope:'international',
+   detail:'UNICEF said more than 57,000 children have been displaced in Yemen over the past two weeks amid renewed fighting, with children killed, injured or missing, and disrupted healthcare and education services across several governorates.'},
+  {from:'un', to:'nic', label:'warned that democracy is being dismantled in Nicaragua', url:'https://news.un.org/feed/view/en/story/2026/09/1168352', date:'2026-09-16', scope:'international',
+   detail:'UN human rights chief Volker Türk presented a report finding near-total capture of Nicaragua\'s state institutions by the ruling party, citing arbitrary arrests, enforced disappearances, and the dissolution of over 5,500 civil society organizations and 56 media outlets.'},
+  {from:'un', to:'ven', label:'reported ongoing torture and human rights violations by Venezuelan state institutions', url:'https://news.un.org/feed/view/en/story/2026/09/1168351', date:'2026-09-16', scope:'international',
+   detail:'The UN\'s independent Fact-Finding Mission on Venezuela published findings that repression, torture, and arbitrary detentions continue in Venezuela despite the change of leadership following the US rendition of former President Maduro in January 2026.'},
+  {from:'un', to:'yem', label:'held emergency Security Council meeting on rising violence in Yemen', url:'https://news.un.org/feed/view/en/story/2026/09/1168343', date:'2026-09-15', scope:'international',
+   detail:'The UN Security Council met in emergency session to discuss escalating violence in Yemen, including clashes near the Bab el-Mandeb Strait, rising casualties, and mass displacement of civilians toward Djibouti.'},
+  {from:'isr', to:'un', label:'Israeli strike on Gaza school kills six UN staff', url:'https://news.un.org/feed/view/en/story/2026/09/1168333', date:'2026-09-14', scope:'international',
+   detail:'Israeli strikes killed six UN workers and civilians at a school sheltering displaced families in Gaza, according to UNRWA, which said the safety of humanitarian staff and premises has been blatantly disregarded since the war began.'},
+  {from:'un', to:'sdn', label:'warned humanitarian system in Sudan could collapse without more funding', url:'https://news.un.org/feed/view/en/story/2026/09/1168331', date:'2026-09-14', scope:'international',
+   detail:'UN agencies including IOM and WFP warned they may be forced to scale back humanitarian aid in Sudan due to severe funding shortfalls, risking collapse of the aid system within weeks amid ongoing civil conflict and mass displacement.'},
+  {from:'russia', to:'uk', label:'summoned UK envoy over weapons support to Ukraine', url:'https://www.aljazeera.com/news/2026/9/18/russia-seizes-assets-of-french-firms-summons-uk-envoy-over-ukraine-support?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'Russia\'s Foreign Ministry summoned Britain\'s charge d\'affaires to protest the UK\'s increased weapons shipments to Ukraine, accusing London of being complicit in what it called Kyiv\'s war crimes.'},
+  {from:'china', to:'phl', label:'chinese coast guard ship rammed philippine government vessel in South China Sea', url:'https://www.aljazeera.com/news/2026/9/18/chinese-ship-rams-philippines-govt-vessel-in-south-china-sea-coastguard?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'A China Coast Guard vessel carried out dangerous manoeuvres and rammed the Philippine ship BRP Datu Magat Salamat off Palawan, causing damage but no injuries; China disputed the account, blaming the Philippine vessel for the collision.'},
+  {from:'pak', to:'sau', label:'pledged full military commitment to defend Saudi Arabia', url:'https://www.aljazeera.com/news/2026/9/18/pakistan-pledges-full-committment-to-defence-of-saudi-arabia?traffic_source=rss', date:'2026-09-18', scope:'international',
+   detail:'A senior Pakistani military officer said Pakistan will defend Saudi Arabia against aggression \'to any extent,\' physically and diplomatically, citing the 2025 Strategic Mutual Defence Agreement amid escalating Houthi attacks on the kingdom.'},
+  {from:'canada', to:'uk', label:'applied to join the UK-led Joint Expeditionary Force military coalition', url:'https://www.aljazeera.com/news/2026/9/18/why-does-canada-want-to-join-the-europe-led-jef-military-partnership?traffic_source=rss', date:'2026-09-17', scope:'international',
+   detail:'Canadian Prime Minister Mark Carney requested to join the JEF during an official trip to the UK, seeking to diversify Canada\'s security ties amid a downturn in relations with the US.'},
+  {from:'india', to:'uk', label:'delhi court grants bail to British Sikh man held nine years on terrorism charges', url:'https://www.theguardian.com/uk-news/2026/sep/18/british-sikh-man-granted-bail-in-india-nine-years-after-arrest', date:'2026-09-18', scope:'international',
+   detail:'A Delhi court granted bail to Jagtar Singh Johal, a British Sikh man from Scotland who has been detained in India since 2017 on alleged terrorism-related charges, though he remains in custody pending confirmation of bail conditions.'},
+  {from:'isr', to:'isr', label:'Netanyahu proposes law to revoke citizenship of those who \'defame IDF soldiers\'', url:'https://www.france24.com/en/video/20260918-gaza-documentary-sparks-political-storm-protests-in-israel', date:'2026-09-18', scope:'domestic', country:'isr',
+   detail:'Following protests and threats against filmmakers of a documentary on Israeli military conduct in Gaza, Prime Minister Netanyahu said he intends to introduce legislation to revoke citizenship of people who defame IDF soldiers.'},
+  {from:'brazil', to:'brazil', label:'announced 15% increase in welfare payments and free weight-loss jabs ahead of election', url:'https://www.theguardian.com/world/2026/sep/18/brazil-lula-welfare-payments-weight-loss-jabs-election', date:'2026-09-17', scope:'domestic', country:'brazil',
+   detail:'Brazil\'s President Lula announced a 15% increase in the Bolsa Família cash-transfer programme and free weight-loss jabs through the public health system, two weeks before the presidential election, prompting criticism from opponents including Flávio Bolsonaro that the move is electorally motivated.'},
+  {from:'germany', to:'eu', label:'urged EU to cut Russians\' holiday visas after sabotage attacks', url:'https://t.me/guardian/4369', date:'2026-09-04', scope:'international',
+   detail:'Germany urged the EU to restrict holiday visas for Russians following sabotage attacks, as a Belarusian holding a tourist visa issued by Italy is investigated over an alleged attempt to attack Leipzig airport.'},
+  {from:'russia', to:'ukraine', label:'struck Ukraine intelligence headquarters in Kyiv', url:'https://t.me/guardian/4370', date:'2026-09-04', scope:'international',
+   detail:'Russia struck Ukraine\'s intelligence headquarters in Kyiv, described by Volodymyr Zelenskyy as a \'major escalation.\' Zelenskyy said he has told the SBU to deliver an \'appropriate, tangible response\' to the strike.'},
+  {from:'usa', to:'russia', label:'sent envoys to Moscow to revive Ukraine peace talks', url:'https://t.me/guardian/4372', date:'2026-09-05', scope:'international',
+   detail:'US envoys Steve Witkoff and Jared Kushner traveled to Moscow expecting to meet Vladimir Putin before heading to Kyiv, in an effort to revive Ukraine peace talks after recent efforts stalled.'},
+  {from:'ukraine', to:'russia', label:'warned of mutual destruction if war with Russia continues', url:'https://t.me/guardian/4373', date:'2026-09-06', scope:'international',
+   detail:'A Zelenskyy adviser, Serhii Beskrestnov, said the frontline deadlock and rising use of deep strikes are increasing risks to civilians and infrastructure, warning that continued war would leave no side victorious.'},
+  {from:'usa', to:'ukraine', label:'sent envoys to Kyiv for talks on ending the war', url:'https://t.me/guardian/4374', date:'2026-09-06', scope:'international',
+   detail:'US envoys Jared Kushner and Steve Witkoff arrived in Kyiv for their first visit to Ukraine to hold talks on ending the war, a day after discussing \'substantive plans\' in Moscow.'},
+  {from:'ukraine', to:'russia', label:'moved to seize water company jointly owned with Russian oligarch', url:'https://t.me/guardian/4375', date:'2026-09-07', scope:'international',
+   detail:'Ukraine sought to seize a bottled water company stake held by the Patarkatsishvili family, which jointly owns the firm with a Russian oligarch.'},
+  {from:'uk', to:'ukraine', label:'committed £100m to bolster Ukraine\'s air defences over winter', url:'https://t.me/guardian/4376', date:'2026-09-08', scope:'international',
+   detail:'The UK pledged £100m in military equipment, including Patriot missiles, to strengthen Ukraine\'s air defences over winter as supplies have dwindled amid Russian attacks.'},
+  {from:'ukraine', to:'ukraine', label:'prosecutor general resigns after anti-corruption raid', url:'https://t.me/guardian/4377', date:'2026-09-08', scope:'domestic', country:'ukraine',
+   detail:'Ukraine\'s prosecutor general Ruslan Kravchenko resigned after anti-corruption agents raided his office over allegations that some officials in his agency were involved in large-scale money laundering.'},
+  {from:'canada', to:'ukraine', label:'offered air defense support during Zelenskyy\'s visit to Calgary', url:'https://t.me/guardian/4379', date:'2026-09-10', scope:'international',
+   detail:'Canadian PM Mark Carney hosted President Zelenskyy in Calgary and offered air defense support for Ukraine.'},
+  {from:'russia', to:'india', label:'arrived in India for BRICS summit', url:'https://t.me/guardian/4380', date:'2026-09-11', scope:'international',
+   detail:'Russian President Putin arrived in India for a BRICS summit expected to focus on the Iran and Ukraine wars, with plans to meet his Iranian counterpart during the visit.'},
+  {from:'russia', to:'ukraine', label:'struck Kyiv petrol stations with jet-powered drones for first time', url:'https://t.me/guardian/4381', date:'2026-09-11', scope:'international',
+   detail:'Russia targeted petrol stations in Kyiv using jet-powered drones for the first time, with three facilities struck in two days as the bombardment of Ukraine\'s capital intensified.'},
+  {from:'ukraine', to:'russia', label:'accused Russia of drone strike hitting Kyiv-Warsaw passenger train', url:'https://t.me/guardian/4382', date:'2026-09-13', scope:'international',
+   detail:'Ukraine\'s foreign minister said a Russian drone hit the Kyiv-Warsaw passenger train near the Polish border with no casualties reported, calling it evidence that \'Putin\'s terror\' is knocking directly on the doors of the EU and Nato.'},
+  {from:'uk', to:'ukraine', label:'reported death of UK armed forces member in road crash in Ukraine', url:'https://t.me/guardian/4384', date:'2026-09-14', scope:'international',
+   detail:'The UK Ministry of Defence said a member of the UK armed forces died in a road incident in Ukraine, understood not to be the result of hostile action.'},
+  {from:'russia', to:'ukraine', label:'allegedly plotted to kill people perceived as aligned with Ukraine in US and Europe', url:'https://t.me/guardian/4386', date:'2026-09-16', scope:'international',
+   detail:'US federal officials say Russian intelligence services attempted to pay people to surveil and kill individuals perceived to be aligned with Ukraine in the US and Europe.'},
+  {from:'usa', to:'ven', label:'invited Venezuela to join G20 energy meetings in Texas', url:'https://t.me/France24_en/18620', date:'2026-09-15', scope:'international',
+   detail:'The US invited a Venezuelan delegation to join G20 energy talks in Houston amid soaring oil prices and disruption from the Middle East war.'},
+  {from:'yem', to:'sau', label:'Houthi attacks wound 13 civilians in southern Saudi Arabia', url:'https://t.me/France24_en/18621', date:'2026-09-15', scope:'international',
+   detail:'Yemen\'s Houthis carried out a series of ballistic missile and drone attacks that wounded 13 civilians in southern Saudi Arabia on Tuesday.'},
+  {from:'swe', to:'swe', label:'left-wing opposition wins narrow majority in general election', url:'https://t.me/France24_en/18624', date:'2026-09-17', scope:'domestic', country:'swe',
+   detail:'Sweden\'s left-wing opposition won a narrow majority in the national election after vote counting concluded Thursday, though it now faces difficult negotiations to form a government.'},
+  {from:'irl', to:'isr', label:'announced boycott of 2027 Eurovision over Israel\'s participation', url:'https://t.me/France24_en/18626', date:'2026-09-17', scope:'international',
+   detail:'Ireland\'s public broadcaster RTE said Ireland will boycott the 2027 Eurovision Song Contest for the second year due to Israel\'s participation.'},
+  {from:'tur', to:'tur', label:'adviser says Erdogan will run again in early 2028 election', url:'https://t.me/France24_en/18627', date:'2026-09-17', scope:'domestic', country:'tur',
+   detail:'A top adviser to Turkish President Recep Tayyip Erdogan said he would run again in an early election likely to be held in April 2028, according to media reports.'},
+  {from:'tur', to:'tur', label:'Erdogan to run in early 2028 election, sidestepping term limit', url:'https://t.me/France24_en/18628', date:'2026-09-17', scope:'domestic', country:'tur',
+   detail:'Turkish President Recep Tayyip Erdogan intends to run for another term in an early election in 2028, a move that would circumvent the constitutional bar on running again after serving his full term.'},
+  {from:'ukraine', to:'russia', label:'drone strikes hit Wildberries warehouses, killing eight', url:'https://t.me/BBCWorld/83849', date:'2026-07-18', scope:'international',
+   detail:'Ukrainian drones struck two warehouses belonging to Russia\'s biggest online retailer, Wildberries, killing eight people and injuring 62, according to Russian officials.'},
+  {from:'irn', to:'russia', label:'asked Russia to supply advanced Geran attack drones', url:'https://t.me/BBCWorld/83850', date:'2026-09-14', scope:'international',
+   detail:'Iran asked Moscow to supply its newest Russian-developed Geran attack drones for potential use against Israel and the United States, according to the Financial Times citing Western security officials.'},
+  {from:'usa', to:'irn', label:'struck Iranian radar sites amid Strait of Hormuz tensions', url:'https://t.me/BBCWorld/83851', date:'2026-09-15', scope:'international',
+   detail:'US Central Command said it hit Iranian military radar sites over the weekend, while Iran said it responded by targeting a US base in Kuwait, marking the third escalation in a week around the Strait of Hormuz.'},
+  {from:'nato', to:'belarus', label:'shot down a drone that entered Lithuanian airspace from Belarus', url:'https://t.me/BBCWorld/83852', date:'2026-09-15', scope:'international',
+   detail:'NATO fighter pilots shot down a drone that entered Lithuania\'s airspace overnight, according to the Lithuanian president. Authorities said the drone likely entered southern Lithuania, near Kaunas, from neighbouring Belarus.'},
+  {from:'irn', to:'usa', label:'denounced US block on nuclear chief attending IAEA meeting', url:'https://t.me/nhkworld/45536', date:'2026-09-16', scope:'international',
+   detail:'An Iranian representative denounced the United States at the IAEA general meeting after the chief of Iran\'s Atomic Energy Organization was denied entry into Austria due to US opposition.'},
+  {from:'takaichi', to:'japan', label:'set to reshuffle cabinet retaining key ministers', url:'https://t.me/nhkworld/45540', date:'2026-09-16', scope:'domestic', country:'japan',
+   detail:'Japanese Prime Minister Takaichi Sanae is set to reshuffle her Cabinet on Thursday, expected to retain key LDP members while appointing a new minister from coalition partner Japan Innovation Party.'},
+  {from:'hkg', to:'china', label:'unveiled first five-year plan to align economy with mainland China', url:'https://t.me/nhkworld/45543', date:'2026-09-16', scope:'domestic', country:'hkg',
+   detail:'Hong Kong Chief Executive John Lee announced the government\'s first five-year economic plan through 2030, stressing policy to support China\'s economy.'},
+  {from:'zelensky', to:'prk', label:'warned conflict in Ukraine could impact East Asian security via North Korea-Russia ties', url:'https://t.me/nhkworld/45546', date:'2026-09-17', scope:'international',
+   detail:'Ukrainian President Volodymyr Zelenskyy told NHK that the conflict in Ukraine could impact regional security in East Asia, citing North Korea\'s growing ties with Russia.'},
+  {from:'japan', to:'japan', label:'BOJ considers raising key interest rate', url:'https://t.me/nhkworld/45550', date:'2026-09-17', scope:'domestic', country:'japan',
+   detail:'The Bank of Japan opened a two-day policy meeting to decide whether to raise its key interest rate from around 1 percent to 1.25 percent, weighing inflation trends.'},
+  {from:'usa', to:'isr', label:'preparing $2.8 billion arms package for Israel', url:'https://t.me/trtworld/15462', date:'2026-09-16', scope:'international',
+   detail:'The US is preparing a $2.8 billion arms package for Israel including 20,000 MK-84 bombs, 20,000 BLU-117 bombs, and 20,000 I-2000 penetrator warheads, according to The Washington Post.'},
+  {from:'mys', to:'isr', label:'detained containers bound for Israel at major port', url:'https://t.me/trtworld/15463', date:'2026-09-16', scope:'international',
+   detail:'Malaysia detained three more containers bound for Israel at the Port of Tanjung Pelepas, signaling increased scrutiny of Israel-bound shipments, according to people familiar with the matter cited by Bloomberg.'},
+  {from:'usa', to:'isr', label:'said US Middle East policy must not be subservient to Israel', url:'https://t.me/trtworld/15470', date:'2026-09-16', scope:'international',
+   detail:'US Vice President JD Vance said Washington must not let its Middle East policy be "subservient to the state of Israel," and that the US should work with partners when it agrees, disagree when it does not, and pursue its own interests.'},
+  {from:'usa', to:'wbg', label:'denied visas for Palestinian delegation to UN General Assembly', url:'https://t.me/trtworld/15473', date:'2026-09-17', scope:'international',
+   detail:'The US State Department said it denied visas for a high-level Palestinian delegation, including Palestinian Authority President Mahmoud Abbas, to attend the United Nations General Assembly for the second year in a row, citing failure to meet obligations.'},
+  {from:'mmr', to:'vnm', label:'Min Aung Hlaing to visit Vietnam', url:'https://t.me/StraitsTimes/307350', date:'2026-09-01', scope:'international',
+   detail:'Myanmar\'s Min Aung Hlaing plans to visit Vietnam this week as part of his continued push for re-engagement and international legitimacy for his presidency.'},
+  {from:'sgp', to:'china', label:'stepped up checks of cabbage imports from China over formaldehyde concerns', url:'https://t.me/StraitsTimes/307354', date:'2026-09-01', scope:'international',
+   detail:'Singapore\'s SFA increased inspections of cabbage imported from China following reports of formaldehyde use, after South Korea also stepped up checks on Chinese cabbage.'},
+  {from:'france', to:'france', label:'announced €54 billion in public spending cuts to reduce deficit', url:'https://t.me/France24_en/18640', date:'2026-09-18', scope:'domestic', country:'france',
+   detail:'French Prime Minister Sébastien Lecornu said France will cut public spending by €54 billion next year to reduce the country\'s deficit.'},
+  {from:'russia', to:'che', label:'seized assets of Swiss food giant Nestle and three French firms', url:'https://t.me/France24_en/18642', date:'2026-09-18', scope:'international',
+   detail:'Russian President Vladimir Putin signed a decree to transfer assets of Nestle and three French companies to a company called LEV Management.'},
+  {from:'twn', to:'japan', label:'donated over $9 million for Kumamoto earthquake recovery', url:'https://t.me/nhkworld/45559', date:'2026-09-18', scope:'international',
+   detail:'Taiwan\'s Foreign Minister Lin Chia-lung presented Japan with a donation of more than US$9 million to support recovery in Kumamoto prefecture, which was hit by a powerful earthquake in July.'},
+  {from:'japan', to:'usa', label:'arranging summit between Takaichi and Trump', url:'https://t.me/nhkworld/45563', date:'2026-09-18', scope:'international',
+   detail:'Japan is arranging for Prime Minister Takaichi Sanae to hold talks with US President Donald Trump next week in the United States on the sidelines of the UN General Assembly.'},
 ];
 
 var SYSTEMS = {
@@ -1951,4 +2097,16 @@ function route(){
 }
 window.addEventListener('hashchange', route);
 route();
+
+// Headline stats are computed live from the actual data, not hand-typed,
+// so they can't silently drift out of sync as edges are added or removed.
+(function updateStats(){
+  var edgeCount = EDGES.length;
+  var nodeEls = document.querySelectorAll('#stat-nodes');
+  var edgeEls = document.querySelectorAll('#stat-edges, #stat-edges-inline-1, #stat-edges-inline-2');
+  var countryEls = document.querySelectorAll('#stat-countries');
+  nodeEls.forEach(function(el){ el.textContent = ENTITIES.length; });
+  edgeEls.forEach(function(el){ el.textContent = edgeCount; });
+  countryEls.forEach(function(el){ el.textContent = ENTITIES.filter(function(e){ return e.type === 'country'; }).length; });
+})();
 </script>

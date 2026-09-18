@@ -18,6 +18,7 @@ not depend on exclusively.
 import json, os, re, sys, urllib.request, urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUTOMATION = os.path.join(BASE, "automation")
@@ -46,10 +47,17 @@ RSS_FEEDS = [
 TELEGRAM_CHANNELS = [
     "toporlive",
     "cnnbrk", "guardian", "france24_en", "apnews", "cbsnews", "politico",
-    "bloomberg", "bbcworld", "skynews", "thetimes", "aljazeeraenglish",
-    "kyivindependent", "scmpnews", "nhkworld", "trtworld", "timesofisrael",
-    "straitstimes", "ukrpravda_news", "almayadeen",
+    "bloomberg", "bbcworld", "scmpnews", "nhkworld", "trtworld",
+    "ukrpravda_news", "almayadeen",
 ]
+# Removed as confirmed dead/abandoned (checked 2026-09-18 -- their "recent"
+# t.me/s/ window is actually frozen months to years in the past, which was
+# silently feeding stale content into the extraction pipeline with fabricated
+# recent-looking dates): thetimes (stuck at Aug 2022), kyivindependent (stuck
+# at May 2023 -- almost certainly the wrong/old handle for that outlet),
+# aljazeeraenglish, timesofisrael, straitstimes, skynews (all last posted
+# many months before this check). Re-verify with a fresh t.me/s/<name> check
+# before re-adding any of these.
 
 GDELT_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
 GDELT_QUERY = (
@@ -101,7 +109,17 @@ def fetch_rss(url):
         link_el = item.find("link")
         if title_el is None or link_el is None or not title_el.text or not link_el.text:
             continue
-        items.append({"title": title_el.text.strip(), "url": link_el.text.strip(), "domain": urllib.parse.urlparse(url).netloc})
+        published = None
+        pubdate_el = item.find("pubDate")
+        if pubdate_el is not None and pubdate_el.text:
+            try:
+                published = parsedate_to_datetime(pubdate_el.text).astimezone(timezone.utc).isoformat()
+            except (ValueError, TypeError):
+                pass
+        items.append({
+            "title": title_el.text.strip(), "url": link_el.text.strip(),
+            "domain": urllib.parse.urlparse(url).netloc, "published": published,
+        })
     return items
 
 
@@ -128,7 +146,11 @@ def fetch_telegram(channel, limit=40):
         text = re.sub(r"\s+", " ", text).strip()
         if not text:
             continue
-        items.append({"title": text[:300], "url": f"https://t.me/{post_m.group(1)}", "domain": f"t.me/{channel}"})
+        time_m = re.search(r'<time[^>]*datetime="([^"]+)"', part)
+        items.append({
+            "title": text[:300], "url": f"https://t.me/{post_m.group(1)}",
+            "domain": f"t.me/{channel}", "published": time_m.group(1) if time_m else None,
+        })
     return items[-limit:]
 
 
@@ -189,6 +211,7 @@ def main():
             "url": url,
             "domain": art.get("domain"),
             "matched_entities": matched,
+            "published": art.get("published"),
             "fetched_at": datetime.now(timezone.utc).isoformat(),
         })
         seen.append(url)
