@@ -9,17 +9,39 @@ without notice — re-check before wiring a new one into `monitor.py`.
 
 ## Currently wired into monitor.py
 
+**RSS**
 - BBC World — `https://feeds.bbci.co.uk/news/world/rss.xml`
 - Al Jazeera — `https://www.aljazeera.com/xml/rss/all.xml`
 - The Guardian World — `https://www.theguardian.com/world/rss`
-
-## Verified working, good candidates to add next
-
-**Wire services / major outlets**
 - Wall Street Journal World — `https://feeds.a.dj.com/rss/RSSWorldNews.xml`
 - New York Times World — `https://rss.nytimes.com/services/xml/rss/nyt/World.xml`
 - France 24 English — `https://www.france24.com/en/rss`
 - Deutsche Welle World — `https://rss.dw.com/xml/rss-en-world`
+- UN News (all) — `https://news.un.org/feed/subscribe/en/news/all/rss.xml`
+
+**Telegram** (via `t.me/s/<channel>`, no login needed — see below)
+- Топор Live (`toporlive`) — user-picked, general incident/news channel
+
+### Telegram channels — a real, workable source after all
+
+Public Telegram channels expose a login-free HTML preview at
+`t.me/s/<channel_name>`, built for embedding posts on other sites. No
+account, no API key, no Telegram app needed — a plain HTTP GET returns
+recent posts with their text and timestamps. `monitor.py`'s
+`fetch_telegram()` parses this directly.
+
+This means Telegram is NOT reference-only the way X/Reddit are — any
+public channel can be added to `TELEGRAM_CHANNELS` in `monitor.py` right
+now, for free, with no extra setup. We aren't vetting channels for bias
+ourselves; whoever picks a channel to add is vouching for it, and the
+LLM-extraction + human-review steps downstream are the actual safety net
+against anything inaccurate reaching the site — same as for any source.
+
+Send more channel @usernames (Russian, Ukrainian, or any language/region)
+and they can be added the same way.
+
+## Verified working, good candidates to add next
+
 - NPR World — `https://feeds.npr.org/1004/rss.xml`
 - Sky News World — `https://feeds.skynews.com/feeds/rss/world.xml`
 - CBS News World — `https://www.cbsnews.com/latest/rss/world`
@@ -27,10 +49,7 @@ without notice — re-check before wiring a new one into `monitor.py`.
 - The Economist International — `https://www.economist.com/international/rss.xml`
 - Financial Times World — `https://www.ft.com/world?format=rss`
 - Politico — `https://www.politico.com/rss/politicopicks.xml`
-
-**International organizations (official statements — high trust, direct source)**
-- UN News (all) — `https://news.un.org/feed/subscribe/en/news/all/rss.xml`
-- European Commission press corner — `https://ec.europa.eu/commission/presscorner/api/rss?language=en`
+- European Commission press corner (official statements, direct source) — `https://ec.europa.eu/commission/presscorner/api/rss?language=en`
 
 ## Checked, not usable as-is (blocked, discontinued, or needs a workaround)
 
@@ -58,16 +77,9 @@ subreddits if browsing manually: r/worldnews, r/geopolitics, r/europe,
 r/UkrainianConflict, r/anime_titties (a long-running geopolitics-focused
 sub despite the name).
 
-**Telegram channels** — genuinely useful for fast, on-the-ground reporting
-(especially Russia/Ukraine war coverage), but each channel needs its own
-scraping setup (no unified RSS-like API), and reliability/bias varies a
-lot channel to channel. Not wired into anything here; would need a
-dedicated integration if this becomes a priority later.
-
 ## Recommendation
 
-Add the WSJ, NYT, France 24, DW and UN News feeds to `monitor.py` next —
-all verified working, no auth needed, and UN News in particular is a
-direct-from-source feed rather than press coverage of a source, which
-fits the site's attribution philosophy especially well. Everything else
-here is reference for later, not urgent.
+Send more Telegram channel handles — that's the highest-leverage source
+we found: free, no auth, works today, good for on-the-ground/local
+coverage RSS misses entirely. Everything else in "verified working" is a
+reasonable next batch to wire in, not urgent.

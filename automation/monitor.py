@@ -7,11 +7,13 @@ actual drafting/verification with an LLM.
 
 Primary source is a handful of major outlets' public RSS feeds -- these
 are meant for frequent automated polling and don't rate-limit a request
-every 30 minutes. GDELT is kept as a best-effort supplementary source for
-its much broader outlet coverage, but GitHub Actions runners share IP
-ranges with countless other projects, and GDELT's free API rate-limits by
-IP -- so a 429 from it is expected sometimes, not an error to fix, just
-something to not depend on exclusively.
+every 30 minutes. Public Telegram channels (t.me/s/<name>, no login
+needed) are a second source, useful for faster/local coverage RSS misses.
+GDELT is kept as a best-effort supplementary source for its much broader
+outlet coverage, but GitHub Actions runners share IP ranges with
+countless other projects, and GDELT's free API rate-limits by IP -- so a
+429 from it is expected sometimes, not an error to fix, just something to
+not depend on exclusively.
 """
 import json, os, re, sys, urllib.request, urllib.parse
 import xml.etree.ElementTree as ET
@@ -35,6 +37,14 @@ RSS_FEEDS = [
     "https://www.france24.com/en/rss",
     "https://rss.dw.com/xml/rss-en-world",
     "https://news.un.org/feed/subscribe/en/news/all/rss.xml",
+]
+
+# Public Telegram channels expose a login-free HTML preview at t.me/s/<name>,
+# meant for embedding -- no account, no API key, no Telegram app needed.
+# User-picked, not vetted by us for bias; the LLM step and human review are
+# what keep bad extractions off the site, same as for any other source.
+TELEGRAM_CHANNELS = [
+    "toporlive",
 ]
 
 GDELT_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
@@ -91,6 +101,33 @@ def fetch_rss(url):
     return items
 
 
+def fetch_telegram(channel, limit=40):
+    url = f"https://t.me/s/{channel}"
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            html = resp.read().decode("utf-8", errors="replace")
+    except Exception as e:
+        print(f"Telegram fetch failed ({channel}): {e}", file=sys.stderr)
+        return []
+    items = []
+    # Each message's own wrapper starts a new "tgme_widget_message " block
+    # (note the trailing space, to not also match message_text/message_date).
+    parts = re.split(r'(?=<div class="tgme_widget_message[^a-zA-Z][^"]*" data-post=)', html)
+    for part in parts[1:]:
+        post_m = re.search(r'data-post="([^"]+)"', part)
+        text_m = re.search(r'<div class="tgme_widget_message_text[^"]*"[^>]*>(.*?)</div>', part, re.S)
+        if not post_m or not text_m:
+            continue
+        text = re.sub(r"<br\s*/?>", " ", text_m.group(1))
+        text = re.sub(r"<[^>]+>", " ", text)
+        text = re.sub(r"\s+", " ", text).strip()
+        if not text:
+            continue
+        items.append({"title": text[:300], "url": f"https://t.me/{post_m.group(1)}", "domain": f"t.me/{channel}"})
+    return items[-limit:]
+
+
 def gdelt_query(query, timespan="45min", maxrecords=250):
     params = {
         "query": query, "mode": "artlist", "maxrecords": str(maxrecords),
@@ -124,6 +161,10 @@ def main():
     for feed in RSS_FEEDS:
         items = fetch_rss(feed)
         print(f"{feed}: {len(items)} items")
+        raw_items.extend(items)
+    for channel in TELEGRAM_CHANNELS:
+        items = fetch_telegram(channel)
+        print(f"t.me/{channel}: {len(items)} items")
         raw_items.extend(items)
     gdelt_items = gdelt_query(GDELT_QUERY)
     print(f"GDELT: {len(gdelt_items)} items")
