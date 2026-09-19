@@ -290,6 +290,51 @@
   "type": "person"
  },
  {
+  "id": "erdogan",
+  "label": "Erdogan",
+  "type": "person"
+ },
+ {
+  "id": "lecornu",
+  "label": "Lecornu",
+  "type": "person"
+ },
+ {
+  "id": "vturk",
+  "label": "Türk",
+  "type": "person"
+ },
+ {
+  "id": "kimyojong",
+  "label": "Kim Yo Jong",
+  "type": "person"
+ },
+ {
+  "id": "johnlee",
+  "label": "John Lee",
+  "type": "person"
+ },
+ {
+  "id": "frederiksen",
+  "label": "Frederiksen",
+  "type": "person"
+ },
+ {
+  "id": "abbas",
+  "label": "Abbas",
+  "type": "person"
+ },
+ {
+  "id": "kravchenko",
+  "label": "Kravchenko",
+  "type": "person"
+ },
+ {
+  "id": "coale",
+  "label": "Coale",
+  "type": "person"
+ },
+ {
   "id": "duma",
   "label": "State Duma election",
   "type": "event"
