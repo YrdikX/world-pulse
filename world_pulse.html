@@ -59,7 +59,7 @@ h1{font-family:'Archivo', sans-serif; font-weight:800; font-size:clamp(24px,3.6v
 #search-input:focus{outline:none; border-color:var(--accent);}
 #search-results{position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--surface); border:1px solid var(--line); border-radius:7px; box-shadow:var(--shadow); z-index:5; max-height:320px; overflow-y:auto; display:none;}
 #search-results.open{display:block;}
-.search-item{padding:10px 14px; font-size:13.5px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line);}
+.search-item{padding:10px 14px; font-size:13.5px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); color:inherit; text-decoration:none;}
 .search-item:first-child{border-top:none;}
 .search-item:hover{background:var(--accent-bg);}
 .search-item .stype{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--ink-dim);}
@@ -109,7 +109,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .panel{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px; box-shadow:var(--shadow); position:sticky; top:16px; min-height:200px;}
 .panel-empty{color:var(--ink-dim); font-size:13.5px; line-height:1.6;}
 .panel-type{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em;}
-.panel-name{font-family:'Archivo',sans-serif; font-size:21px; font-weight:800; margin:4px 0 14px; color:var(--ink);}
+.panel-name{display:block; font-family:'Archivo',sans-serif; font-size:21px; font-weight:800; margin:4px 0 14px; color:var(--ink); text-decoration:none;}
 .panel-section{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--accent); letter-spacing:.08em; margin:16px 0 8px;}
 .edge-item{font-size:13px; line-height:1.5; padding:9px 0; border-top:1px solid var(--line);}
 .edge-item a{color:var(--accent); text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:11px;}
@@ -132,7 +132,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .sys-table td:first-child{color:var(--ink-dim); font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; width:88px; padding-right:8px;}
 .sys-note{font-size:12.5px; line-height:1.5; color:var(--ink); margin:10px 0 0; padding-top:10px; border-top:1px dashed var(--line);}
 .sys-src{font-size:11px; color:var(--ink-dim); margin-top:12px; font-style:italic;}
-.entity-link{cursor:pointer;}
+.entity-link{cursor:pointer; text-decoration:none;}
 .entity-link:hover{text-decoration:underline;}
 .panel-name.clickable{cursor:pointer; text-decoration:underline; text-decoration-color:var(--line); text-decoration-thickness:2px; text-underline-offset:4px;}
 .panel-name.clickable:hover{color:var(--accent);}
@@ -165,19 +165,22 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-timeline li{display:flex; gap:14px; padding:9px 0; border-top:1px solid var(--line); font-size:13.5px;}
 .cp-timeline .tdate{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-dim); min-width:90px;}
 .cp-timeline .flag{color:var(--live);}
-.cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); cursor:pointer; transition:border-color .15s;}
+.cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); transition:border-color .15s;}
 .cp-news-item:hover{border-color:var(--accent);}
 .cp-news-item .who-line{font-size:12.5px; margin-bottom:6px;}
-.cp-news-item p{margin:0 0 8px; font-size:14px; line-height:1.6;}
+.cp-news-detail{display:block; margin:0 0 8px; font-size:14px; line-height:1.6; color:inherit; text-decoration:none;}
+.cp-news-detail:hover{text-decoration:underline;}
+.rel{color:inherit; text-decoration:none;}
+.rel:hover{text-decoration:underline;}
 .event-meta{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 0;}
 .event-meta span{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; background:var(--surface-2); border:1px solid var(--line); border-radius:20px; padding:4px 11px; color:var(--ink-dim);}
 .event-detail{font-size:15.5px; line-height:1.65; margin:0 0 8px; max-width:70ch;}
 .event-source{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--accent); text-decoration:none;}
 .event-source:hover{text-decoration:underline;}
-.cp-news-item a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none;}
+.cp-news-item .source-link{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none;}
 .cp-related{display:flex; flex-wrap:wrap; gap:8px;}
-.cp-related button{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent-bg); border-radius:100px; padding:6px 14px; cursor:pointer;}
-.cp-related button:hover{border-color:var(--accent);}
+.cp-related-link{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent-bg); border-radius:100px; padding:6px 14px; cursor:pointer; text-decoration:none; display:inline-block;}
+.cp-related-link:hover{border-color:var(--accent);}
 .cp-empty{color:var(--ink-dim); font-size:13.5px; padding:16px 0;}
 .comment-empty{color:var(--ink-dim); font-size:13.5px; padding:8px 0 18px;}
 
@@ -207,14 +210,14 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .month-body{display:flex; flex-direction:column; gap:10px; margin:0 0 4px;}
 .month-body[hidden]{display:none;}
 .feed-list{display:flex; flex-direction:column; gap:10px;}
-.feed-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; cursor:pointer; transition:border-color .15s;}
+.feed-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; transition:border-color .15s;}
 .feed-card:hover{border-color:var(--accent);}
 .feed-card.no-link{cursor:default;}
 .feed-card.no-link:hover{border-color:var(--line);}
 .feed-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:104px;}
 .feed-body{flex:1; font-size:13.5px;}
 .feed-scope{font-family:'IBM Plex Mono',monospace; font-size:9.5px; text-transform:uppercase; color:var(--ink-dim); letter-spacing:.05em; margin-left:8px;}
-.feed-body a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none; margin-left:8px;}
+.feed-body .source-link{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none; margin-left:8px;}
 
 .about-page{max-width:70ch;}
 .about-page h2{font-family:'Archivo',sans-serif; font-size:22px; font-weight:800; margin:0 0 6px;}
@@ -248,11 +251,11 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 .map-legend .lg-dot{width:9px;height:9px;border-radius:50%; flex:none; border:1px solid rgba(0,0,0,.15);}
 
 .archive-list{display:flex; flex-direction:column; gap:10px;}
-.archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; cursor:pointer; transition:border-color .15s;}
+.archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; transition:border-color .15s;}
 .archive-card:hover{border-color:var(--accent);}
 .archive-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:78px;}
 .archive-body{flex:1; font-size:13.5px; line-height:1.5;}
-.archive-body a{color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:11px; text-decoration:none; margin-left:8px;}
+.archive-body .source-link{color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:11px; text-decoration:none; margin-left:8px;}
 .archive-empty{color:var(--ink-dim); font-size:13.5px; padding:20px 0;}
 
 .chambers-layout{display:grid; grid-template-columns:220px 1fr; gap:18px;}
@@ -2213,16 +2216,12 @@ function centerOf(e){
 
 function typeSpan(id){
   var ent = byId[id];
-  return '<span class="entity-link" data-entity-id="' + id + '" style="color:' + typeVar[ent.type] + '; font-weight:600;">' + ent.label + '</span>';
+  return '<a class="entity-link" href="/entity/' + id + '.html" style="color:' + typeVar[ent.type] + '; font-weight:600;">' + ent.label + '</a>';
 }
-document.body.addEventListener('click', function(event){
-  var el = event.target.closest ? event.target.closest('.entity-link') : null;
-  if (el){ event.stopPropagation(); openEntityPage(el.getAttribute('data-entity-id')); }
-});
-function edgeRow(fromId, rel, toId, url, date){
-  return '<div class="edge-item">' + typeSpan(fromId) + ' <span class="rel">' + rel + '</span> → ' + typeSpan(toId) +
+function edgeRow(fromId, rel, toId, url, date, eventId){
+  return '<div class="edge-item">' + typeSpan(fromId) + ' <a class="rel" href="/event/' + eventId + '.html">' + rel + '</a> → ' + typeSpan(toId) +
     '<span class="edge-date">' + fmtDate(date) + '</span>' +
-    '<a href="' + url + '" target="_blank" rel="noopener">source →</a></div>';
+    '<a href="' + url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
 }
 
 // Attribution rule: a news item belongs to whoever is the ACTOR (from side) —
@@ -2275,7 +2274,9 @@ function showPanel(id, mode){
   var domestic = e.type === 'country' ? domesticOf(id) : [];
 
   var html = '<div class="panel-type" style="color:' + typeVar[e.type] + '">' + typeLabel[e.type] + '</div>';
-  html += '<div class="panel-name' + (e.type==='country' ? ' clickable' : '') + '" id="panel-name-link">' + e.label + '</div>';
+  html += e.type === 'country'
+    ? '<a class="panel-name clickable" href="/entity/' + id + '.html">' + e.label + '</a>'
+    : '<div class="panel-name">' + e.label + '</div>';
 
   if (e.type === 'country'){
     html += '<div class="mode-toggle">' +
@@ -2284,7 +2285,7 @@ function showPanel(id, mode){
       '</div>';
   }
 
-  function rowHtml(x){ return edgeRow(x.from, x.label, x.to, x.url, x.date); }
+  function rowHtml(x){ return edgeRow(x.from, x.label, x.to, x.url, x.date, edgeId(x)); }
   function rowsCollapsible(items, sectionId){
     if (items.length <= COLLAPSE_AFTER) return items.map(rowHtml).join('');
     var shown = items.slice(0, COLLAPSE_AFTER), rest = items.slice(COLLAPSE_AFTER);
@@ -2305,7 +2306,7 @@ function showPanel(id, mode){
   }
 
   if (e.type === 'country'){
-    html += '<div class="panel-profile-link" id="panel-profile-link">Full country profile (system, all history) →</div>';
+    html += '<a class="panel-profile-link" href="/entity/' + id + '.html">Full country profile (system, all history) →</a>';
   }
 
   document.getElementById('panel').innerHTML = html;
@@ -2315,10 +2316,6 @@ function showPanel(id, mode){
   Array.from(document.querySelectorAll('.mode-btn')).forEach(function(btn){
     btn.addEventListener('click', function(){ showPanel(panelId, btn.getAttribute('data-mode')); });
   });
-  if (e.type === 'country'){
-    document.getElementById('panel-name-link').addEventListener('click', function(){ openCountryPage(id); });
-    document.getElementById('panel-profile-link').addEventListener('click', function(){ openCountryPage(id); });
-  }
 }
 
 function seatBarHtml(seats){
@@ -2368,15 +2365,11 @@ function findEdgeById(id){ return EDGES.filter(function(x){ return edgeId(x) ===
 function newsCardsHtml(edges, emptyText){
   if (!edges.length) return '<div class="cp-empty">' + emptyText + '</div>';
   return edges.map(function(x){
-    return '<div class="cp-news-item" data-event="' + edgeId(x) + '"><div class="who-line">' + typeSpan(x.from) + ' <span class="rel">' + x.label + '</span> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
-      '<p>' + (x.detail || x.label) + '</p>' +
-      '<a href="' + x.url + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">source →</a></div>';
+    var id = edgeId(x);
+    return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
+      '<a class="cp-news-detail" href="/event/' + id + '.html">' + (x.detail || x.label) + '</a>' +
+      '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }).join('');
-}
-function wireEventCards(container){
-  Array.from(container.querySelectorAll('.cp-news-item[data-event]')).forEach(function(card){
-    card.addEventListener('click', function(){ openEventPage(card.getAttribute('data-event')); });
-  });
 }
 
 // A country like the US or Russia now has enough history that showing every
@@ -2424,7 +2417,7 @@ function openGenericEntityPage(id){
   }
 
   if (e.country && byId[e.country]){
-    html += '<div class="cp-section"><h3>Country</h3><div class="cp-related"><button data-goto="' + e.country + '">' + byId[e.country].label + '</button></div></div>';
+    html += '<div class="cp-section"><h3>Country</h3><div class="cp-related"><a class="cp-related-link" href="/entity/' + e.country + '.html">' + byId[e.country].label + '</a></div></div>';
   }
 
   html += '<div class="cp-section"><h3>' + (outgoing.length ? 'Current moments — said or did' : 'Activity') + '</h3>' + newsCardsHtmlCollapsible(outgoing, 'Nothing recorded from ' + e.label + ' yet.', 'cp-outgoing') + '</div>';
@@ -2434,10 +2427,6 @@ function openGenericEntityPage(id){
   }
 
   document.getElementById('country-content').innerHTML = html;
-  Array.from(document.querySelectorAll('.cp-related button')).forEach(function(btn){
-    btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
-  });
-  wireEventCards(document.getElementById('country-content'));
   wireShowMore(document.getElementById('country-content'));
   currentCommentTopic = {id: 'entity-' + id, label: e.label};
   showEntityView();
@@ -2478,15 +2467,11 @@ function openCountryPage(id){
 
   if (sys && sys.related && sys.related.length){
     html += '<div class="cp-section"><h3>Related countries</h3><div class="cp-related">' +
-      sys.related.map(function(r){ return '<button data-goto="' + r[0] + '" title="' + r[1] + '">' + (byId[r[0]] ? byId[r[0]].label : r[0]) + ' — ' + r[1] + '</button>'; }).join('') +
+      sys.related.map(function(r){ return '<a class="cp-related-link" href="/entity/' + r[0] + '.html" title="' + r[1] + '">' + (byId[r[0]] ? byId[r[0]].label : r[0]) + ' — ' + r[1] + '</a>'; }).join('') +
       '</div></div>';
   }
 
   document.getElementById('country-content').innerHTML = html;
-  Array.from(document.querySelectorAll('.cp-related button')).forEach(function(btn){
-    btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
-  });
-  wireEventCards(document.getElementById('country-content'));
   wireShowMore(document.getElementById('country-content'));
   currentCommentTopic = {id: 'entity-' + id, label: e.label};
   showEntityView();
@@ -2517,7 +2502,6 @@ function openEventPage(id, skipHash){
   html += '<div class="cp-section" style="margin-top:32px;"><h3>Related events</h3>' +
     newsCardsHtml(related, 'No other documented events involving ' + byId[x.from].label + ' or ' + byId[x.to].label + ' yet.') + '</div>';
   document.getElementById('event-content').innerHTML = html;
-  wireEventCards(document.getElementById('event-content'));
   currentCommentTopic = {id: 'event-' + id, label: byId[x.from].label + ' ' + x.label};
   activateView('view-event');
 }
@@ -2640,10 +2624,11 @@ function setupAllianceFlyout(){
 drawMap();
 
 function archiveCard(x){
-  return '<div class="archive-card" data-event="' + edgeId(x) + '"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
-    '<span class="archive-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
+  var id = edgeId(x);
+  return '<div class="archive-card"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
+    '<span class="archive-body">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
-    '<a href="' + x.url + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">source →</a></span></div>';
+    '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></span></div>';
 }
 function renderArchive(){
   var list = document.getElementById('archive-list');
@@ -2680,21 +2665,22 @@ function renderChambers(activeId){
     .sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
   var t = document.getElementById('transcript');
   var orgName = byId[activeId].label;
-  var html = '<h3>' + orgName + '</h3><div class="sub">Real, sourced statements only — nothing here is invented.</div>';
+  var html = '<h3><a href="/entity/' + activeId + '.html" style="color:inherit; text-decoration:none;">' + orgName + '</a></h3><div class="sub">Real, sourced statements only — nothing here is invented.</div>';
   html += statements.map(function(x){
+    var id = edgeId(x);
     return '<div class="statement"><span class="speaker">' + orgName + '</span><span class="stmt-date">' + fmtDate(x.date) + '</span>' +
-      '<p>' + x.label.charAt(0).toUpperCase() + x.label.slice(1) + ': ' + typeSpan(x.to) + '</p>' +
-      '<a href="' + x.url + '" target="_blank" rel="noopener">source →</a></div>';
+      '<p><a class="rel" href="/event/' + id + '.html">' + x.label.charAt(0).toUpperCase() + x.label.slice(1) + '</a>: ' + typeSpan(x.to) + '</p>' +
+      '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }).join('');
   t.innerHTML = html;
 }
 
 function feedCard(x){
-  return '<div class="feed-card" data-event="' + edgeId(x) + '">' +
-    '<span class="feed-date">' + fmtDate(x.date) + '</span>' +
-    '<span class="feed-body">' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) +
+  var id = edgeId(x);
+  return '<div class="feed-card"><span class="feed-date">' + fmtDate(x.date) + '</span>' +
+    '<span class="feed-body">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
-    '<a href="' + x.url + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">source →</a></span></div>';
+    '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></span></div>';
 }
 function renderFeed(){
   var list = document.getElementById('feed-list');
@@ -2800,6 +2786,15 @@ function renderActivityTable(){
 }
 
 function switchTab(id, skipHash){
+  // Entity/event pages are real, separate pages -- clicking a hub tab from
+  // one of them should be a real navigation back to the app, not a DOM swap
+  // that leaves the URL bar pointing at /entity/... or /event/... while
+  // showing the Feed.
+  var onStandalonePage = location.pathname.indexOf('/entity/') === 0 || location.pathname.indexOf('/event/') === 0;
+  if (onStandalonePage){
+    location.href = '/#/' + id.replace('tab-','');
+    return;
+  }
   ALL_TABS.forEach(function(t){ document.getElementById(t).setAttribute('aria-selected', t===id ? 'true':'false'); });
   ALL_VIEWS.forEach(function(v){ document.getElementById(v).classList.remove('active'); });
   document.getElementById('view-' + id.replace('tab-','')).classList.add('active');
@@ -2830,16 +2825,9 @@ renderGlanceMetrics();
     var matches = ENTITIES.filter(function(e){ return e.label.toLowerCase().indexOf(q) !== -1; }).slice(0, 10);
     if (!matches.length){ results.innerHTML = '<div class="search-empty">No matches.</div>'; results.classList.add('open'); return; }
     results.innerHTML = matches.map(function(e){
-      return '<div class="search-item" data-id="' + e.id + '"><span>' + e.label + '</span><span class="stype">' + typeLabel[e.type] + '</span></div>';
+      return '<a class="search-item" href="/entity/' + e.id + '.html"><span>' + e.label + '</span><span class="stype">' + typeLabel[e.type] + '</span></a>';
     }).join('');
     results.classList.add('open');
-    Array.from(results.querySelectorAll('.search-item')).forEach(function(item){
-      item.addEventListener('click', function(){
-        openEntityPage(item.getAttribute('data-id'));
-        input.value = '';
-        close();
-      });
-    });
   }
   input.addEventListener('input', function(){ search(input.value); });
   input.addEventListener('focus', function(){ if (input.value.trim()) search(input.value); });

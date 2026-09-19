@@ -1,1 +1,10 @@
 .DS_Store
+# Multi-page build output: real files, generated fresh in CI every deploy --
+# not the git-tracked artifact (that's build/world_pulse.html, kept for the
+# single-file local sanity check).
+build/app.js
+build/style.css
+build/index.html
+build/sitemap.xml
+build/entity/
+build/event/

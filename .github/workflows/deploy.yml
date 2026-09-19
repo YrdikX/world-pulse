@@ -29,9 +29,13 @@ jobs:
       - name: Prepare Pages output
         run: |
           mkdir -p public
-          cp build/world_pulse.html public/index.html
+          cp build/index.html public/index.html
+          cp build/style.css public/style.css
+          cp build/app.js public/app.js
+          cp -r build/entity public/entity
+          cp -r build/event public/event
           cp static/robots.txt public/robots.txt
-          cp static/sitemap.xml public/sitemap.xml
+          cp build/sitemap.xml public/sitemap.xml
           echo "getworldpulse.com" > public/CNAME
 
       - uses: actions/configure-pages@v5
