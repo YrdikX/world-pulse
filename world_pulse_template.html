@@ -116,7 +116,8 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .edge-item a:hover{text-decoration:underline;}
 .edge-item .rel{color:var(--ink-dim);}
 .edge-item .who{font-weight:600; color:var(--ink);}
-.edge-date{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-dim); display:block; margin-top:3px;}
+.edge-date{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-dim); display:block; margin-top:3px; text-decoration:none;}
+.edge-date:hover{text-decoration:underline;}
 .archive-hint{font-size:12px; color:var(--ink-dim); margin-top:14px; padding-top:10px; border-top:1px dashed var(--line);}
 .archive-hint b{color:var(--accent); cursor:pointer;}
 .panel-profile-link{font-size:12.5px; color:var(--accent); cursor:pointer; margin-top:16px; padding-top:12px; border-top:1px solid var(--line); font-weight:600;}
@@ -169,8 +170,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-news-item:hover{border-color:var(--accent);}
 .cp-news-item .who-line{font-size:12.5px; margin-bottom:6px;}
 .cp-news-detail{margin:0 0 8px; font-size:14px; line-height:1.6; color:inherit;}
-.rel{color:inherit; text-decoration:none;}
-.rel:hover{text-decoration:underline;}
+.rel{color:inherit;}
 .event-meta{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 0;}
 .event-meta span{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; background:var(--surface-2); border:1px solid var(--line); border-radius:20px; padding:4px 11px; color:var(--ink-dim);}
 .event-detail{font-size:15.5px; line-height:1.65; margin:0 0 8px; max-width:70ch;}
@@ -217,7 +217,8 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .feed-card:hover{border-color:var(--accent);}
 .feed-card.no-link{cursor:default;}
 .feed-card.no-link:hover{border-color:var(--line);}
-.feed-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:104px;}
+.feed-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:104px; text-decoration:none;}
+.feed-date:hover{text-decoration:underline;}
 .feed-body{flex:1; font-size:13.5px;}
 .feed-scope{font-family:'IBM Plex Mono',monospace; font-size:9.5px; text-transform:uppercase; color:var(--ink-dim); letter-spacing:.05em; margin-left:8px;}
 .feed-body .source-link{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none; margin-left:8px;}
@@ -243,7 +244,8 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 .archive-list{display:flex; flex-direction:column; gap:10px;}
 .archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; transition:border-color .15s;}
 .archive-card:hover{border-color:var(--accent);}
-.archive-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:78px;}
+.archive-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:78px; text-decoration:none;}
+.archive-date:hover{text-decoration:underline;}
 .archive-body{flex:1; font-size:13.5px; line-height:1.5;}
 .archive-body .source-link{color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:11px; text-decoration:none; margin-left:8px;}
 .archive-empty{color:var(--ink-dim); font-size:13.5px; padding:20px 0;}
@@ -260,7 +262,8 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 .transcript .sub{font-size:12.5px; color:var(--ink-dim); margin-bottom:18px;}
 .statement{border-left:3px solid var(--t-org); padding:4px 0 4px 16px; margin-bottom:18px;}
 .statement .speaker{font-weight:700; font-size:13.5px;}
-.statement .stmt-date{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-dim); margin-left:8px;}
+.statement .stmt-date{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-dim); margin-left:8px; text-decoration:none;}
+.statement .stmt-date:hover{text-decoration:underline;}
 .statement p{margin:6px 0 4px; font-size:14px; line-height:1.6;}
 .statement a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-decoration:none;}
 
@@ -1844,9 +1847,20 @@ function typeSpan(id){
   var ent = byId[id];
   return '<a class="entity-link" href="/entity/' + id + '.html" style="color:' + typeVar[ent.type] + '; font-weight:600;">' + ent.label + '</a>';
 }
+// The label text can't sit inside the event-permalink anchor (nested <a> is
+// invalid HTML), so any entity mentioned inside it gets linked here instead,
+// and the date carries the permalink to the event page. This is the one
+// place label text becomes HTML for every card type -- add a new render
+// function and it gets entity-linking and an event permalink for free.
+function relSpan(fromId, label, toId){
+  return '<span class="rel">' + autoLinkText(label, [fromId, toId]) + '</span>';
+}
+function eventDateLink(date, eventId, cls){
+  return '<a class="' + cls + '" href="/event/' + eventId + '.html" title="View full event page">' + fmtDate(date) + '</a>';
+}
 function edgeRow(fromId, rel, toId, url, date, eventId){
-  return '<div class="edge-item">' + typeSpan(fromId) + ' <a class="rel" href="/event/' + eventId + '.html">' + rel + '</a> → ' + typeSpan(toId) +
-    '<span class="edge-date">' + fmtDate(date) + '</span>' +
+  return '<div class="edge-item">' + typeSpan(fromId) + ' ' + relSpan(fromId, rel, toId) + ' → ' + typeSpan(toId) +
+    eventDateLink(date, eventId, 'edge-date') +
     '<a href="' + url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
 }
 
@@ -1992,7 +2006,7 @@ function newsCardsHtml(edges, emptyText){
   if (!edges.length) return '<div class="cp-empty">' + emptyText + '</div>';
   return edges.map(function(x){
     var id = edgeId(x);
-    return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
+    return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' ' + relSpan(x.from, x.label, x.to) + ' → ' + typeSpan(x.to) + ' ' + eventDateLink(x.date, id, 'edge-date') + '</div>' +
       '<p class="cp-news-detail">' + autoLinkText(x.detail || x.label, [x.from, x.to]) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }).join('');
@@ -2120,7 +2134,7 @@ function openEventPage(id, skipHash){
   if (!x) return;
   if (!skipHash) location.hash = '#/event/' + id;
   var related = relatedEvents(x, id);
-  var html = '<div class="country-header"><h2>' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) + '</h2>' +
+  var html = '<div class="country-header"><h2>' + typeSpan(x.from) + ' ' + autoLinkText(x.label, [x.from, x.to]) + ' → ' + typeSpan(x.to) + '</h2>' +
     '<div class="event-meta"><span>' + fmtDate(x.date) + '</span><span>' + x.scope + '</span>' +
     (x.country && byId[x.country] ? '<span>' + byId[x.country].label + '</span>' : '') + '</div></div>';
   html += '<p class="event-detail">' + autoLinkText(x.detail || x.label, [x.from, x.to]) + '</p>';
@@ -2251,8 +2265,8 @@ drawMap();
 
 function archiveCard(x){
   var id = edgeId(x);
-  return '<div class="archive-card"><span class="archive-date">' + fmtDate(x.date) + '</span>' +
-    '<span class="archive-body">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) +
+  return '<div class="archive-card">' + eventDateLink(x.date, id, 'archive-date') +
+    '<span class="archive-body">' + typeSpan(x.from) + ' ' + relSpan(x.from, x.label, x.to) + ' → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
     '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></span></div>';
 }
@@ -2294,8 +2308,8 @@ function renderChambers(activeId){
   var html = '<h3><a href="/entity/' + activeId + '.html" style="color:inherit; text-decoration:none;">' + orgName + '</a></h3><div class="sub">Real, sourced statements only — nothing here is invented.</div>';
   function statementHtml(x){
     var id = edgeId(x);
-    return '<div class="statement"><span class="speaker">' + orgName + '</span><span class="stmt-date">' + fmtDate(x.date) + '</span>' +
-      '<p><a class="rel" href="/event/' + id + '.html">' + x.label.charAt(0).toUpperCase() + x.label.slice(1) + '</a>: ' + typeSpan(x.to) + '</p>' +
+    return '<div class="statement"><span class="speaker">' + orgName + '</span>' + eventDateLink(x.date, id, 'stmt-date') +
+      '<p>' + relSpan(x.from, x.label.charAt(0).toUpperCase() + x.label.slice(1), x.to) + ': ' + typeSpan(x.to) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }
   if (statements.length <= COLLAPSE_AFTER){
@@ -2311,8 +2325,8 @@ function renderChambers(activeId){
 
 function feedCard(x){
   var id = edgeId(x);
-  return '<div class="feed-card"><span class="feed-date">' + fmtDate(x.date) + '</span>' +
-    '<span class="feed-body">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) +
+  return '<div class="feed-card">' + eventDateLink(x.date, id, 'feed-date') +
+    '<span class="feed-body">' + typeSpan(x.from) + ' ' + relSpan(x.from, x.label, x.to) + ' → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
     '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></span></div>';
 }
