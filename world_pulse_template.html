@@ -121,6 +121,8 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .archive-hint b{color:var(--accent); cursor:pointer;}
 .panel-profile-link{font-size:12.5px; color:var(--accent); cursor:pointer; margin-top:16px; padding-top:12px; border-top:1px solid var(--line); font-weight:600;}
 .panel-profile-link:hover{text-decoration:underline;}
+.cp-show-more{display:block; width:100%; text-align:left; background:none; border:none; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--accent); cursor:pointer; margin-top:10px; padding:10px 0 0; border-top:1px dashed var(--line); font-weight:600;}
+.cp-show-more:hover{text-decoration:underline;}
 .mode-toggle{display:flex; gap:0; margin-bottom:14px; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
 .mode-btn{flex:1; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; background:var(--surface); border:none; color:var(--ink-dim); padding:7px 4px; cursor:pointer; border-right:1px solid var(--line);}
 .mode-btn:last-child{border-right:none;}
@@ -1591,13 +1593,20 @@ function showPanel(id, mode){
   }
 
   function rowHtml(x){ return edgeRow(x.from, x.label, x.to, x.url, x.date); }
+  function rowsCollapsible(items, sectionId){
+    if (items.length <= COLLAPSE_AFTER) return items.map(rowHtml).join('');
+    var shown = items.slice(0, COLLAPSE_AFTER), rest = items.slice(COLLAPSE_AFTER);
+    return shown.map(rowHtml).join('') +
+      '<div id="' + sectionId + '-rest" style="display:none">' + rest.map(rowHtml).join('') + '</div>' +
+      '<button class="cp-show-more" data-target="' + sectionId + '-rest">Show ' + rest.length + ' more (' + items.length + ' total) →</button>';
+  }
 
   if (panelMode === 'domestic'){
     html += '<div class="panel-section">' + e.label + '’s own domestic news</div>';
-    html += domestic.length ? domestic.map(rowHtml).join('') : '<div class="edge-item" style="border-top:none; color:var(--ink-dim);">No domestic items yet.</div>';
+    html += domestic.length ? rowsCollapsible(domestic, 'panel-domestic') : '<div class="edge-item" style="border-top:none; color:var(--ink-dim);">No domestic items yet.</div>';
   } else {
     html += '<div class="panel-section">Said or did internationally (last ' + RECENT_DAYS + ' days)</div>';
-    html += recent.length ? recent.map(rowHtml).join('') : '<div class="edge-item" style="border-top:none; color:var(--ink-dim);">Nothing in the last ' + RECENT_DAYS + ' days.</div>';
+    html += recent.length ? rowsCollapsible(recent, 'panel-intl') : '<div class="edge-item" style="border-top:none; color:var(--ink-dim);">Nothing in the last ' + RECENT_DAYS + ' days.</div>';
     if (archivedCount){
       html += '<div class="archive-hint">' + archivedCount + ' older item' + (archivedCount>1?'s':'') + ' from ' + e.label + ' — see the <b id="panel-archive-link">Archive tab</b>.</div>';
     }
@@ -1608,6 +1617,7 @@ function showPanel(id, mode){
   }
 
   document.getElementById('panel').innerHTML = html;
+  wireShowMore(document.getElementById('panel'));
   var link = document.getElementById('panel-archive-link');
   if (link) link.addEventListener('click', function(){ document.getElementById('tab-archive').click(); });
   Array.from(document.querySelectorAll('.mode-btn')).forEach(function(btn){
@@ -1676,6 +1686,29 @@ function wireEventCards(container){
   });
 }
 
+// A country like the US or Russia now has enough history that showing every
+// item at once made the profile page very long to scroll -- show a handful
+// up front and let people expand the rest on demand instead.
+var COLLAPSE_AFTER = 5;
+function newsCardsHtmlCollapsible(edges, emptyText, sectionId){
+  if (!edges.length) return '<div class="cp-empty">' + emptyText + '</div>';
+  if (edges.length <= COLLAPSE_AFTER) return newsCardsHtml(edges, emptyText);
+  var shown = edges.slice(0, COLLAPSE_AFTER);
+  var rest = edges.slice(COLLAPSE_AFTER);
+  return '<div>' + newsCardsHtml(shown, emptyText) + '</div>' +
+    '<div id="' + sectionId + '-rest" style="display:none">' + newsCardsHtml(rest, emptyText) + '</div>' +
+    '<button class="cp-show-more" data-target="' + sectionId + '-rest">Show ' + rest.length + ' more (' + edges.length + ' total) →</button>';
+}
+function wireShowMore(container){
+  Array.from(container.querySelectorAll('.cp-show-more')).forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var rest = document.getElementById(btn.getAttribute('data-target'));
+      if (rest) rest.style.display = '';
+      btn.remove();
+    });
+  });
+}
+
 function openGenericEntityPage(id){
   var e = byId[id];
   var outgoing = EDGES.filter(function(x){ return x.from === id; }).sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
@@ -1701,10 +1734,10 @@ function openGenericEntityPage(id){
     html += '<div class="cp-section"><h3>Country</h3><div class="cp-related"><button data-goto="' + e.country + '">' + byId[e.country].label + '</button></div></div>';
   }
 
-  html += '<div class="cp-section"><h3>' + (outgoing.length ? 'Current moments — said or did' : 'Activity') + '</h3>' + newsCardsHtml(outgoing, 'Nothing recorded from ' + e.label + ' yet.') + '</div>';
+  html += '<div class="cp-section"><h3>' + (outgoing.length ? 'Current moments — said or did' : 'Activity') + '</h3>' + newsCardsHtmlCollapsible(outgoing, 'Nothing recorded from ' + e.label + ' yet.', 'cp-outgoing') + '</div>';
 
   if (incoming.length){
-    html += '<div class="cp-section"><h3>Mentioned in / connected to</h3>' + newsCardsHtml(incoming, '') + '</div>';
+    html += '<div class="cp-section"><h3>Mentioned in / connected to</h3>' + newsCardsHtmlCollapsible(incoming, '', 'cp-incoming') + '</div>';
   }
 
   document.getElementById('country-content').innerHTML = html;
@@ -1712,6 +1745,7 @@ function openGenericEntityPage(id){
     btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
   });
   wireEventCards(document.getElementById('country-content'));
+  wireShowMore(document.getElementById('country-content'));
   showEntityView();
 }
 
@@ -1744,9 +1778,9 @@ function openCountryPage(id){
       sys.turning.map(function(t){ return '<li><span class="tdate">' + t.date + '</span><span>' + (t.flag ? '<span class="flag">△</span> ' : '') + t.event + '</span></li>'; }).join('') + '</ul></div>';
   }
 
-  html += '<div class="cp-section"><h3>International (said or did)</h3>' + newsCardsHtml(acted, 'Nothing recorded yet.') + '</div>';
+  html += '<div class="cp-section"><h3>International (said or did)</h3>' + newsCardsHtmlCollapsible(acted, 'Nothing recorded yet.', 'cp-intl') + '</div>';
 
-  html += '<div class="cp-section"><h3>Domestic</h3>' + newsCardsHtml(domestic, 'Nothing recorded yet.') + '</div>';
+  html += '<div class="cp-section"><h3>Domestic</h3>' + newsCardsHtmlCollapsible(domestic, 'Nothing recorded yet.', 'cp-domestic') + '</div>';
 
   if (sys && sys.related && sys.related.length){
     html += '<div class="cp-section"><h3>Related countries</h3><div class="cp-related">' +
@@ -1759,6 +1793,7 @@ function openCountryPage(id){
     btn.addEventListener('click', function(){ openEntityPage(btn.getAttribute('data-goto')); });
   });
   wireEventCards(document.getElementById('country-content'));
+  wireShowMore(document.getElementById('country-content'));
   showEntityView();
 }
 document.getElementById('country-back').addEventListener('click', function(){ switchTab('tab-map'); });
