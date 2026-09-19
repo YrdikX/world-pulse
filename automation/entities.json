@@ -335,6 +335,71 @@
   "type": "person"
  },
  {
+  "id": "graham",
+  "label": "Graham",
+  "type": "person"
+ },
+ {
+  "id": "minaunghlaing",
+  "label": "Min Aung Hlaing",
+  "type": "person"
+ },
+ {
+  "id": "maduro",
+  "label": "Maduro",
+  "type": "person"
+ },
+ {
+  "id": "vance",
+  "label": "Vance",
+  "type": "person"
+ },
+ {
+  "id": "najib",
+  "label": "Najib",
+  "type": "person"
+ },
+ {
+  "id": "bago",
+  "label": "Bago",
+  "type": "person"
+ },
+ {
+  "id": "yoon",
+  "label": "Yoon Suk-yeol",
+  "type": "person"
+ },
+ {
+  "id": "pistorius",
+  "label": "Pistorius",
+  "type": "person"
+ },
+ {
+  "id": "babis",
+  "label": "Babiš",
+  "type": "person"
+ },
+ {
+  "id": "linchialung",
+  "label": "Lin Chia-lung",
+  "type": "person"
+ },
+ {
+  "id": "olabi",
+  "label": "Olabi",
+  "type": "person"
+ },
+ {
+  "id": "fbolsonaro",
+  "label": "Flávio Bolsonaro",
+  "type": "person"
+ },
+ {
+  "id": "johal",
+  "label": "Jagtar Singh Johal",
+  "type": "person"
+ },
+ {
   "id": "duma",
   "label": "State Duma election",
   "type": "event"

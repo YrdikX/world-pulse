@@ -579,7 +579,7 @@ var ENTITIES = [
   {id:'lavrov', label:'Lavrov', type:'person', country:'russia'},
   {id:'tusk', label:'Tusk', type:'person', country:'poland'},
   {id:'lukashenko', label:'Lukashenko', type:'person', country:'belarus'},
-  {id:'zelensky', label:'Zelensky', type:'person', country:'ukraine'},
+  {id:'zelensky', label:'Zelensky', type:'person', country:'ukraine', aliases:['Zelenskyy']},
   {id:'takaichi', label:'Takaichi', type:'person', country:'japan'},
   {id:'carney', label:'Carney', type:'person', country:'canada'},
   {id:'meloni', label:'Meloni', type:'person', country:'italy'},
@@ -617,7 +617,7 @@ var ENTITIES = [
   {id:'mahama', label:'Mahama', type:'person', country:'gha'},
   {id:'nawrocki', label:'Nawrocki', type:'person', country:'poland'},
   {id:'lula', label:'Lula', type:'person', country:'brazil'},
-  {id:'leejaemyung', label:'Lee Jae-myung', type:'person', country:'kor'},
+  {id:'leejaemyung', label:'Lee Jae-myung', type:'person', country:'kor', aliases:['Lee Jae Myung']},
   {id:'mirziyoyev', label:'Mirziyoyev', type:'person', country:'uzb'},
   {id:'noboa', label:'Noboa', type:'person', country:'ecu'},
   {id:'arevalo', label:'Arévalo', type:'person', country:'gtm'},
@@ -642,6 +642,19 @@ var ENTITIES = [
   {id:'abbas', label:'Abbas', type:'person', country:'wbg'},
   {id:'kravchenko', label:'Kravchenko', type:'person', country:'ukraine'},
   {id:'coale', label:'Coale', type:'person', country:'usa'},
+  {id:'graham', label:'Graham', type:'person', country:'usa'},
+  {id:'minaunghlaing', label:'Min Aung Hlaing', type:'person', country:'mmr'},
+  {id:'maduro', label:'Maduro', type:'person', country:'ven'},
+  {id:'vance', label:'Vance', type:'person', country:'usa'},
+  {id:'najib', label:'Najib', type:'person', country:'mys'},
+  {id:'bago', label:'Bago', type:'person', country:'nga'},
+  {id:'yoon', label:'Yoon Suk-yeol', type:'person', country:'kor'},
+  {id:'pistorius', label:'Pistorius', type:'person', country:'germany'},
+  {id:'babis', label:'Babiš', type:'person', country:'cze'},
+  {id:'linchialung', label:'Lin Chia-lung', type:'person', country:'twn'},
+  {id:'olabi', label:'Olabi', type:'person', country:'syr'},
+  {id:'fbolsonaro', label:'Flávio Bolsonaro', type:'person', country:'brazil'},
+  {id:'johal', label:'Jagtar Singh Johal', type:'person', country:'uk'},
   {id:'duma', label:'State Duma election', type:'event'},
   {id:'russia', label:'Russia', type:'country', geo:RUS_PATH},
   {id:'ukraine', label:'Ukraine', type:'country', geo:UKR_PATH},
@@ -1819,12 +1832,23 @@ ENTITIES.forEach(function(e){ byId[e.id] = e; });
 // Andersson clickable right there, not only when she's the edge's own actor.
 // Single combined regex (one pass, longest label first) so a match can't be
 // re-matched inside text a shorter label already replaced.
-var LINKABLE = ENTITIES.filter(function(e){ return e.label.length >= 4; })
-  .slice().sort(function(a,b){ return b.label.length - a.label.length; });
+// Some names show up in real source text under more than one spelling
+// (Zelensky/Zelenskyy, Lee Jae-myung/Lee Jae Myung) -- an entity's optional
+// `aliases` list lets any of those variants resolve to the same profile
+// instead of silently going unlinked whenever a source picks the "wrong" one.
 var LABEL_TO_ENTITY = {};
-LINKABLE.forEach(function(e){ LABEL_TO_ENTITY[e.label] = e; });
+var LINKABLE = [];
+ENTITIES.forEach(function(e){
+  var forms = [e.label].concat(e.aliases || []);
+  forms.forEach(function(form){
+    if (form.length < 4) return;
+    LINKABLE.push(form);
+    LABEL_TO_ENTITY[form] = e;
+  });
+});
+LINKABLE.sort(function(a,b){ return b.length - a.length; });
 function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-var AUTO_LINK_RE = new RegExp('\\b(' + LINKABLE.map(function(e){ return escapeRegExp(e.label); }).join('|') + ')\\b', 'g');
+var AUTO_LINK_RE = new RegExp('\\b(' + LINKABLE.map(escapeRegExp).join('|') + ')\\b', 'g');
 function autoLinkText(text, excludeIds){
   if (!text) return text;
   excludeIds = excludeIds || [];
