@@ -280,6 +280,9 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 .comments h2{font-family:'Archivo',sans-serif; font-size:19px; font-weight:800; margin:0 0 4px; color:var(--ink);}
 .comments .sub{font-size:12.5px; color:var(--ink-dim); margin-bottom:18px;}
 .comment-list{display:flex; flex-direction:column; gap:14px; margin-bottom:20px;}
+.comments{display:none;}
+.comments.active{display:block;}
+.comments .sub b{color:var(--ink); font-weight:700;}
 .comment{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow);}
 .comment-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
 .comment-author{font-weight:700; font-size:13.5px; color:var(--ink);}
@@ -303,7 +306,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <div class="name">WORLD<span>PULSE</span></div>
       <div class="tagline">Facts, not framing — who did what, sourced</div>
     </div>
-    <div class="live-badge"><span class="dot"></span> Sample fragment · 2026-09-17</div>
+    <div class="live-badge"><span class="dot"></span> <span id="stat-freshness">Live</span></div>
   </div>
 
   <h1>Who's connected to whom in the news</h1>
@@ -463,16 +466,16 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 
       <h3>Known limitations</h3>
       <ul>
-        <li>Coverage is a handful of countries and two real news stories — not the 25-country, every-day base this is meant to become.</li>
         <li>Comments are stored in your browser's local storage only — not shared with other visitors. A real deployment needs a backend for that.</li>
-        <li>Nothing updates automatically. Every edge, country and date was added by hand in a conversation with Claude.</li>
-        <li>To become a live product: an always-on collector, automated "who-said-what" extraction per article (an AI task, but needing review), and a real database — not a hand-built file.</li>
+        <li>Country System profiles (structure, leadership, parties) and person/org bios are still hand-built, not automatically kept current — treat them as a snapshot as of when they were last updated, not a live feed.</li>
+        <li>The automated pipeline currently pulls from a fixed set of RSS feeds and Telegram channels, not the full range of outlets and languages this is meant to grow into.</li>
+        <li>Every automatically-extracted edge is reviewed by a person before it goes live — nothing is merged unattended, which caps how fast new coverage can appear.</li>
       </ul>
     </div>
   </div>
 
-  <div class="comments">
-    <h2>Comments</h2>
+  <div class="comments" id="comments-section">
+    <h2>Comments <span id="comments-topic"></span></h2>
     <div class="sub">No account needed. Local to your browser in this prototype — not shared between visitors yet. A real deployment needs a backend for that.</div>
     <div class="comment-list" id="comment-list"></div>
     <div class="comment-form">
@@ -949,8 +952,6 @@ var EDGES = [
    detail:'Sweden\'s left-wing opposition won a narrow majority in the national election after vote counting concluded Thursday, though it now faces difficult negotiations to form a government.'},
   {from:'irl', to:'isr', label:'announced boycott of 2027 Eurovision over Israel\'s participation', url:'https://t.me/France24_en/18626', date:'2026-09-17', scope:'international',
    detail:'Ireland\'s public broadcaster RTE said Ireland will boycott the 2027 Eurovision Song Contest for the second year due to Israel\'s participation.'},
-  {from:'tur', to:'tur', label:'adviser says Erdogan will run again in early 2028 election', url:'https://t.me/France24_en/18627', date:'2026-09-17', scope:'domestic', country:'tur',
-   detail:'A top adviser to Turkish President Recep Tayyip Erdogan said he would run again in an early election likely to be held in April 2028, according to media reports.'},
   {from:'tur', to:'tur', label:'Erdogan to run in early 2028 election, sidestepping term limit', url:'https://t.me/France24_en/18628', date:'2026-09-17', scope:'domestic', country:'tur',
    detail:'Turkish President Recep Tayyip Erdogan intends to run for another term in an early election in 2028, a move that would circumvent the constitutional bar on running again after serving his full term.'},
   {from:'ukraine', to:'russia', label:'drone strikes hit Wildberries warehouses, killing eight', url:'https://t.me/BBCWorld/83849', date:'2026-07-18', scope:'international',
@@ -985,8 +986,6 @@ var EDGES = [
    detail:'Singapore\'s SFA increased inspections of cabbage imported from China following reports of formaldehyde use, after South Korea also stepped up checks on Chinese cabbage.'},
   {from:'france', to:'france', label:'announced €54 billion in public spending cuts to reduce deficit', url:'https://t.me/France24_en/18640', date:'2026-09-18', scope:'domestic', country:'france',
    detail:'French Prime Minister Sébastien Lecornu said France will cut public spending by €54 billion next year to reduce the country\'s deficit.'},
-  {from:'russia', to:'che', label:'seized assets of Swiss food giant Nestle and three French firms', url:'https://t.me/France24_en/18642', date:'2026-09-18', scope:'international',
-   detail:'Russian President Vladimir Putin signed a decree to transfer assets of Nestle and three French companies to a company called LEV Management.'},
   {from:'twn', to:'japan', label:'donated over $9 million for Kumamoto earthquake recovery', url:'https://t.me/nhkworld/45559', date:'2026-09-18', scope:'international',
    detail:'Taiwan\'s Foreign Minister Lin Chia-lung presented Japan with a donation of more than US$9 million to support recovery in Kumamoto prefecture, which was hit by a powerful earthquake in July.'},
   {from:'japan', to:'usa', label:'arranging summit between Takaichi and Trump', url:'https://t.me/nhkworld/45563', date:'2026-09-18', scope:'international',
@@ -1015,8 +1014,6 @@ var EDGES = [
    detail:'Equatorial Guinea authorities beat, bound and imprisoned two migrants deported from the US, while about 30 others remain held at Hotel Bamy under an agreement in which Equatorial Guinea received $7.5m to accept US deportees.'},
   {from:'lva', to:'europe', label:'warned Europe is not keeping pace with drone and aerial warfare in Ukraine', url:'https://www.theguardian.com/world/2026/sep/18/edgars-rinkevics-europe-ukraine-war', date:'2026-09-18', scope:'international',
    detail:'Latvia\'s president Edgars Rinkēvičs said in a Guardian interview that European and Nato countries\' air-defence and drone-defence capabilities have serious problems and could not repel a Russian missile attack, warning that current preparations could be obsolete by mid-2027.'},
-  {from:'dnk', to:'usa', label:'says Greenland security deal with US to be signed next week', url:'https://t.me/France24_en/18651', date:'2026-09-18', scope:'international',
-   detail:'Denmark\'s Prime Minister said a security deal on Greenland between the US, Denmark, and Greenland will be signed by the three governments next week during the UN General Assembly.'},
   {from:'russia', to:'ukraine', label:'intensified missile and drone strikes on Kyiv with new tactics reducing warning times', url:'https://www.bbc.co.uk/news/articles/cwp93k9gpnv1o?at_medium=RSS&at_campaign=rss', date:'2026-09-18', scope:'international',
    detail:'Russia has scaled up the intensity and frequency of missile attacks on Kyiv since summer 2026, relying more on fast ballistic missiles that give residents as little as four minutes\' warning, causing dozens of civilian casualties and disrupting daily life.'},
   {from:'zaf', to:'zaf', label:'president pledges investigation into Ekurhuleni murders of women, domestic crisis over femicide', url:'https://www.bbc.co.uk/news/articles/cjkg71e67k17o?at_medium=RSS&at_campaign=rss', date:'2026-09-18', scope:'domestic', country:'zaf',
@@ -1650,6 +1647,7 @@ function activateView(viewId){
   document.getElementById(viewId).classList.add('active');
   ALL_TABS.forEach(function(t){ document.getElementById(t).setAttribute('aria-selected','false'); });
   window.scrollTo(0,0);
+  renderComments(viewId === 'view-country' || viewId === 'view-event');
 }
 
 function openEntityPage(id, skipHash){
@@ -1746,6 +1744,7 @@ function openGenericEntityPage(id){
   });
   wireEventCards(document.getElementById('country-content'));
   wireShowMore(document.getElementById('country-content'));
+  currentCommentTopic = {id: 'entity-' + id, label: e.label};
   showEntityView();
 }
 
@@ -1794,6 +1793,7 @@ function openCountryPage(id){
   });
   wireEventCards(document.getElementById('country-content'));
   wireShowMore(document.getElementById('country-content'));
+  currentCommentTopic = {id: 'entity-' + id, label: e.label};
   showEntityView();
 }
 document.getElementById('country-back').addEventListener('click', function(){ switchTab('tab-map'); });
@@ -1823,6 +1823,7 @@ function openEventPage(id, skipHash){
     newsCardsHtml(related, 'No other documented events involving ' + byId[x.from].label + ' or ' + byId[x.to].label + ' yet.') + '</div>';
   document.getElementById('event-content').innerHTML = html;
   wireEventCards(document.getElementById('event-content'));
+  currentCommentTopic = {id: 'event-' + id, label: byId[x.from].label + ' ' + x.label};
   activateView('view-event');
 }
 document.getElementById('event-back').addEventListener('click', function(){ switchTab('tab-feed'); });
@@ -2106,6 +2107,7 @@ function switchTab(id, skipHash){
   ALL_TABS.forEach(function(t){ document.getElementById(t).setAttribute('aria-selected', t===id ? 'true':'false'); });
   ALL_VIEWS.forEach(function(v){ document.getElementById(v).classList.remove('active'); });
   document.getElementById('view-' + id.replace('tab-','')).classList.add('active');
+  renderComments(false); // none of the tab views are an entity/event page
   if (!skipHash) location.hash = '#/' + id.replace('tab-','');
   if (id === 'tab-archive') renderArchive();
   if (id === 'tab-chambers') renderChambers('idea');
@@ -2152,13 +2154,28 @@ renderGlanceMetrics();
 })();
 
 // --- comments (localStorage, per-browser demo only) ---
-(function(){
+// Scoped per entity/event (currentCommentTopic, set by openCountryPage /
+// openGenericEntityPage / openEventPage) -- previously this was a single
+// global thread shown identically under every page on the site, which made
+// a comment posted on one country's page appear, confusingly, on every
+// other page too. Only shown on entity/event pages now, where "comments on
+// this" actually means something.
+var currentCommentTopic = null;
+function renderComments(shouldShow){
+  var section = document.getElementById('comments-section');
+  if (!shouldShow || !currentCommentTopic){
+    section.classList.remove('active');
+    return;
+  }
+  section.classList.add('active');
+  document.getElementById('comments-topic').textContent = 'on ' + currentCommentTopic.label;
   var list = document.getElementById('comment-list');
+  var key = 'wp_comments_' + currentCommentTopic.id;
   var stored = [];
-  try { stored = JSON.parse(localStorage.getItem('wp_comments') || '[]'); } catch(e) { stored = []; }
-  function render(){
-    list.innerHTML = '';
-    if (!stored.length){ list.innerHTML = '<div class="comment-empty">No comments yet — be the first.</div>'; return; }
+  try { stored = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { stored = []; }
+  list.innerHTML = '';
+  if (!stored.length){ list.innerHTML = '<div class="comment-empty">No comments yet — be the first.</div>'; }
+  else {
     stored.forEach(function(c){
       var el = document.createElement('div');
       el.className = 'comment';
@@ -2169,17 +2186,20 @@ renderGlanceMetrics();
       list.appendChild(el);
     });
   }
-  render();
-  document.getElementById('c-submit').addEventListener('click', function(){
-    var name = document.getElementById('c-name').value.trim() || 'Anonymous';
-    var text = document.getElementById('c-text').value.trim();
-    if (!text) return;
-    stored.push({author:name, text:text, time:'just now'});
-    try { localStorage.setItem('wp_comments', JSON.stringify(stored)); } catch(e) {}
-    document.getElementById('c-text').value = '';
-    render();
-  });
-})();
+  document.getElementById('c-text').value = '';
+}
+document.getElementById('c-submit').addEventListener('click', function(){
+  if (!currentCommentTopic) return;
+  var name = document.getElementById('c-name').value.trim() || 'Anonymous';
+  var text = document.getElementById('c-text').value.trim();
+  if (!text) return;
+  var key = 'wp_comments_' + currentCommentTopic.id;
+  var stored = [];
+  try { stored = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { stored = []; }
+  stored.push({author:name, text:text, time:'just now'});
+  try { localStorage.setItem(key, JSON.stringify(stored)); } catch(e) {}
+  renderComments(true);
+});
 
 // --- direct links: #/event/<id>, #/entity/<id>, #/feed, #/map, ... ---
 function route(){
@@ -2204,5 +2224,10 @@ route();
   nodeEls.forEach(function(el){ el.textContent = ENTITIES.length; });
   edgeEls.forEach(function(el){ el.textContent = edgeCount; });
   countryEls.forEach(function(el){ el.textContent = ENTITIES.filter(function(e){ return e.type === 'country'; }).length; });
+  var freshnessEl = document.getElementById('stat-freshness');
+  if (freshnessEl && EDGES.length){
+    var latest = EDGES.reduce(function(m, x){ return x.date > m ? x.date : m; }, EDGES[0].date);
+    freshnessEl.textContent = 'Updated ' + fmtDate(latest);
+  }
 })();
 </script>
