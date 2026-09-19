@@ -29,7 +29,11 @@ sys.path.insert(0, AUTOMATION)
 from extract_text import fetch_article_text  # noqa: E402
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
-MODEL = "claude-sonnet-5"
+# Haiku, not Sonnet: this is bounded structured extraction (accept/reject +
+# fill a fixed JSON shape from article text already narrowed down by the
+# entity-match filter upstream) -- not the kind of task that needs a bigger
+# model, and running it on Sonnet every 6 hours was needlessly expensive.
+MODEL = "claude-haiku-4-5-20251001"
 API_URL = "https://api.anthropic.com/v1/messages"
 
 SYSTEM_PROMPT = """You are a strict fact-extraction engine for World Pulse, a site whose entire premise is "facts, not framing" -- every claim must be a real, sourced, dated event, never invented.
