@@ -168,8 +168,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); transition:border-color .15s;}
 .cp-news-item:hover{border-color:var(--accent);}
 .cp-news-item .who-line{font-size:12.5px; margin-bottom:6px;}
-.cp-news-detail{display:block; margin:0 0 8px; font-size:14px; line-height:1.6; color:inherit; text-decoration:none;}
-.cp-news-detail:hover{text-decoration:underline;}
+.cp-news-detail{margin:0 0 8px; font-size:14px; line-height:1.6; color:inherit;}
 .rel{color:inherit; text-decoration:none;}
 .rel:hover{text-decoration:underline;}
 .event-meta{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 0;}
@@ -590,21 +589,47 @@ var ENTITIES = [
   {id:'lmontenegro', label:'Luís Montenegro', type:'person', country:'prt'},
   {id:'mitsotakis', label:'Mitsotakis', type:'person', country:'grc'},
   {id:'nicusor_dan', label:'Nicșor Dan', type:'person', country:'rom'},
-  {id:'trump', label:'Donald Trump', type:'person', country:'usa'},
-  {id:'netanyahu', label:'Benjamin Netanyahu', type:'person', country:'isr'},
-  {id:'xi', label:'Xi Jinping', type:'person', country:'china'},
-  {id:'modi', label:'Narendra Modi', type:'person', country:'india'},
-  {id:'milei', label:'Javier Milei', type:'person', country:'arg'},
-  {id:'ramaphosa', label:'Cyril Ramaphosa', type:'person', country:'zaf'},
+  {id:'trump', label:'Trump', type:'person', country:'usa'},
+  {id:'netanyahu', label:'Netanyahu', type:'person', country:'isr'},
+  {id:'xi', label:'Xi', type:'person', country:'china'},
+  {id:'modi', label:'Modi', type:'person', country:'india'},
+  {id:'milei', label:'Milei', type:'person', country:'arg'},
+  {id:'ramaphosa', label:'Ramaphosa', type:'person', country:'zaf'},
   {id:'tolam', label:'Tô Lâm', type:'person', country:'vnm'},
-  {id:'sisi', label:'Abdel Fattah el-Sisi', type:'person', country:'egy'},
-  {id:'tinubu', label:'Bola Tinubu', type:'person', country:'nga'},
-  {id:'pezeshkian', label:'Masoud Pezeshkian', type:'person', country:'irn'},
+  {id:'sisi', label:'Sisi', type:'person', country:'egy'},
+  {id:'tinubu', label:'Tinubu', type:'person', country:'nga'},
+  {id:'pezeshkian', label:'Pezeshkian', type:'person', country:'irn'},
   {id:'mkhamenei', label:'Mojtaba Khamenei', type:'person', country:'irn'},
-  {id:'sheinbaum', label:'Claudia Sheinbaum', type:'person', country:'mex'},
+  {id:'sheinbaum', label:'Sheinbaum', type:'person', country:'mex'},
   {id:'espriella', label:'Abelardo de la Espriella', type:'person', country:'col'},
-  {id:'anutin', label:'Anutin Charnvirakul', type:'person', country:'tha'},
-  {id:'jetten', label:'Rob Jetten', type:'person', country:'nld'},
+  {id:'anutin', label:'Anutin', type:'person', country:'tha'},
+  {id:'jetten', label:'Jetten', type:'person', country:'nld'},
+  {id:'macron', label:'Macron', type:'person', country:'france'},
+  {id:'merz', label:'Merz', type:'person', country:'germany'},
+  {id:'rutte', label:'Rutte', type:'person', country:'nato'},
+  {id:'costa', label:'Costa', type:'person', country:'eu'},
+  {id:'okonjo_iweala', label:'Okonjo-Iweala', type:'person', country:'wto'},
+  {id:'anwar', label:'Anwar', type:'person', country:'mys'},
+  {id:'dissanayake', label:'Dissanayake', type:'person', country:'lka'},
+  {id:'mahama', label:'Mahama', type:'person', country:'gha'},
+  {id:'nawrocki', label:'Nawrocki', type:'person', country:'poland'},
+  {id:'lula', label:'Lula', type:'person', country:'brazil'},
+  {id:'leejaemyung', label:'Lee Jae-myung', type:'person', country:'kor'},
+  {id:'mirziyoyev', label:'Mirziyoyev', type:'person', country:'uzb'},
+  {id:'noboa', label:'Noboa', type:'person', country:'ecu'},
+  {id:'arevalo', label:'Arévalo', type:'person', country:'gtm'},
+  {id:'saied', label:'Saied', type:'person', country:'tun'},
+  {id:'paz', label:'Paz', type:'person', country:'bol'},
+  {id:'andersson', label:'Andersson', type:'person', country:'swe'},
+  {id:'kristersson', label:'Kristersson', type:'person', country:'swe'},
+  {id:'nauseda', label:'Nausėda', type:'person', country:'lithuania'},
+  {id:'kushner', label:'Kushner', type:'person', country:'usa'},
+  {id:'witkoff', label:'Witkoff', type:'person', country:'usa'},
+  {id:'lutnick', label:'Lutnick', type:'person', country:'usa'},
+  {id:'banerjee', label:'Banerjee', type:'person', country:'india'},
+  {id:'norlen', label:'Norlen', type:'person', country:'swe'},
+  {id:'burke', label:'Burke', type:'person', country:'aus'},
+  {id:'crosetto', label:'Crosetto', type:'person', country:'italy'},
   {id:'duma', label:'State Duma election', type:'event'},
   {id:'russia', label:'Russia', type:'country', geo:RUS_PATH},
   {id:'ukraine', label:'Ukraine', type:'country', geo:UKR_PATH},
@@ -1760,6 +1785,28 @@ var typeLabel = {person:'person', country:'country', org:'organization', event:'
 var byId = {};
 ENTITIES.forEach(function(e){ byId[e.id] = e; });
 
+// Auto-link any tracked entity's name wherever it appears inside a longer
+// detail paragraph, not just in the from/to slots of its own edge -- e.g.
+// "Social Democratic leader Magdalena Andersson was tasked..." should make
+// Andersson clickable right there, not only when she's the edge's own actor.
+// Single combined regex (one pass, longest label first) so a match can't be
+// re-matched inside text a shorter label already replaced.
+var LINKABLE = ENTITIES.filter(function(e){ return e.label.length >= 4; })
+  .slice().sort(function(a,b){ return b.label.length - a.label.length; });
+var LABEL_TO_ENTITY = {};
+LINKABLE.forEach(function(e){ LABEL_TO_ENTITY[e.label] = e; });
+function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+var AUTO_LINK_RE = new RegExp('\\b(' + LINKABLE.map(function(e){ return escapeRegExp(e.label); }).join('|') + ')\\b', 'g');
+function autoLinkText(text, excludeIds){
+  if (!text) return text;
+  excludeIds = excludeIds || [];
+  return text.replace(AUTO_LINK_RE, function(match){
+    var e = LABEL_TO_ENTITY[match];
+    if (!e || excludeIds.indexOf(e.id) !== -1) return match;
+    return '<a class="entity-link" href="/entity/' + e.id + '.html" style="color:' + typeVar[e.type] + '; font-weight:600;">' + match + '</a>';
+  });
+}
+
 function centerOf(e){
   if (e.geo !== undefined) {
     var b = d3.select('#geo-' + e.id).node().getBBox();
@@ -1921,7 +1968,7 @@ function newsCardsHtml(edges, emptyText){
   return edges.map(function(x){
     var id = edgeId(x);
     return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
-      '<a class="cp-news-detail" href="/event/' + id + '.html">' + (x.detail || x.label) + '</a>' +
+      '<p class="cp-news-detail">' + autoLinkText(x.detail || x.label, [x.from, x.to]) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }).join('');
 }
@@ -2051,7 +2098,7 @@ function openEventPage(id, skipHash){
   var html = '<div class="country-header"><h2>' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) + '</h2>' +
     '<div class="event-meta"><span>' + fmtDate(x.date) + '</span><span>' + x.scope + '</span>' +
     (x.country && byId[x.country] ? '<span>' + byId[x.country].label + '</span>' : '') + '</div></div>';
-  html += '<p class="event-detail">' + (x.detail || x.label) + '</p>';
+  html += '<p class="event-detail">' + autoLinkText(x.detail || x.label, [x.from, x.to]) + '</p>';
   html += '<a class="event-source" href="' + x.url + '" target="_blank" rel="noopener">Source →</a>';
   html += '<div class="cp-section" style="margin-top:32px;"><h3>Related events</h3>' +
     newsCardsHtml(related, 'No other documented events involving ' + byId[x.from].label + ' or ' + byId[x.to].label + ' yet.') + '</div>';
@@ -2220,13 +2267,21 @@ function renderChambers(activeId){
   var t = document.getElementById('transcript');
   var orgName = byId[activeId].label;
   var html = '<h3><a href="/entity/' + activeId + '.html" style="color:inherit; text-decoration:none;">' + orgName + '</a></h3><div class="sub">Real, sourced statements only — nothing here is invented.</div>';
-  html += statements.map(function(x){
+  function statementHtml(x){
     var id = edgeId(x);
     return '<div class="statement"><span class="speaker">' + orgName + '</span><span class="stmt-date">' + fmtDate(x.date) + '</span>' +
       '<p><a class="rel" href="/event/' + id + '.html">' + x.label.charAt(0).toUpperCase() + x.label.slice(1) + '</a>: ' + typeSpan(x.to) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
-  }).join('');
+  }
+  if (statements.length <= COLLAPSE_AFTER){
+    html += statements.map(statementHtml).join('');
+  } else {
+    html += statements.slice(0, COLLAPSE_AFTER).map(statementHtml).join('') +
+      '<div id="chamber-stmt-rest" style="display:none">' + statements.slice(COLLAPSE_AFTER).map(statementHtml).join('') + '</div>' +
+      '<button class="cp-show-more" data-target="chamber-stmt-rest">Show ' + (statements.length - COLLAPSE_AFTER) + ' more (' + statements.length + ' total) →</button>';
+  }
   t.innerHTML = html;
+  wireShowMore(t);
 }
 
 function feedCard(x){
@@ -2308,7 +2363,8 @@ function renderTrends(openId){
   var trend = TRENDS.filter(function(t){ return t.id === openId; })[0];
   if (!trend){ detail.innerHTML = ''; return; }
   var edges = trendEdges(trend);
-  detail.innerHTML = '<h3 style="margin-top:28px;">' + trend.name + '</h3>' + newsCardsHtml(edges, 'Nothing matches this trend right now.');
+  detail.innerHTML = '<h3 style="margin-top:28px;">' + trend.name + '</h3>' + newsCardsHtmlCollapsible(edges, 'Nothing matches this trend right now.', 'trend-' + openId);
+  wireShowMore(detail);
 }
 
 function switchTab(id, skipHash){

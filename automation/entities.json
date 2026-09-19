@@ -86,32 +86,32 @@
  },
  {
   "id": "trump",
-  "label": "Donald Trump",
+  "label": "Trump",
   "type": "person"
  },
  {
   "id": "netanyahu",
-  "label": "Benjamin Netanyahu",
+  "label": "Netanyahu",
   "type": "person"
  },
  {
   "id": "xi",
-  "label": "Xi Jinping",
+  "label": "Xi",
   "type": "person"
  },
  {
   "id": "modi",
-  "label": "Narendra Modi",
+  "label": "Modi",
   "type": "person"
  },
  {
   "id": "milei",
-  "label": "Javier Milei",
+  "label": "Milei",
   "type": "person"
  },
  {
   "id": "ramaphosa",
-  "label": "Cyril Ramaphosa",
+  "label": "Ramaphosa",
   "type": "person"
  },
  {
@@ -121,17 +121,17 @@
  },
  {
   "id": "sisi",
-  "label": "Abdel Fattah el-Sisi",
+  "label": "Sisi",
   "type": "person"
  },
  {
   "id": "tinubu",
-  "label": "Bola Tinubu",
+  "label": "Tinubu",
   "type": "person"
  },
  {
   "id": "pezeshkian",
-  "label": "Masoud Pezeshkian",
+  "label": "Pezeshkian",
   "type": "person"
  },
  {
@@ -141,7 +141,7 @@
  },
  {
   "id": "sheinbaum",
-  "label": "Claudia Sheinbaum",
+  "label": "Sheinbaum",
   "type": "person"
  },
  {
@@ -151,12 +151,142 @@
  },
  {
   "id": "anutin",
-  "label": "Anutin Charnvirakul",
+  "label": "Anutin",
   "type": "person"
  },
  {
   "id": "jetten",
-  "label": "Rob Jetten",
+  "label": "Jetten",
+  "type": "person"
+ },
+ {
+  "id": "macron",
+  "label": "Macron",
+  "type": "person"
+ },
+ {
+  "id": "merz",
+  "label": "Merz",
+  "type": "person"
+ },
+ {
+  "id": "rutte",
+  "label": "Rutte",
+  "type": "person"
+ },
+ {
+  "id": "costa",
+  "label": "Costa",
+  "type": "person"
+ },
+ {
+  "id": "okonjo_iweala",
+  "label": "Okonjo-Iweala",
+  "type": "person"
+ },
+ {
+  "id": "anwar",
+  "label": "Anwar",
+  "type": "person"
+ },
+ {
+  "id": "dissanayake",
+  "label": "Dissanayake",
+  "type": "person"
+ },
+ {
+  "id": "mahama",
+  "label": "Mahama",
+  "type": "person"
+ },
+ {
+  "id": "nawrocki",
+  "label": "Nawrocki",
+  "type": "person"
+ },
+ {
+  "id": "lula",
+  "label": "Lula",
+  "type": "person"
+ },
+ {
+  "id": "leejaemyung",
+  "label": "Lee Jae-myung",
+  "type": "person"
+ },
+ {
+  "id": "mirziyoyev",
+  "label": "Mirziyoyev",
+  "type": "person"
+ },
+ {
+  "id": "noboa",
+  "label": "Noboa",
+  "type": "person"
+ },
+ {
+  "id": "arevalo",
+  "label": "Arévalo",
+  "type": "person"
+ },
+ {
+  "id": "saied",
+  "label": "Saied",
+  "type": "person"
+ },
+ {
+  "id": "paz",
+  "label": "Paz",
+  "type": "person"
+ },
+ {
+  "id": "andersson",
+  "label": "Andersson",
+  "type": "person"
+ },
+ {
+  "id": "kristersson",
+  "label": "Kristersson",
+  "type": "person"
+ },
+ {
+  "id": "nauseda",
+  "label": "Nausėda",
+  "type": "person"
+ },
+ {
+  "id": "kushner",
+  "label": "Kushner",
+  "type": "person"
+ },
+ {
+  "id": "witkoff",
+  "label": "Witkoff",
+  "type": "person"
+ },
+ {
+  "id": "lutnick",
+  "label": "Lutnick",
+  "type": "person"
+ },
+ {
+  "id": "banerjee",
+  "label": "Banerjee",
+  "type": "person"
+ },
+ {
+  "id": "norlen",
+  "label": "Norlen",
+  "type": "person"
+ },
+ {
+  "id": "burke",
+  "label": "Burke",
+  "type": "person"
+ },
+ {
+  "id": "crosetto",
+  "label": "Crosetto",
   "type": "person"
  },
  {

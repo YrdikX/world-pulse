@@ -168,8 +168,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); transition:border-color .15s;}
 .cp-news-item:hover{border-color:var(--accent);}
 .cp-news-item .who-line{font-size:12.5px; margin-bottom:6px;}
-.cp-news-detail{display:block; margin:0 0 8px; font-size:14px; line-height:1.6; color:inherit; text-decoration:none;}
-.cp-news-detail:hover{text-decoration:underline;}
+.cp-news-detail{margin:0 0 8px; font-size:14px; line-height:1.6; color:inherit;}
 .rel{color:inherit; text-decoration:none;}
 .rel:hover{text-decoration:underline;}
 .event-meta{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 0;}
@@ -808,6 +807,33 @@ var PERSON_PROFILES = {
   espriella: {desc:"President of Colombia since 2026", extract:"Abelardo Gabriel de la Espriella Otero is a Colombian lawyer, businessman, and politician who has served as the 36th president of Colombia since 2026. He is the founder and leader of the far-right Defenders of the Homeland party, established initially as a movement in 2024.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Colombian_Presidential_Candidate_Abelardo_de_la_Espriella_%28cropped%29.jpg/330px-Colombian_Presidential_Candidate_Abelardo_de_la_Espriella_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Abelardo_de_la_Espriella"},
   anutin: {desc:"Prime Minister of Thailand since 2025", extract:"Anutin Charnvirakul is a Thai politician and businessman who has served as the 32nd prime minister of Thailand since September 2025. He has also been the leader of the Bhumjaithai Party since 2012 and a member of the House of Representatives since 2019.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Anutin_Charnvirakul_2026-05-08_%282%29.jpg/330px-Anutin_Charnvirakul_2026-05-08_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Anutin_Charnvirakul"},
   jetten: {desc:"Prime Minister of the Netherlands since 2026", extract:"Rob Arnoldus Adrianus Jetten is a Dutch politician who has served as prime minister of the Netherlands since February 2026. He has also served as leader of the Democrats 66 (D66) since August 2023. Previously, he served in the fourth Rutte cabinet as Minister for Climate and Energy Policy from 2022 to 2024 and as First Deputy Prime Minister of the Netherlands in 2024.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Rob_Jetten%2C_March_2026_-_02.jpg/330px-Rob_Jetten%2C_March_2026_-_02.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Rob_Jetten"},
+
+  macron: {desc:"President of France since 2017", extract:"Emmanuel Jean-Michel Frédéric Macron is a French politician who has served as President of France since 2017. He has been a member of Renaissance since founding the party in 2016. Macron previously served as Deputy Secretary-General to the President from 2012 to 2014 and Minister of Economics and Finance from 2014 to 2016 under President François Hollande.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Emmanuel_Macron_2025_%28cropped%29.jpg/330px-Emmanuel_Macron_2025_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Emmanuel_Macron"},
+  merz: {desc:"Chancellor of Germany since 2025", extract:"Joachim-Friedrich Martin Josef Merz is a German politician, who has served as Chancellor of Germany since 6 May 2025. He has also served as Leader of the Christian Democratic Union (CDU) since January 2022, leading the CDU/CSU (Union) parliamentary group as Leader of the Opposition in the Bundestag from February 2022 to May 2025.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg/330px-2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Friedrich_Merz"},
+  rutte: {desc:"Secretary General of NATO since 2024", extract:"Mark Rutte is a Dutch politician who has served as the 14th secretary general of NATO since October 2024. He previously served as prime minister of the Netherlands from 2010 to 2024 and leader of the People's Party for Freedom and Democracy (VVD) from 2006 to 2023. Serving a total of almost 14 years, Rutte is the longest-serving prime minister in Dutch history.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Mark_Rutte%2C_23.03.23_%28cropped%29.jpg/330px-Mark_Rutte%2C_23.03.23_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Mark_Rutte"},
+  costa: {desc:"President of the European Council since 2024", extract:"António Luís Santos da Costa is a Goan - Portuguese lawyer and politician who has served as president of the European Council since 2024. He previously served as prime minister of Portugal from 2015 to 2024 and secretary-general of the Socialist Party from 2014 to 2024.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Antonio_Costa_Portrait_2024_%28cropped%29.jpg/330px-Antonio_Costa_Portrait_2024_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Ant%C3%B3nio_Costa"},
+  okonjo_iweala: {desc:"Nigerian economist (born 1954)", extract:"Dr Ngozi Okonjo-Iweala is a Nigerian economist who has been serving as the director-general of the World Trade Organization since March 2021. She is the first ever woman and also the first African to lead the World Trade Organization as director-general.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Ngozi_Okonjo-Iweala_takes_over_as_new_WTO_Director-General%2C_1_March_2021_%2850993534756%29_%28cropped%29.jpg/330px-Ngozi_Okonjo-Iweala_takes_over_as_new_WTO_Director-General%2C_1_March_2021_%2850993534756%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Ngozi_Okonjo-Iweala"},
+  anwar: {desc:"Prime Minister of Malaysia since 2022", extract:"Anwar bin Ibrahim is a Malaysian politician who has served as the 10th Prime Minister of Malaysia since 2022. A member of the People's Justice Party (PKR), he served as Member of Parliament (MP) for Tambun since 2022. Upon becoming prime minister, he appointed himself Minister of Finance. Anwar is also the president of PKR since 2018 and the chairman of Pakatan Harapan coalition since 2020.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Anwar_Ibrahim_in_June_2026.jpg/330px-Anwar_Ibrahim_in_June_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Anwar_Ibrahim"},
+  dissanayake: {desc:"President of Sri Lanka since 2024", extract:"Anura Kumara Dissanayake, commonly referred to by his initials AKD, is a Sri Lankan politician who has served as the president of Sri Lanka since 2024. Dissanayake is the first Sri Lankan president to be elected in a second round of vote counting, and the first not to be a member of the traditional political parties of Sri Lanka. He is also the ninth executive president of Sri Lanka, a constitutional distinction that separates the executive presidency established in 1978 from the earlier non-executive presidency.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Dissanayake_2026.jpg/330px-Dissanayake_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Anura_Kumara_Dissanayake"},
+  mahama: {desc:"President of Ghana (2012–2017; since 2025)", extract:"John Dramani Mahama is a Ghanaian politician who has been the president of the Republic of Ghana since January 2025. A member of the National Democratic Congress (NDC), he previously served as president from 2012 to 2017.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/John_Mahama_in_Yokohama_%28cropped%29.jpg/330px-John_Mahama_in_Yokohama_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/John_Mahama"},
+  nawrocki: {desc:"President of Poland since 2025", extract:"Karol Tadeusz Nawrocki is a Polish historian and politician who has served as the 7th president of Poland since 2025. He served as the director of the Institute of National Remembrance (IPN) from 2021 to 2025, and was the director of the Museum of the Second World War in Gdańsk from 2017 to 2021.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Karol_Nawrocki_%282025%29_%28cropped%29.jpg/330px-Karol_Nawrocki_%282025%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Karol_Nawrocki"},
+  lula: {desc:"President of Brazil (2003–2011; since 2023)", extract:"Luiz Inácio Lula da Silva, known mononymously as Lula, is a Brazilian politician, trade unionist and former metalworker who has served as president of Brazil since 2023 and from 2003 to 2011. He is a member of the Workers' Party.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Foto_oficial_de_Luiz_In%C3%A1cio_Lula_da_Silva_%28ombros%29_denoise_%28cropped%29.jpg/330px-Foto_oficial_de_Luiz_In%C3%A1cio_Lula_da_Silva_%28ombros%29_denoise_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva"},
+  leejaemyung: {desc:"President of South Korea since 2025", extract:"Lee Jae Myung is a South Korean politician and lawyer who has served as the 14th president of South Korea since 2025. A member of the Democratic Party of Korea (DPK), he was the party's leader while serving as member of the National Assembly for Incheon Gyeyang B from 2022 to 2025. Lee previously served as governor of Gyeonggi from 2018 to 2021 and as mayor of Seongnam from 2010 to 2018.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/President_Lee_Jae_Myung_20260306.jpg/330px-President_Lee_Jae_Myung_20260306.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Lee_Jae_Myung"},
+  mirziyoyev: {desc:"President of Uzbekistan since 2016", extract:"Shavkat Miromonovich Mirziyoyev is an Uzbek Politician who has served as the second president of Uzbekistan since 2016. A member of the Uzbekistan Liberal Democratic Party, he served as the third prime minister under President Islam Karimov from 2003 to 2016. Mirziyoyev has also served as chairman of the Organization of Turkic States since 2022.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Vladimir_Putin_and_Shavkat_Mirziyoyev_%282025-05-09%29_%28Shavkat_Mirziyoyev_1%29.jpg/330px-Vladimir_Putin_and_Shavkat_Mirziyoyev_%282025-05-09%29_%28Shavkat_Mirziyoyev_1%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Shavkat_Mirziyoyev"},
+  noboa: {desc:"President of Ecuador since 2023", extract:"Daniel Roy Gilchrist Noboa Azín is an Ecuadorian politician and businessman serving as the 48th and current president of Ecuador since 2023. Having first taken office at the age of 35, he is the second-youngest president in the country's history, after Juan José Flores, and the youngest to be elected.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Noboa_en_24_mayo_de_2026.jpg/330px-Noboa_en_24_mayo_de_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Daniel_Noboa"},
+  arevalo: {desc:"President of Guatemala since 2024", extract:"César Bernardo Arévalo de León is a Guatemalan diplomat, sociologist, writer, and politician who has served as the 52nd president of Guatemala since 2024. A member and co-founder of the defunct Semilla party, he previously served as a deputy in the Congress of Guatemala from 2020 to 2024, as ambassador to Spain from 1995 to 1996 and as deputy minister of foreign affairs from 1994 to 1995.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Retrato_oficial_de_Presidente_Bernardo_Ar%C3%A9valo_%28cropped%29.jpg/330px-Retrato_oficial_de_Presidente_Bernardo_Ar%C3%A9valo_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Bernardo_Ar%C3%A9valo"},
+  saied: {desc:"President of Tunisia since 2019", extract:"Kaïs Saïed is a Tunisian politician, jurist and former assistant professor of law who has served as the fifth president of Tunisia since 2019. He was president of the Tunisian Association of Constitutional Law from 1995 to 2019.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/President_Kais_Sa%C3%AFed.jpg/330px-President_Kais_Sa%C3%AFed.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Kais_Saied"},
+  paz: {desc:"President of Bolivia since 2025", extract:"Rodrigo Paz Pereira is a Bolivian politician and diplomat who has served as the 68th president of Bolivia since 2025. The eldest son of former president Jaime Paz Zamora and great-nephew of president Víctor Paz Estenssoro, he served as a senator for Tarija from 2020 to 2025. He also previously served as mayor of Tarija from 2015 to 2020 and as a member of the Chamber of Deputies from 2002 to 2010, representing his father's Revolutionary Left Movement (MIR).", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Rodrigo_Paz_enero_2026.jpg/330px-Rodrigo_Paz_enero_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Rodrigo_Paz"},
+  andersson: {desc:"Prime Minister of Sweden from 2021 to 2022", extract:"Eva Magdalena Andersson is a Swedish politician and economist who has served as Leader of the Opposition since 2022 and as Leader of the Swedish Social Democratic Party since 2021. She has served as a Member of the Riksdag for Stockholm County since 2014. She previously served as the first female Prime Minister of Sweden from 2021 to 2022, as well as Minister for Finance from 2014 to 2021 and Chair of the International Monetary and Financial Committee from 2020 to 2022.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Magdalena_Andersson_Gothenburg_2026-04-10_02_%28cropped%29.jpg/330px-Magdalena_Andersson_Gothenburg_2026-04-10_02_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Magdalena_Andersson"},
+  kristersson: {desc:"Prime Minister of Sweden since 2022", extract:"Ulf Hjalmar Kristersson is a Swedish politician who has served as Prime Minister of Sweden since October 2022, and since 17 September 2026 in a caretaker capacity, following the defeat of his governing bloc in the September 2026 general election. He has been the leader of the Moderate Party since 2017. He has been a member of the Riksdag since 2014, having previously served from 1991 to 2000, and was Minister for Social Security from 2010 to 2014.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Ulf_Kristersson_June_2025_%28cropped2%29.jpg/330px-Ulf_Kristersson_June_2025_%28cropped2%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Ulf_Kristersson"},
+  nauseda: {desc:"President of Lithuania since 2019", extract:"Gitanas Nausėda is a Lithuanian politician, economist, banker, and diplomat who is serving as the ninth and incumbent president of Lithuania since 2019. Born in Klaipėda, Nausėda graduated from Vilnius University with an economics degree in 1987. He was director of monetary policy at the Bank of Lithuania from 1996 to 2000 and chief economist to the chairman of SEB bankas from 2008 to 2018.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/Prime_Minister_Petteri_Orpo_and_President_of_Lithuania_Gitanas_Naus%C4%97da_met_in_Helsinki_2_September.jpg/330px-Prime_Minister_Petteri_Orpo_and_President_of_Lithuania_Gitanas_Naus%C4%97da_met_in_Helsinki_2_September.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Gitanas_Naus%C4%97da"},
+  kushner: {desc:"American businessman (born 1981)", extract:"Jared Corey Kushner is an American businessman, investor, government official and politician. Through his marriage to Ivanka Trump, he is the son-in-law of the 45th and 47th president of the United States Donald Trump. Kushner has served in both official and informal roles in the first and second Trump administrations.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Jared_Kushner_2025.jpg/330px-Jared_Kushner_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Jared_Kushner"},
+  witkoff: {desc:"American businessman and diplomat (born 1957)", extract:"Steven Charles Witkoff is an American real estate investor and former attorney who is the founder of the Witkoff Group. Since 2025, Witkoff has served as the United States special envoy to the Middle East and special envoy for peace missions. He has also acted as a de facto envoy to Russian president Vladimir Putin.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Steve_Witkoff_%282025%29_%28cropped%29.jpg/330px-Steve_Witkoff_%282025%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Steve_Witkoff"},
+  lutnick: {desc:"American businessman and government official (born 1961)", extract:"Howard William Lutnick is an American businessman and government official who has served as the 41st United States secretary of commerce since 2025.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Howard_Lutnick_2025.jpg/330px-Howard_Lutnick_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Howard_Lutnick"},
+  banerjee: {desc:"Chief Minister of West Bengal from 2011 to 2026", extract:"Mamata Banerjee is an Indian politician and lawyer who served as the eighth chief minister of West Bengal from 2011 to 2026. She was the first and only woman to hold that office. She founded the All India Trinamool Congress (AITC), and has previously served as a Union Cabinet Minister. She currently is the leader of the Mamata All India Trinamool Congress (MAITC), following the 2026 Trinamool Congress split.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Official_portrait_of_Mamata_Banerjee.jpg/330px-Official_portrait_of_Mamata_Banerjee.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Mamata_Banerjee"},
+  norlen: {desc:"Swedish politician (born 1973)", extract:"Per Olof Andreas Norlén is a Swedish politician who has served as Speaker of the Riksdag since 2018. A member of the Moderate Party (M), he has represented Östergötland County in the Riksdag since 2006. Norlén was previously chairman of the Committee on the Constitution from 2014 to 2018.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/20240612_Estocolmo_Visita_al_Parlamento_Sueco-Juan_Diego_Cano06616_%28cropped%29.jpg/330px-20240612_Estocolmo_Visita_al_Parlamento_Sueco-Juan_Diego_Cano06616_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Andreas_Norl%C3%A9n"},
+  burke: {desc:"Australian politician (born 1969)", extract:"Anthony Stephen Burke is an Australian politician serving as Minister for Home Affairs, Immigration and Citizenship, Cyber Security and the Arts. A member of the Labor Party, he has been the member of Parliament (MP) for the New South Wales division of Watson since 2004. He previously held cabinet positions in the governments of Kevin Rudd and Julia Gillard from 2007 to 2013.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Tony_Burke.jpg/330px-Tony_Burke.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Tony_Burke"},
+  crosetto: {desc:"Italian politician and businessman (born 1963)", extract:"Guido Crosetto is an Italian politician and businessman who is the Minister of Defence since 22 October 2022. Born in Cuneo, he grew up into a family involved in agriculture and construction, and later took over the family business. Crosetto began his political career in Christian Democracy (DC) and was mainly involved in the local politics of Piedmont. From 1990 to 2004, he was mayor of Marene. In 2000, he joined Forza Italia (FI). His rise in national politics began with his election to the Chamber of Deputies in 2001, a position he held until 2013 and from 2018 to 2019. In 2009, Crosetto joined The People of Freedom (PdL) and served as an undersecretary at the Ministry of Defence in the fourth Berlusconi government from 2008 to 2011. In 2012, Crosetto was among the founders of Brothers of Italy (FdI), of which he served as national coordinator from 2013 to 2014 and from 2018 to 2019, representing its moderate wing.", photo:"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Guido_Crosetto_foto_ufficiale_%28cropped%29.jpg/330px-Guido_Crosetto_foto_ufficiale_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", wiki:"https://en.wikipedia.org/wiki/Guido_Crosetto"},
 };
 
 var ORG_PROFILES = {
@@ -849,21 +875,47 @@ var ENTITIES = [
   {id:'lmontenegro', label:'Luís Montenegro', type:'person', country:'prt'},
   {id:'mitsotakis', label:'Mitsotakis', type:'person', country:'grc'},
   {id:'nicusor_dan', label:'Nicșor Dan', type:'person', country:'rom'},
-  {id:'trump', label:'Donald Trump', type:'person', country:'usa'},
-  {id:'netanyahu', label:'Benjamin Netanyahu', type:'person', country:'isr'},
-  {id:'xi', label:'Xi Jinping', type:'person', country:'china'},
-  {id:'modi', label:'Narendra Modi', type:'person', country:'india'},
-  {id:'milei', label:'Javier Milei', type:'person', country:'arg'},
-  {id:'ramaphosa', label:'Cyril Ramaphosa', type:'person', country:'zaf'},
+  {id:'trump', label:'Trump', type:'person', country:'usa'},
+  {id:'netanyahu', label:'Netanyahu', type:'person', country:'isr'},
+  {id:'xi', label:'Xi', type:'person', country:'china'},
+  {id:'modi', label:'Modi', type:'person', country:'india'},
+  {id:'milei', label:'Milei', type:'person', country:'arg'},
+  {id:'ramaphosa', label:'Ramaphosa', type:'person', country:'zaf'},
   {id:'tolam', label:'Tô Lâm', type:'person', country:'vnm'},
-  {id:'sisi', label:'Abdel Fattah el-Sisi', type:'person', country:'egy'},
-  {id:'tinubu', label:'Bola Tinubu', type:'person', country:'nga'},
-  {id:'pezeshkian', label:'Masoud Pezeshkian', type:'person', country:'irn'},
+  {id:'sisi', label:'Sisi', type:'person', country:'egy'},
+  {id:'tinubu', label:'Tinubu', type:'person', country:'nga'},
+  {id:'pezeshkian', label:'Pezeshkian', type:'person', country:'irn'},
   {id:'mkhamenei', label:'Mojtaba Khamenei', type:'person', country:'irn'},
-  {id:'sheinbaum', label:'Claudia Sheinbaum', type:'person', country:'mex'},
+  {id:'sheinbaum', label:'Sheinbaum', type:'person', country:'mex'},
   {id:'espriella', label:'Abelardo de la Espriella', type:'person', country:'col'},
-  {id:'anutin', label:'Anutin Charnvirakul', type:'person', country:'tha'},
-  {id:'jetten', label:'Rob Jetten', type:'person', country:'nld'},
+  {id:'anutin', label:'Anutin', type:'person', country:'tha'},
+  {id:'jetten', label:'Jetten', type:'person', country:'nld'},
+  {id:'macron', label:'Macron', type:'person', country:'france'},
+  {id:'merz', label:'Merz', type:'person', country:'germany'},
+  {id:'rutte', label:'Rutte', type:'person', country:'nato'},
+  {id:'costa', label:'Costa', type:'person', country:'eu'},
+  {id:'okonjo_iweala', label:'Okonjo-Iweala', type:'person', country:'wto'},
+  {id:'anwar', label:'Anwar', type:'person', country:'mys'},
+  {id:'dissanayake', label:'Dissanayake', type:'person', country:'lka'},
+  {id:'mahama', label:'Mahama', type:'person', country:'gha'},
+  {id:'nawrocki', label:'Nawrocki', type:'person', country:'poland'},
+  {id:'lula', label:'Lula', type:'person', country:'brazil'},
+  {id:'leejaemyung', label:'Lee Jae-myung', type:'person', country:'kor'},
+  {id:'mirziyoyev', label:'Mirziyoyev', type:'person', country:'uzb'},
+  {id:'noboa', label:'Noboa', type:'person', country:'ecu'},
+  {id:'arevalo', label:'Arévalo', type:'person', country:'gtm'},
+  {id:'saied', label:'Saied', type:'person', country:'tun'},
+  {id:'paz', label:'Paz', type:'person', country:'bol'},
+  {id:'andersson', label:'Andersson', type:'person', country:'swe'},
+  {id:'kristersson', label:'Kristersson', type:'person', country:'swe'},
+  {id:'nauseda', label:'Nausėda', type:'person', country:'lithuania'},
+  {id:'kushner', label:'Kushner', type:'person', country:'usa'},
+  {id:'witkoff', label:'Witkoff', type:'person', country:'usa'},
+  {id:'lutnick', label:'Lutnick', type:'person', country:'usa'},
+  {id:'banerjee', label:'Banerjee', type:'person', country:'india'},
+  {id:'norlen', label:'Norlen', type:'person', country:'swe'},
+  {id:'burke', label:'Burke', type:'person', country:'aus'},
+  {id:'crosetto', label:'Crosetto', type:'person', country:'italy'},
   {id:'duma', label:'State Duma election', type:'event'},
   {id:'russia', label:'Russia', type:'country', geo:RUS_PATH},
   {id:'ukraine', label:'Ukraine', type:'country', geo:UKR_PATH},
@@ -2224,6 +2276,28 @@ var typeLabel = {person:'person', country:'country', org:'organization', event:'
 var byId = {};
 ENTITIES.forEach(function(e){ byId[e.id] = e; });
 
+// Auto-link any tracked entity's name wherever it appears inside a longer
+// detail paragraph, not just in the from/to slots of its own edge -- e.g.
+// "Social Democratic leader Magdalena Andersson was tasked..." should make
+// Andersson clickable right there, not only when she's the edge's own actor.
+// Single combined regex (one pass, longest label first) so a match can't be
+// re-matched inside text a shorter label already replaced.
+var LINKABLE = ENTITIES.filter(function(e){ return e.label.length >= 4; })
+  .slice().sort(function(a,b){ return b.label.length - a.label.length; });
+var LABEL_TO_ENTITY = {};
+LINKABLE.forEach(function(e){ LABEL_TO_ENTITY[e.label] = e; });
+function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+var AUTO_LINK_RE = new RegExp('\\b(' + LINKABLE.map(function(e){ return escapeRegExp(e.label); }).join('|') + ')\\b', 'g');
+function autoLinkText(text, excludeIds){
+  if (!text) return text;
+  excludeIds = excludeIds || [];
+  return text.replace(AUTO_LINK_RE, function(match){
+    var e = LABEL_TO_ENTITY[match];
+    if (!e || excludeIds.indexOf(e.id) !== -1) return match;
+    return '<a class="entity-link" href="/entity/' + e.id + '.html" style="color:' + typeVar[e.type] + '; font-weight:600;">' + match + '</a>';
+  });
+}
+
 function centerOf(e){
   if (e.geo !== undefined) {
     var b = d3.select('#geo-' + e.id).node().getBBox();
@@ -2385,7 +2459,7 @@ function newsCardsHtml(edges, emptyText){
   return edges.map(function(x){
     var id = edgeId(x);
     return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' <a class="rel" href="/event/' + id + '.html">' + x.label + '</a> → ' + typeSpan(x.to) + ' <span class="edge-date">' + fmtDate(x.date) + '</span></div>' +
-      '<a class="cp-news-detail" href="/event/' + id + '.html">' + (x.detail || x.label) + '</a>' +
+      '<p class="cp-news-detail">' + autoLinkText(x.detail || x.label, [x.from, x.to]) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }).join('');
 }
@@ -2515,7 +2589,7 @@ function openEventPage(id, skipHash){
   var html = '<div class="country-header"><h2>' + typeSpan(x.from) + ' ' + x.label + ' → ' + typeSpan(x.to) + '</h2>' +
     '<div class="event-meta"><span>' + fmtDate(x.date) + '</span><span>' + x.scope + '</span>' +
     (x.country && byId[x.country] ? '<span>' + byId[x.country].label + '</span>' : '') + '</div></div>';
-  html += '<p class="event-detail">' + (x.detail || x.label) + '</p>';
+  html += '<p class="event-detail">' + autoLinkText(x.detail || x.label, [x.from, x.to]) + '</p>';
   html += '<a class="event-source" href="' + x.url + '" target="_blank" rel="noopener">Source →</a>';
   html += '<div class="cp-section" style="margin-top:32px;"><h3>Related events</h3>' +
     newsCardsHtml(related, 'No other documented events involving ' + byId[x.from].label + ' or ' + byId[x.to].label + ' yet.') + '</div>';
@@ -2684,13 +2758,21 @@ function renderChambers(activeId){
   var t = document.getElementById('transcript');
   var orgName = byId[activeId].label;
   var html = '<h3><a href="/entity/' + activeId + '.html" style="color:inherit; text-decoration:none;">' + orgName + '</a></h3><div class="sub">Real, sourced statements only — nothing here is invented.</div>';
-  html += statements.map(function(x){
+  function statementHtml(x){
     var id = edgeId(x);
     return '<div class="statement"><span class="speaker">' + orgName + '</span><span class="stmt-date">' + fmtDate(x.date) + '</span>' +
       '<p><a class="rel" href="/event/' + id + '.html">' + x.label.charAt(0).toUpperCase() + x.label.slice(1) + '</a>: ' + typeSpan(x.to) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
-  }).join('');
+  }
+  if (statements.length <= COLLAPSE_AFTER){
+    html += statements.map(statementHtml).join('');
+  } else {
+    html += statements.slice(0, COLLAPSE_AFTER).map(statementHtml).join('') +
+      '<div id="chamber-stmt-rest" style="display:none">' + statements.slice(COLLAPSE_AFTER).map(statementHtml).join('') + '</div>' +
+      '<button class="cp-show-more" data-target="chamber-stmt-rest">Show ' + (statements.length - COLLAPSE_AFTER) + ' more (' + statements.length + ' total) →</button>';
+  }
   t.innerHTML = html;
+  wireShowMore(t);
 }
 
 function feedCard(x){
@@ -2772,7 +2854,8 @@ function renderTrends(openId){
   var trend = TRENDS.filter(function(t){ return t.id === openId; })[0];
   if (!trend){ detail.innerHTML = ''; return; }
   var edges = trendEdges(trend);
-  detail.innerHTML = '<h3 style="margin-top:28px;">' + trend.name + '</h3>' + newsCardsHtml(edges, 'Nothing matches this trend right now.');
+  detail.innerHTML = '<h3 style="margin-top:28px;">' + trend.name + '</h3>' + newsCardsHtmlCollapsible(edges, 'Nothing matches this trend right now.', 'trend-' + openId);
+  wireShowMore(detail);
 }
 
 function switchTab(id, skipHash){
