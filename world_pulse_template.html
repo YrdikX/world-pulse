@@ -447,7 +447,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. <span id="stat-edges-inline-2"></span> real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), 19 full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, plus a growing set of edges pulled in automatically: news is checked every 30 minutes, an AI extraction pass runs every 6 hours, and nothing goes live without a human reviewing it first. Nothing here is an invented connection, date or quote.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. <span id="stat-edges-inline-2"></span> real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), <span id="stat-systems"></span> full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, plus a growing set of edges pulled in automatically: news is checked every 30 minutes, an AI extraction pass runs every 6 hours, and nothing goes live without a human reviewing it first. Nothing here is an invented connection, date or quote.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -1435,6 +1435,228 @@ var SYSTEMS_FULL = {
       {flag:false, date:'04.2026', event:'Sheinbaum’s own electoral reform stalls in Congress, despite the supermajority'}
     ],
     related: [['usa','largest trading partner and migration border'], ['brazil','comparing Latin America’s leftist presidencies']]
+  },
+  ukraine: {
+    snapshot: 'The fourth prime minister of the full-scale war, a corruption scandal around the president’s own chief of staff, and a parliament that couldn’t muster votes for a law critical to the IMF program — the Rada is living through its toughest political crisis since 2022.',
+    facts: [['President','Volodymyr Zelensky — since 20.05.2019, term extended under martial law'],['Prime Minister','Serhiy Koretsky (ex-head of Naftogaz) — since 07.2026'],['Verkhovna Rada','Servant of the People — largest faction, no stable majority'],['Crisis','Corruption scandal around ex-chief of staff Andriy Yermak'],['Under','Martial law since 24.02.2022 — elections suspended']],
+    figures: [['President','Volodymyr Zelensky'],['Prime Minister','Serhiy Koretsky'],['Ex-PM (resigned 07.2026)','Yuliia Svyrydenko'],['Ex-chief of staff (resigned 11.2025)','Andriy Yermak']],
+    parties: ['Servant of the People (2018, Zelensky) — the Rada’s largest faction, shrunk from 254 to roughly 228 deputies over the war as members left or lost mandates.', 'European Solidarity — the party of ex-president Petro Poroshenko, the main systemic opposition.', 'Batkivshchyna — Yulia Tymoshenko’s party, opposition.', 'Several smaller factions (17–21 deputies each) plus 23 unaffiliated deputies fill the rest.'],
+    how: 'A semi-presidential system: the president is directly elected for 5 years, controls defense and foreign policy, and appoints the defense and foreign ministers on the coalition’s recommendation; the prime minister and most ministers are formed by the parliamentary coalition — both centers of power hold real authority. The Verkhovna Rada is a single 450-seat chamber, effectively around 400 filled since by-elections are impossible under martial law; it hasn’t been re-elected since 2019. Martial law, in force since 24 February 2022, constitutionally suspends elections — the president’s and Rada’s terms have formally expired but are automatically extended for the duration, a point of political dispute at home and abroad even though most of Ukraine’s partners recognize the extension as legitimate. NABU (the anti-corruption bureau) and SAP (the specialized anti-corruption prosecutor’s office) are independent bodies created under Western pressure after 2014 — it was NABU’s “Midas” investigation into Yermak’s circle that triggered the current crisis, a rare case of anti-corruption oversight actually reaching a wartime president’s inner circle.',
+    turning: [
+      {flag:true, date:'24.02.2022', event:'Russia’s full-scale invasion begins; martial law declared'},
+      {flag:true, date:'11.2025', event:'NABU raids the residence of chief of staff Andriy Yermak over the "Midas" energy-corruption case; Yermak resigns'},
+      {flag:false, date:'03.2026', event:'The Rada fails to reach the 226 votes needed for a law critical to the IMF program (168 in favor) — exposing the depth of the parliamentary crisis'},
+      {flag:true, date:'12.07.2026', event:'Zelensky announces a government "reset"; PM Yuliia Svyrydenko resigns'},
+      {flag:true, date:'14.07.2026', event:'The Rada dismisses the Svyrydenko government'},
+      {flag:false, date:'07.2026', event:'Serhiy Koretsky, ex-head of Naftogaz, becomes prime minister'}
+    ],
+    related: [['russia','direct military conflict since 2022'], ['germany','key European donor of military and financial aid'], ['poland','border logistics for support']]
+  },
+  isr: {
+    snapshot: 'The Knesset has dissolved and the country heads to a snap election in late October 2026 — against the backdrop of an unfinished war with Iran, the ongoing conflict in Gaza, and a corruption trial against the sitting prime minister.',
+    facts: [['Prime Minister','Benjamin Netanyahu (Likud) — since 12.2022 (previously PM 1996–99, 2009–21)'],['Knesset','Dissolved 17.07.2026 — snap election set for 27.10.2026'],['Ruling coalition','Likud plus religious and right-wing parties'],['Context','Unfinished war with Iran (2026), Gaza conflict, corruption trial against Netanyahu']],
+    figures: [['Prime Minister','Benjamin Netanyahu'],['President (ceremonial)','Isaac Herzog']],
+    seats: {chamber:'Knesset (120 seats, majority 61) — composition before dissolution', majority:61, items:[
+      {name:'Netanyahu coalition (Likud + religious + right)', seats:64, color:'#1C6FBF'},
+      {name:'Opposition (centrist + left + Arab parties)', seats:56, color:'#B5342E'}
+    ]},
+    parties: ['Likud (1973) — center-right/right, Netanyahu’s party, the dominant force on the right.', 'Religious Zionism and Otzma Yehudit — far-right religious-nationalist parties, key coalition partners.', 'Shas and United Torah Judaism — ultra-Orthodox parties, anchor the coalition in exchange for benefits to religious communities, including military-service exemptions — a constant source of tension.', 'Yesh Atid (Yair Lapid) and National Unity (Benny Gantz) — centrist opposition.', 'Labor — the historic center-left party, now marginalized.', 'Arab parties (Hadash-Ta’al, Ra’am) — represent Israel’s Arab minority.'],
+    how: 'A parliamentary republic: the president (Isaac Herzog) is a ceremonial figure elected by the Knesset for 7 years; real executive power sits with the prime minister — the leader of the party/bloc able to form a majority coalition in the Knesset. The Knesset’s 120 seats are allocated by a single nationwide proportional vote with no electoral districts — the whole country votes for party lists, with a 3.25% threshold — one of the most proportional systems in the world, which almost guarantees multi-party coalitions of 5-7+ parties. Israel has no single written constitution — a series of Basic Laws fill that role, which makes disputes over the balance between the Knesset and the Supreme Court (sharpened by the 2023 judicial-overhaul attempt) structurally sharper than in countries with a codified constitution. The coalition’s 2023 attempt to limit the Supreme Court’s power to strike down government decisions on "reasonableness" grounds triggered the country’s largest-ever protests and a societal rift that remains an unresolved backdrop to the 2026 election.',
+    turning: [
+      {flag:false, date:'12.2022', event:'Netanyahu forms the most right-wing coalition in Israel’s history'},
+      {flag:true, date:'07.10.2023', event:'Hamas attack and the start of the Gaza war'},
+      {flag:true, date:'02.2026', event:'Direct war with Iran begins'},
+      {flag:true, date:'17.07.2026', event:'The Knesset dissolves; a snap election is called'},
+      {flag:false, date:'27.10.2026', event:'Snap parliamentary election scheduled'}
+    ],
+    related: [['irn','direct military conflict in 2026'], ['usa','key military and diplomatic ally']]
+  },
+  irn: {
+    snapshot: 'After the supreme leader was killed in the war with Israel in early 2026, power passed for the first time in nearly 40 years outside the usual pattern — the new rahbar is the dead leader’s son, which many call a hidden monarchization of a formally anti-monarchist republic.',
+    facts: [['Supreme Leader (Rahbar)','Mojtaba Khamenei — since 08.03.2026 (son of Ali Khamenei)'],['Predecessor','Ali Khamenei — killed 28.02.2026 in the war with Israel'],['President','Masoud Pezeshkian — since 2024, the office is subordinate to the supreme leader'],['Context','The country is emerging from a short but devastating war with Israel (2026)']],
+    figures: [['Supreme Leader','Mojtaba Khamenei'],['President','Masoud Pezeshkian'],['Late Supreme Leader (1989–2026)','Ali Khamenei']],
+    parties: ['No Western-style parties exist — politics is organized around factions within the system.', 'Principlists (Osoolgarayan) — hardline conservatives, the base of the Islamic Revolutionary Guard Corps (IRGC), dominant in the security apparatus.', 'Reformists — favor limited liberalization and dialogue with the West; President Pezeshkian formally belongs to this camp.', 'The IRGC — not a party but a military-economic structure that sharply expanded its influence after the 2026 war and Khamenei Sr.’s death.'],
+    how: 'The Supreme Leader sits above all three branches of government: commander-in-chief, appoints the judiciary chief, half the Guardian Council, and the heads of state broadcasting. Formally elected for life by the Assembly of Experts — an 88-cleric body that in theory can also remove him. The president is directly elected for a 4-year term (max 2 consecutive), heads the executive, but every decision is bounded by the supreme leader’s oversight and the Guardian Council. The Majlis (parliament, 290 seats) passes laws, which the Guardian Council can strike down as contrary to Islamic law or the constitution. The Guardian Council (12 members, half appointed by the supreme leader, half confirmed by parliament from judiciary nominees) filters both election candidates and passed legislation — the real mechanism controlling the "democratic" part of the system. The Expediency Council resolves disputes between parliament and the Guardian Council. The IRGC is a parallel military structure with its own economic empire (from telecoms to oil), answering directly to the supreme leader, and its political weight rose sharply during and after the 2026 war.',
+    turning: [
+      {flag:false, date:'2024', event:'Reformist Masoud Pezeshkian is elected president'},
+      {flag:true, date:'02.2026', event:'Escalation with Israel turns into direct war'},
+      {flag:true, date:'28.02.2026', event:'Supreme Leader Ali Khamenei is killed in US-Israeli strikes'},
+      {flag:true, date:'08.03.2026', event:'The Assembly of Experts confirms his son, Mojtaba Khamenei, as the new supreme leader'},
+      {flag:false, date:'2026 (after March)', event:'Postwar reconstruction, a stronger IRGC, and open questions about the new rahbar’s succession and legitimacy'}
+    ],
+    related: [['isr','direct military conflict in 2026'], ['sau','regional rivalry in the Persian Gulf'], ['russia','military-technical partnership']]
+  },
+  arg: {
+    snapshot: 'A libertarian president who started with a handful of deputies two years ago unexpectedly won the 2025 midterms and nearly tripled his party’s seats in Congress — a rare case where radical reforms mid-term strengthened, rather than weakened, a president’s position.',
+    facts: [['President','Javier Milei (La Libertad Avanza) — since 10.12.2023'],['Chamber of Deputies','LLA + PRO — 95 of 257 seats (after the 2025 election)'],['Senate','LLA — 21 of 72 seats'],['Context','The 26.10.2025 midterm win strengthened the president’s veto power']],
+    figures: [['President','Javier Milei'],['Vice President','Victoria Villarruel']],
+    seats: {chamber:'Chamber of Deputies (257 seats, majority 129; two-thirds ≈172 to override a veto)', majority:129, items:[
+      {name:'LLA + PRO', seats:95, color:'#7B3FA0'},
+      {name:'Peronists (Unión por la Patria and allies)', seats:99, color:'#1C6FBF'},
+      {name:'UCR and provincial parties', seats:63, color:'#5C6B80'}
+    ]},
+    parties: ['La Libertad Avanza (2021, Milei) — libertarians, a radical program of deregulation and spending cuts (the "chainsaw" as its symbol).', 'PRO — center-right, ex-president Macri’s party, an ally of LLA in Congress.', 'Unión por la Patria / Peronists — the center-left camp descended from Cristina Kirchner, the largest opposition force.', 'UCR (Radical Civic Union) and other provincial parties — a swing center that bargains for votes on each bill.'],
+    how: 'A presidential republic: the president is directly elected for 4 years with one consecutive re-election allowed, and holds veto power that requires a two-thirds vote of both chambers to override — a threshold Milei can block since 2025. The Chamber of Deputies (257 seats) renews half its membership every 2 years by proportional vote within each province; the Senate (72 seats — 3 per province including the autonomous city of Buenos Aires) renews a third every 2 years — a structure, like the US Senate, that gives small provinces disproportionate weight. Argentina is a federation of 23 provinces plus the autonomous city of Buenos Aires; provincial governors remain key negotiators for any federal law, especially for a president without his own majority. Early in his term Milei pushed much of his agenda through decrees (DNU) and an emergency-powers "omnibus law" rather than ordinary bills — an approach that drew disputes over the executive-legislative balance but which courts have broadly upheld as constitutional.',
+    turning: [
+      {flag:true, date:'10.12.2023', event:'Milei takes office with just 38 of 257 deputies and 6 of 72 senators'},
+      {flag:false, date:'2024–2025', event:'A radical program — devaluation, subsidy cuts, fewer ministries — sharply lowers inflation'},
+      {flag:true, date:'26.10.2025', event:'Midterms: LLA+PRO win 95 House seats and 21 Senate seats — nearly tripling their representation'},
+      {flag:false, date:'2026', event:'The government opens the legislative session with far more bargaining power than a year earlier'}
+    ],
+    related: [['brazil','largest neighbor and Mercosur trading partner'], ['usa','ideological alignment with the Trump administration'], ['mex','contrast with Latin America’s left-populist presidencies']]
+  },
+  zaf: {
+    snapshot: 'For the first time since the end of apartheid in 1994, the ruling party lost its majority on its own — and instead of the usual opposition, brought in yesterday’s political rivals, including the party once seen as representing the white minority.',
+    facts: [['President','Cyril Ramaphosa (ANC) — since 2018, re-elected after the 2024 election'],['Government','Government of National Unity (GNU) — 11 parties, including the ANC and DA'],['National Assembly','ANC holds 159/400 — without a majority alone for the first time since 1994'],['Context','2026 municipal elections — the first with the DA inside government']],
+    figures: [['President','Cyril Ramaphosa'],['Opposition (MK) leader','Jacob Zuma (former president)']],
+    seats: {chamber:'National Assembly (400 seats, majority 201)', majority:201, items:[
+      {name:'ANC', seats:159, color:'#1C6F3E'},
+      {name:'DA', seats:87, color:'#1C6FBF'},
+      {name:'MK', seats:58, color:'#B5342E'},
+      {name:'EFF', seats:39, color:'#B5750E'},
+      {name:'Others (IFP and more, some in GNU)', seats:57, color:'#5C6B80'}
+    ]},
+    parties: ['ANC (African National Congress, 1912) — ruled alone since the end of apartheid in 1994; forced to share power for the first time after 2024.', 'DA (Democratic Alliance) — liberal, historically the ANC’s main opposition (based among white and coloured voters), now a government partner.', 'MK (uMkhonto weSizwe) — ex-president Jacob Zuma’s new party, split from the ANC, the main opposition force outside the GNU.', 'EFF (Economic Freedom Fighters) — Julius Malema’s radical-left party, outside the GNU.', 'IFP, Patriotic Alliance, Freedom Front Plus and 6 more small parties make up the rest of the 11-party GNU coalition.'],
+    how: 'A parliamentary republic with indirect presidential election: the National Assembly, not the public directly, elects the president from among its members for a 5-year term, maximum 2 terms. The president is simultaneously head of state and head of government, unlike purely parliamentary systems that split those roles. The Assembly’s 400 seats are allocated by proportional representation with no threshold — which explains the presence of many small parties — half from a national list, half from 9 provincial lists. South Africa has 9 provinces with their own legislatures; the upper house, the National Council of Provinces (90 seats, 10 per province), reviews legislation touching provincial powers. The 1996 constitution — one of the most progressive in the world when adopted — includes an extensive bill of rights and anti-discrimination protections, a direct response to apartheid (1948–1994).',
+    turning: [
+      {flag:true, date:'29.05.2024', event:'General election: the ANC loses its majority for the first time, winning 159 of 400 seats'},
+      {flag:true, date:'14.06.2024', event:'The 11-party Government of National Unity (GNU) forms, including historic rival the DA'},
+      {flag:false, date:'30.06.2024', event:'Ramaphosa announces a coalition cabinet; the DA gets 6 of 32 ministerial posts'},
+      {flag:false, date:'11.2025', event:'Ramaphosa confirms the GNU will continue despite friction between partners'},
+      {flag:true, date:'2026', event:'Municipal elections — the first where the DA runs as part of the national governing coalition'}
+    ],
+    related: [['brazil','BRICS partnership'], ['china','growing economic ties within BRICS'], ['nga','Africa’s largest economies']]
+  },
+  vnm: {
+    snapshot: 'For the first time since the era of collective leadership, the Communist Party’s general secretary also took the presidency with unanimous backing — a concentration of power analysts directly compare to Xi Jinping’s model in China.',
+    facts: [['General Secretary & President','To Lam — general secretary since 08.2024, president since 07.04.2026'],['Prime Minister','Le Minh Hung — since 07.04.2026'],['National Assembly','500 seats, 482 held by Communist Party members'],['Trend','A shift from collective leadership toward power concentrated in one person']],
+    figures: [['General Secretary / President','To Lam'],['Prime Minister','Le Minh Hung']],
+    parties: ['The Communist Party of Vietnam (CPV) is the country’s only legal party, constitutionally enshrined as the "leading force of the state and society." There are no formal factions in the National Assembly — politics runs through internal party influence groups.', 'The To Lam group — figures from the Ministry of Public Security (the security bloc) who consolidated power after 2024.', 'Traditionalists of the "four pillars" — supporters of the old model, where the general secretary, president, prime minister and National Assembly chair were split among different people to balance interests.'],
+    how: 'The constitution explicitly enshrines the CPV’s leading role — real decisions are made in the Politburo and Central Committee, while state institutions (the National Assembly, the presidency, the government) formally ratify decisions the party has already agreed on. The National Assembly has 500 deputies serving 5-year terms and is constitutionally the highest state authority, formally electing the president and prime minister and approving the budget and laws; 482 of its 500 seats are held by CPV members, with the remainder nominally independent candidates also vetted by the Vietnam Fatherland Front, a party-controlled mass organization that builds and approves candidate lists for elections at every level — the key mechanism of party control over a formally "elected" process. Since 1986, Vietnam has pursued market reforms ("Doi Moi," or renewal) that made it one of the world’s fastest-growing economies and a key link in the reshuffling of global supply chains amid the US-China trade war — while the CPV’s political monopoly remains untouched even amid economic liberalization.',
+    turning: [
+      {flag:false, date:'08.2024', event:'To Lam is elected CPV general secretary after his predecessor’s death — the first person since 1997 to hold both general secretary and president simultaneously'},
+      {flag:true, date:'23.01.2026', event:'The 14th Central Committee unanimously re-elects To Lam as general secretary for a new term'},
+      {flag:true, date:'07.04.2026', event:'The 16th National Assembly elects To Lam president — 495 votes in favor out of 495'},
+      {flag:false, date:'07.04.2026', event:'Le Minh Hung, an ex-central-bank chief with close security-service ties, is elected prime minister'},
+      {flag:false, date:'2026', event:'Analysts note the definitive end of the "four pillars" system in favor of power concentrated around To Lam'}
+    ],
+    related: [['china','party-state model and South China Sea territorial disputes'], ['usa','balancing economic partnership amid the trade war with China']]
+  },
+  egy: {
+    snapshot: 'A new parliament, elected in late 2025 with almost no real competition, will be the last one before President Sisi’s constitutionally final third term expires in 2030 — and it’s this parliament that will decide whether to extend his rule further.',
+    facts: [['President','Abdel Fattah el-Sisi — since 2014, third term since 2024'],['Speaker of the House of Representatives','Hisham Badawy — since 01.2026'],['Parliament','Dominated by the pro-government Nation’s Future Party and allies'],['Key question','Whether the new parliament will extend Sisi’s rule past 2030']],
+    figures: [['President','Abdel Fattah el-Sisi'],['Speaker, House of Representatives','Hisham Badawy']],
+    parties: ['Nation’s Future Party (Mostaqbal Watan, 2014) — the main pro-government party, formed with direct backing from the security establishment, dominant in parliament.', 'Other pro-government parties fill nearly all remaining seats — real opposition in parliament is effectively absent.', 'Independent and opposition candidates face systemic obstacles to registration and campaigning — international observers describe the elections as lacking real competition.'],
+    how: 'A super-presidential republic: the president is elected for 6 years (maximum 2 terms under the 2019 constitution), and holds sweeping powers — appoints the prime minister and cabinet, commands the armed forces, can dissolve parliament under certain conditions, and appoints some senators. Parliament is bicameral: the House of Representatives (596 seats, 568 elected, the rest presidentially appointed) is the main legislative body; the Senate is a consultative upper chamber with limited powers, recreated in 2020. The armed forces remain a central political and economic player — controlling a substantial share of the economy from construction to food — seen both as a guarantor of stability and as the real source of Sisi’s own power, since he himself rose from the military leadership. Human rights organizations document systemic constraints on judicial independence, prosecution of critics, and a shrinking space for civil society, against a backdrop of continuing economic crisis (inflation, currency devaluation) and rising public discontent.',
+    turning: [
+      {flag:false, date:'2014', event:'Sisi is elected president after ousting President Morsi in 2013'},
+      {flag:true, date:'2019', event:'Constitutional amendments extend the presidential term from 4 to 6 years and allow up to 2 such terms, opening a path for Sisi to rule until 2030'},
+      {flag:false, date:'2024', event:'Sisi is re-elected to a third — and, under the current constitution, final — term'},
+      {flag:true, date:'08–11.2025', event:'Parliamentary elections — criticized for lacking real competition, with party lists cleared in favor of pro-government forces'},
+      {flag:false, date:'01.2026', event:'Hisham Badawy is elected the 13th speaker of the House of Representatives'}
+    ],
+    related: [['sau','regional partnership in the Arab world'], ['isr','the 1979 peace treaty and mediation over Gaza']]
+  },
+  col: {
+    snapshot: 'The country elected a right-wing, sharply anti-left lawyer as president for the first time in decades — by less than a point over the candidate of the coalition of Colombia’s first-ever leftist president, whose term ended with no right to run again.',
+    facts: [['President','Abelardo de la Espriella — took office 07.08.2026'],['Predecessor','Gustavo Petro (2022–2026), the country’s first leftist president'],['Congress','Historic Pact (Petro’s left coalition) — the largest force, without a majority'],['Context','The new president announced a foreign-policy pivot from China toward the US']],
+    figures: [['President','Abelardo de la Espriella'],['Ex-President','Gustavo Petro'],['Losing left-coalition candidate','Iván Cepeda']],
+    parties: ['Pacto Histórico (Historic Pact, 2021, Petro) — the left coalition that brought Colombia’s first leftist president to power in 2022; the largest force in Congress after 2026, but now in opposition to the presidency.', 'Centro Democrático — the right-wing party of ex-president Uribe, the second-largest force in Congress.', 'The party of President de la Espriella — the right-wing, anti-left coalition that won the 2026 presidential election.', 'The Liberal Party, Conservative Party, and La U — traditional centrist parties, essential to building any majority in a fragmented Congress.'],
+    how: 'A presidential republic with no consecutive re-election: the president is elected for 4 years with no right to immediate re-election (after a 2015 reform repealed the one-time consecutive re-election allowed before) — which is why Petro, however popular with his base, could not run in 2026. If no candidate wins an outright majority in the first round, a runoff is held between the top two — in 2026 the runoff decided the race by less than a point. Congress is bicameral: the Senate (108 seats, elected in a single nationwide district) and the House of Representatives (188 seats, elected by department) — both renew simultaneously every 4 years, separately from the presidential vote. Colombia is a unitary state divided into 32 departments with elected governors and assemblies, but with limited autonomy compared to a federation; key powers over security, the economy and foreign policy remain centralized in Bogotá — though the new administration held its inauguration in Cali, a symbolic gesture toward decentralization.',
+    turning: [
+      {flag:true, date:'2022', event:'Gustavo Petro is elected president — the first leftist president in Colombia’s history'},
+      {flag:false, date:'03.2026', event:'Congressional elections: the Historic Pact wins 62 seats across both chambers — the largest force, without a majority'},
+      {flag:true, date:'31.05.2026', event:'Presidential election runoff: Abelardo de la Espriella wins 49.66% to 48.70% over Iván Cepeda of the Historic Pact'},
+      {flag:false, date:'07.2026', event:'Petro, constitutionally barred from a second term, hands over power'},
+      {flag:true, date:'07.08.2026', event:'De la Espriella’s inauguration — the first in the country’s history held outside Bogotá, in Cali'}
+    ],
+    related: [['usa','the new government’s announced foreign-policy realignment'], ['brazil','contrast between left- and right-populist trends in Latin America'], ['mex','comparing left and right presidencies in the region']]
+  },
+  nga: {
+    snapshot: 'Africa’s largest economy and most populous country is heading toward the 2027 election under a new electoral law the ruling party calls reform and the opposition calls a tool to entrench its own power.',
+    facts: [['President','Bola Tinubu (APC) — since 29.05.2023'],['National Assembly','APC holds a majority in both chambers'],['Context','2026 is the pre-election year ahead of the 2027 general election'],['Key question','The Electoral Act 2026 and its effect on the 2027 vote']],
+    figures: [['President','Bola Tinubu'],['Senate President','Godswill Akpabio'],['Opposition figure (ex-VP)','Atiku Abubakar'],['Labour Party leader','Peter Obi']],
+    seats: {chamber:'Senate (109 seats, majority 55)', majority:55, items:[
+      {name:'APC', seats:75, color:'#1C6FBF'},
+      {name:'PDP', seats:26, color:'#12805F'},
+      {name:'Others', seats:8, color:'#5C6B80'}
+    ]},
+    parties: ['APC (All Progressives Congress, 2013) — Tinubu’s ruling party, dominant in both chambers of the National Assembly since 2023.', 'PDP (People’s Democratic Party) — historically dominant (ruled 1999–2015), now the main opposition, weakened by internal splits.', 'Labour Party — Peter Obi’s party, which posted a surprisingly strong result in the 2023 election, especially among youth and urban voters.', 'NNPP, APGA and other regional parties represent individual states and ethnic groups.'],
+    how: 'A presidential federal republic: the president is directly elected for 4 years (maximum 2 terms) and must win not just a plurality nationally but at least 25% of the vote in a minimum of two-thirds of the 36 states — a mechanism meant to block a president who relies on only one region. The National Assembly is bicameral: the Senate (109 seats — 3 per state plus 1 for the federal capital territory of Abuja) and the House of Representatives (360 seats by constituency, proportional to state population). Nigeria is a federation of 36 states plus the federal capital territory, with deep religious (a Muslim north and Christian south) and ethnic (Hausa-Fulani, Yoruba, Igbo and dozens of other peoples) divisions that drive nearly all coalition-building and post-distribution logic. INEC (the Independent National Electoral Commission) is formally independent, but its real impartiality is disputed — the balance of power in and around INEC, together with the new Electoral Act 2026, will determine how competitive the 2027 election turns out to be.',
+    turning: [
+      {flag:true, date:'25.02.2023', event:'General election: Tinubu wins a disputed result (~37% on turnout below 27%)'},
+      {flag:false, date:'29.05.2023', event:'Tinubu takes office and immediately ends fuel subsidies — prices spike sharply'},
+      {flag:false, date:'2023–2025', event:'Economic crisis: inflation, naira devaluation, a rising cost of living'},
+      {flag:true, date:'2026', event:'The Electoral Act 2026 is passed — Tinubu calls it a strengthening of democratic institutions, the opposition calls it a tool to control the electoral commission before 2027'},
+      {flag:false, date:'2026', event:'The 2027 election cycle begins, with splits inside opposition parties (PDP, possible regroupings around Atiku and Obi)'}
+    ],
+    related: [['zaf','Africa’s largest economies'], ['sau','OPEC+ partnership as an oil producer']]
+  },
+  nld: {
+    snapshot: 'The country’s youngest-ever prime minister leads its first minority government in decades — a three-party coalition 10 votes short of a majority, which took more than three months to assemble after the narrowest vote margin since 1956.',
+    facts: [['Prime Minister','Rob Jetten (D66) — since 23.02.2026, the youngest PM in the country’s history'],['Coalition','D66 + VVD + CDA — 66 of 150 seats, a minority government'],['House of Representatives','D66 and PVV tied at 26 seats each, the narrowest margin since 1956'],['Formation','117 days of negotiations after the 29.10.2025 election']],
+    figures: [['Prime Minister','Rob Jetten'],['Finance Minister (VVD)','Dilan Yeşilgöz'],['PVV leader (largest opposition)','Geert Wilders']],
+    seats: {chamber:'House of Representatives (150 seats, majority 76)', majority:76, items:[
+      {name:'D66 (coalition)', seats:26, color:'#12805F'},
+      {name:'PVV (opposition)', seats:26, color:'#1C3E7A'},
+      {name:'VVD (coalition)', seats:22, color:'#E8A33D'},
+      {name:'GroenLinks-PvdA (opposition)', seats:20, color:'#B5342E'},
+      {name:'CDA (coalition)', seats:18, color:'#5C6B80'},
+      {name:'Others (JA21, FvD, BBB and more)', seats:38, color:'#8A93A3'}
+    ]},
+    parties: ['D66 — progressive liberals, Jetten’s party, which unexpectedly overtook the PVV in the 2025 election.', 'PVV (Geert Wilders) — far-right, anti-immigration, the largest opposition force; its own 2024 government collapsed in June 2025.', 'VVD — center-right liberals, a coalition partner handling finance, defense, justice and health.', 'CDA — Christian democrats, a coalition partner handling foreign affairs, home affairs and economic affairs.', 'GroenLinks-PvdA — the merged greens and social democrats, a large opposition force (20 seats).', 'JA21, FvD, BBB and others — smaller right-wing and regional parties.'],
+    how: 'A parliamentary constitutional monarchy: the king is the ceremonial head of state; real executive power sits with the prime minister, formed by the party/coalition able to negotiate a majority — or, as now, to govern without one — in the House of Representatives. The House’s 150 seats are allocated about as close to pure proportionality as any system in the world: the whole country is a single constituency, with an effective threshold of roughly 0.67% of the vote (1/150) — which explains why more than 15 parties hold seats. The 75-seat Senate is elected indirectly by the provincial legislatures, renews every 4 years, and holds veto power over legislation (without the right to amend it), which makes the composition of provincial parliaments an additional factor in national politics. With no electoral threshold, the Netherlands almost never has single-party government — coalition talks traditionally take months (a record 299 days in 2021), and the 2026 minority government is itself a sign that even broad coalitions are getting harder to assemble.',
+    turning: [
+      {flag:false, date:'06.2025', event:'The Wilders (PVV) government collapses after a coalition partner walks out'},
+      {flag:true, date:'29.10.2025', event:'Snap election: D66 and PVV both win 26 seats — the narrowest margin since 1956, with D66 ahead on votes'},
+      {flag:false, date:'11.2025', event:'The Electoral Council confirms the results; coalition talks begin'},
+      {flag:true, date:'30.01.2026', event:'D66, VVD and CDA present a coalition agreement — 117 days of talks'},
+      {flag:true, date:'23.02.2026', event:'Rob Jetten is sworn in as the youngest prime minister in Dutch history'}
+    ],
+    related: [['germany','key EU partner'], ['france','the Franco-German-Dutch axis within the EU']]
+  },
+  pak: {
+    snapshot: 'The party that won the most votes in the 2024 election sits in opposition — its leader in prison — while the country is run by a coalition of former rivals assembled specifically to keep his supporters out of power.',
+    facts: [['Prime Minister','Shehbaz Sharif (PMLN) — since 03.2024 (second term)'],['National Assembly','A PMLN+PPP-led coalition governs, excluding PTI-aligned independents'],['Largest bloc by votes','Independents backed by Imran Khan’s PTI — in opposition'],['Context','Imran Khan remains imprisoned; the army is a key behind-the-scenes player']],
+    figures: [['Prime Minister','Shehbaz Sharif'],['PMLN leader (PM’s elder brother)','Nawaz Sharif'],['PTI leader (imprisoned)','Imran Khan'],['Army Chief of Staff','Asim Munir']],
+    seats: {chamber:'National Assembly (336 seats, majority 169)', majority:169, items:[
+      {name:'Independents (PTI-aligned)', seats:93, color:'#B5750E'},
+      {name:'PMLN', seats:75, color:'#12805F'},
+      {name:'PPP', seats:54, color:'#B5342E'},
+      {name:'Other coalition partners', seats:114, color:'#5C6B80'}
+    ]},
+    parties: ['PMLN (Pakistan Muslim League-Nawaz) — the Sharif family’s party, ruling, based in industrial Punjab.', 'PPP (Pakistan People’s Party) — the Bhutto-Zardari family’s party, junior coalition partner, strong in Sindh.', 'PTI (Pakistan Tehreek-e-Insaf), Imran Khan’s party — formally barred from contesting as a party (stripped of its electoral symbol), but its independent candidates won the most votes and seats — the largest opposition force.', 'MQM-P and other smaller parties — junior partners in the ruling coalition.'],
+    how: 'A parliamentary federal republic: the prime minister is head of government, elected by the National Assembly and the real executive authority; the president is a ceremonial head of state, chosen by an electoral college of parliament and the provincial assemblies. The National Assembly has 336 seats: 266 elected directly by first-past-the-post, 60 reserved for women and 10 for religious minorities (allocated proportionally among parties based on the direct-vote results). The 100-seat Senate is elected indirectly by the provincial assemblies for 6-year terms (half rotating every 3 years), meant to give all 4 provinces equal representation regardless of population, balancing Punjab’s dominance in the National Assembly. Pakistan is a federation of 4 provinces (Punjab, Sindh, Khyber Pakhtunkhwa, Balochistan) with significant ethnic and economic differences; provincial autonomy and resource-sharing, especially in Balochistan, remain a constant source of internal tension. No Pakistani government has historically held power long without at least the army’s tacit support, and the standoff between Imran Khan and the military (since his 2022 ouster) has been the key factor shaping the 2024 election and continued pressure on PTI since.',
+    turning: [
+      {flag:true, date:'08.2023', event:'Imran Khan is arrested; PTI is stripped of its unified party symbol for elections'},
+      {flag:true, date:'02.2024', event:'General election: PTI-backed independents win the most seats (93 of 336) but not a majority'},
+      {flag:true, date:'03.03.2024', event:'A PMLN+PPP+MQM-P coalition forms government; Shehbaz Sharif becomes PM for a second time'},
+      {flag:false, date:'2024–2026', event:'Legal proceedings against Imran Khan continue; PTI alleges systematic pressure from the authorities'},
+      {flag:false, date:'2026', event:'Tension between the civilian government and military leadership remains a key factor in the coalition’s stability'}
+    ],
+    related: [['india','historic rivalry and the conflict over Kashmir'], ['china','the CPEC strategic partnership'], ['sau','financial support and labor migration']]
+  },
+  tha: {
+    snapshot: 'A party that had recently been a junior coalition partner unexpectedly won a snap election called after a leaked phone call brought down the government of the daughter of a once-untouchable billionaire ex-prime minister.',
+    facts: [['Prime Minister','Anutin Charnvirakul (Bhumjaithai) — since 08.2025, re-elected after the 02.2026 vote'],['House of Representatives','Bhumjaithai — the largest party, in coalition with Pheu Thai'],['Context','A referendum on a new constitution passed with 60% support (69% turnout) in the same election'],['Backdrop','A border conflict with Cambodia and economic stagnation']],
+    figures: [['Prime Minister','Anutin Charnvirakul'],['Ex-PM (removed by court order)','Paetongtarn Shinawatra'],['Her father, influential ex-PM in exile/under investigation','Thaksin Shinawatra']],
+    seats: {chamber:'House of Representatives (500 seats, majority 251)', majority:251, items:[
+      {name:'Bhumjaithai', seats:192, color:'#1C3E7A'},
+      {name:'People’s Party', seats:88, color:'#E8A33D'},
+      {name:'Pheu Thai', seats:58, color:'#B5342E'},
+      {name:'Others', seats:162, color:'#5C6B80'}
+    ]},
+    parties: ['Bhumjaithai — Anutin’s conservative party, the surprise winner of the 2026 election, previously a junior partner in the Pheu Thai coalition.', 'People’s Party — a reformist party (successor to the dissolved Move Forward), the runner-up in 2026 and the main voice for systemic change.', 'Pheu Thai — the Shinawatra family’s populist party, dominant in Thai politics for two decades, reduced to third place in 2026.', 'The military-royalist establishment and the Constitutional Court remain influential non-party players that regularly decide the fate of governments through court rulings.'],
+    how: 'A constitutional monarchy with a history of military coups: the king is a symbol of national unity with substantial informal influence; Thailand has seen more than a dozen military coups since 1932, and the army and allied institutions (including the Constitutional Court) retain the ability to remove elected governments without a formal coup, as happened to Paetongtarn in 2025. The House of Representatives has 500 seats: 400 from single-member constituencies, 100 from party lists — a mixed system repeatedly redesigned after each coup or constitutional reform. After a 2024 reform, the 200-seat Senate is now chosen through a complex indirect professional-election system rather than direct appointment by the military junta — a step toward reducing military influence on the legislative process, though the transition leaves old elites with plenty of leverage. A referendum held alongside the February 2026 election approved replacing the 2017 constitution (adopted under the military government after the 2014 coup) — a first step toward possibly rewriting the rules, including the military’s and the Constitutional Court’s role in politics.',
+    turning: [
+      {flag:false, date:'08.2024', event:'Paetongtarn Shinawatra (Pheu Thai, Thaksin’s daughter) becomes prime minister'},
+      {flag:true, date:'06.2025', event:'A leaked phone call between Paetongtarn and Cambodia’s ex-PM Hun Sen surfaces; Bhumjaithai leaves the coalition'},
+      {flag:true, date:'29.08.2025', event:'The Constitutional Court removes Paetongtarn from office for an ethics violation'},
+      {flag:false, date:'08.2025', event:'Anutin Charnvirakul (Bhumjaithai) becomes Thailand’s 32nd prime minister'},
+      {flag:false, date:'12.12.2025', event:'Anutin dissolves the House and calls a snap election'},
+      {flag:true, date:'08.02.2026', event:'Snap election: Bhumjaithai wins unexpectedly (170 constituencies); a referendum on a new constitution passes with 60% support'}
+    ],
+    related: [['idn','regional balance in Southeast Asia'], ['china','economic influence and tourism']]
   }
 };
 
@@ -2229,5 +2451,7 @@ route();
     var latest = EDGES.reduce(function(m, x){ return x.date > m ? x.date : m; }, EDGES[0].date);
     freshnessEl.textContent = 'Updated ' + fmtDate(latest);
   }
+  var systemsEl = document.getElementById('stat-systems');
+  if (systemsEl) systemsEl.textContent = Object.keys(SYSTEMS_FULL).length;
 })();
 </script>
