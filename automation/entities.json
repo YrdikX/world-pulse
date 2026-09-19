@@ -85,6 +85,81 @@
   "type": "person"
  },
  {
+  "id": "trump",
+  "label": "Donald Trump",
+  "type": "person"
+ },
+ {
+  "id": "netanyahu",
+  "label": "Benjamin Netanyahu",
+  "type": "person"
+ },
+ {
+  "id": "xi",
+  "label": "Xi Jinping",
+  "type": "person"
+ },
+ {
+  "id": "modi",
+  "label": "Narendra Modi",
+  "type": "person"
+ },
+ {
+  "id": "milei",
+  "label": "Javier Milei",
+  "type": "person"
+ },
+ {
+  "id": "ramaphosa",
+  "label": "Cyril Ramaphosa",
+  "type": "person"
+ },
+ {
+  "id": "tolam",
+  "label": "Tô Lâm",
+  "type": "person"
+ },
+ {
+  "id": "sisi",
+  "label": "Abdel Fattah el-Sisi",
+  "type": "person"
+ },
+ {
+  "id": "tinubu",
+  "label": "Bola Tinubu",
+  "type": "person"
+ },
+ {
+  "id": "pezeshkian",
+  "label": "Masoud Pezeshkian",
+  "type": "person"
+ },
+ {
+  "id": "mkhamenei",
+  "label": "Mojtaba Khamenei",
+  "type": "person"
+ },
+ {
+  "id": "sheinbaum",
+  "label": "Claudia Sheinbaum",
+  "type": "person"
+ },
+ {
+  "id": "espriella",
+  "label": "Abelardo de la Espriella",
+  "type": "person"
+ },
+ {
+  "id": "anutin",
+  "label": "Anutin Charnvirakul",
+  "type": "person"
+ },
+ {
+  "id": "jetten",
+  "label": "Rob Jetten",
+  "type": "person"
+ },
+ {
   "id": "duma",
   "label": "State Duma election",
   "type": "event"

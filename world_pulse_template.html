@@ -433,7 +433,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
       <p class="about-lede">A prototype for tracking who said or did what in world politics, as fact — not opinion — with a link to the original source on every claim.</p>
 
       <h3>What this is right now</h3>
-      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. <span id="stat-edges-inline-2"></span> real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), <span id="stat-systems"></span> full political-system profiles and 16 person profiles (photo + bio from Wikipedia) — all hand-built so far, plus a growing set of edges pulled in automatically: news is checked every 30 minutes, an AI extraction pass runs every 6 hours, and nothing goes live without a human reviewing it first. Nothing here is an invented connection, date or quote.</p>
+      <p>All 221 countries are on the map and clickable — most just don't have any data yet, and say so honestly rather than faking coverage. <span id="stat-edges-inline-2"></span> real, sourced edges now span Europe, North and South America, the Middle East, Asia-Pacific and Africa, going back to January 2026. On top of that there are 13 active Chambers (international organizations, from the UN and NATO to BRICS, the EU, Mercosur, ASEAN, the African Union and the Arab League), <span id="stat-systems"></span> full political-system profiles and <span id="stat-persons"></span> person profiles (photo + bio from Wikipedia) — all hand-built so far, plus a growing set of edges pulled in automatically: news is checked every 30 minutes, an AI extraction pass runs every 6 hours, and nothing goes live without a human reviewing it first. Nothing here is an invented connection, date or quote.</p>
 
       <h3>The attribution rule</h3>
       <p>A news item belongs to whoever is the <b>actor</b> — the one speaking or acting — not whoever it's about. "Lithuania's president says the drone was Russian" is filed under Lithuania, not Russia, because Lithuania is who's speaking. People are tied to the country they represent (Putin, Lavrov → Russia), so their statements count as that country's international activity.</p>
@@ -590,6 +590,21 @@ var ENTITIES = [
   {id:'lmontenegro', label:'Luís Montenegro', type:'person', country:'prt'},
   {id:'mitsotakis', label:'Mitsotakis', type:'person', country:'grc'},
   {id:'nicusor_dan', label:'Nicșor Dan', type:'person', country:'rom'},
+  {id:'trump', label:'Donald Trump', type:'person', country:'usa'},
+  {id:'netanyahu', label:'Benjamin Netanyahu', type:'person', country:'isr'},
+  {id:'xi', label:'Xi Jinping', type:'person', country:'china'},
+  {id:'modi', label:'Narendra Modi', type:'person', country:'india'},
+  {id:'milei', label:'Javier Milei', type:'person', country:'arg'},
+  {id:'ramaphosa', label:'Cyril Ramaphosa', type:'person', country:'zaf'},
+  {id:'tolam', label:'Tô Lâm', type:'person', country:'vnm'},
+  {id:'sisi', label:'Abdel Fattah el-Sisi', type:'person', country:'egy'},
+  {id:'tinubu', label:'Bola Tinubu', type:'person', country:'nga'},
+  {id:'pezeshkian', label:'Masoud Pezeshkian', type:'person', country:'irn'},
+  {id:'mkhamenei', label:'Mojtaba Khamenei', type:'person', country:'irn'},
+  {id:'sheinbaum', label:'Claudia Sheinbaum', type:'person', country:'mex'},
+  {id:'espriella', label:'Abelardo de la Espriella', type:'person', country:'col'},
+  {id:'anutin', label:'Anutin Charnvirakul', type:'person', country:'tha'},
+  {id:'jetten', label:'Rob Jetten', type:'person', country:'nld'},
   {id:'duma', label:'State Duma election', type:'event'},
   {id:'russia', label:'Russia', type:'country', geo:RUS_PATH},
   {id:'ukraine', label:'Ukraine', type:'country', geo:UKR_PATH},
@@ -2427,5 +2442,7 @@ route();
   }
   var systemsEl = document.getElementById('stat-systems');
   if (systemsEl) systemsEl.textContent = Object.keys(SYSTEMS_FULL).length;
+  var personsEl = document.getElementById('stat-persons');
+  if (personsEl) personsEl.textContent = Object.keys(PERSON_PROFILES).length;
 })();
 </script>
