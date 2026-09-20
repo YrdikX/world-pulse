@@ -34,7 +34,8 @@ body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans', system
 .wrap{max-width:1080px; margin:0 auto;}
 
 .masthead{border-bottom:3px solid var(--ink); padding:22px 0 16px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;}
-.masthead .name{font-family:'Archivo', sans-serif; font-weight:800; font-size:28px; letter-spacing:-0.01em;}
+.masthead .name{font-family:'Archivo', sans-serif; font-weight:800; font-size:28px; letter-spacing:-0.01em; color:var(--ink); text-decoration:none;}
+.masthead .name:hover{opacity:0.8;}
 .masthead .name span{color:var(--accent);}
 .masthead .tagline{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.08em;}
 .live-badge{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--live); display:flex; align-items:center; gap:6px; text-transform:uppercase; letter-spacing:.06em;}
@@ -111,7 +112,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .panel-type{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em;}
 .panel-name{display:block; font-family:'Archivo',sans-serif; font-size:21px; font-weight:800; margin:4px 0 14px; color:var(--ink); text-decoration:none;}
 .panel-section{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--accent); letter-spacing:.08em; margin:16px 0 8px;}
-.edge-item{font-size:13px; line-height:1.5; padding:9px 0; border-top:1px solid var(--line);}
+.edge-item{font-size:13px; line-height:1.5; padding:9px 0; border-top:1px solid var(--line); cursor:pointer;}
 .edge-item a{color:var(--accent); text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:11px;}
 .edge-item a:hover{text-decoration:underline;}
 .edge-item .rel{color:var(--ink-dim);}
@@ -166,7 +167,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-timeline li{display:flex; gap:14px; padding:9px 0; border-top:1px solid var(--line); font-size:13.5px;}
 .cp-timeline .tdate{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-dim); min-width:90px;}
 .cp-timeline .flag{color:var(--live);}
-.cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); transition:border-color .15s;}
+.cp-news-item{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); transition:border-color .15s; cursor:pointer;}
 .cp-news-item:hover{border-color:var(--accent);}
 .cp-news-item .who-line{font-size:12.5px; margin-bottom:6px;}
 .cp-news-detail{margin:0 0 8px; font-size:14px; line-height:1.6; color:inherit;}
@@ -222,7 +223,7 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .month-body{display:flex; flex-direction:column; gap:10px; margin:0 0 4px;}
 .month-body[hidden]{display:none;}
 .feed-list{display:flex; flex-direction:column; gap:10px;}
-.feed-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; transition:border-color .15s;}
+.feed-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; transition:border-color .15s; cursor:pointer;}
 .feed-card:hover{border-color:var(--accent);}
 .feed-card.no-link{cursor:default;}
 .feed-card.no-link:hover{border-color:var(--line);}
@@ -251,7 +252,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 .map-legend .lg-dot{width:9px;height:9px;border-radius:50%; flex:none; border:1px solid rgba(0,0,0,.15);}
 
 .archive-list{display:flex; flex-direction:column; gap:10px;}
-.archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; transition:border-color .15s;}
+.archive-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; transition:border-color .15s; cursor:pointer;}
 .archive-card:hover{border-color:var(--accent);}
 .archive-date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); min-width:78px; text-decoration:none;}
 .archive-date:hover{text-decoration:underline;}
@@ -269,7 +270,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 .transcript{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px; box-shadow:var(--shadow);}
 .transcript h3{font-family:'Archivo',sans-serif; font-size:19px; font-weight:800; margin:0 0 4px;}
 .transcript .sub{font-size:12.5px; color:var(--ink-dim); margin-bottom:18px;}
-.statement{border-left:3px solid var(--t-org); padding:4px 0 4px 16px; margin-bottom:18px;}
+.statement{border-left:3px solid var(--t-org); padding:4px 0 4px 16px; margin-bottom:18px; cursor:pointer;}
 .statement .speaker{font-weight:700; font-size:13.5px;}
 .statement .stmt-date{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-dim); margin-left:8px; text-decoration:none;}
 .statement .stmt-date:hover{text-decoration:underline;}
@@ -308,7 +309,7 @@ path.hl-country.pulse-t3{animation:pulseGlowT3 3s ease-in-out infinite; stroke:v
 <div class="wrap">
   <div class="masthead">
     <div>
-      <div class="name">WORLD<span>PULSE</span></div>
+      <a class="name" href="/">WORLD<span>PULSE</span></a>
       <div class="tagline">Facts, not framing — who did what, sourced</div>
     </div>
     <div class="live-badge"><span class="dot"></span> <span id="stat-freshness">Live</span></div>
@@ -2405,8 +2406,19 @@ function relSpan(fromId, label, toId){
 function eventDateLink(date, eventId, cls){
   return '<a class="' + cls + '" href="/event/' + eventId + '.html" title="View full event page">' + fmtDate(date) + '</a>';
 }
+// Every card carries data-event so the whole card is clickable to the event
+// page -- not just the date link -- without repeating this wiring at every
+// render call site. One delegated listener covers all of them, present and
+// future, and yields to any real <a>/<button> inside the card (entity
+// links, the date link, "source ->", "show more") so those keep their own
+// behavior instead of being swallowed by the card-wide click.
+document.addEventListener('click', function(event){
+  if (event.target.closest('a, button')) return;
+  var card = event.target.closest('[data-event]');
+  if (card) location.href = '/event/' + card.getAttribute('data-event') + '.html';
+});
 function edgeRow(fromId, rel, toId, url, date, eventId){
-  return '<div class="edge-item">' + typeSpan(fromId) + ' ' + relSpan(fromId, rel, toId) + ' → ' + typeSpan(toId) +
+  return '<div class="edge-item" data-event="' + eventId + '">' + typeSpan(fromId) + ' ' + relSpan(fromId, rel, toId) + ' → ' + typeSpan(toId) +
     eventDateLink(date, eventId, 'edge-date') +
     '<a href="' + url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
 }
@@ -2554,7 +2566,7 @@ function newsCardsHtml(edges, emptyText){
   if (!edges.length) return '<div class="cp-empty">' + emptyText + '</div>';
   return edges.map(function(x){
     var id = edgeId(x);
-    return '<div class="cp-news-item"><div class="who-line">' + typeSpan(x.from) + ' ' + relSpan(x.from, x.label, x.to) + ' → ' + typeSpan(x.to) + ' ' + eventDateLink(x.date, id, 'edge-date') + '</div>' +
+    return '<div class="cp-news-item" data-event="' + id + '"><div class="who-line">' + typeSpan(x.from) + ' ' + relSpan(x.from, x.label, x.to) + ' → ' + typeSpan(x.to) + ' ' + eventDateLink(x.date, id, 'edge-date') + '</div>' +
       '<p class="cp-news-detail">' + autoLinkText(x.detail || x.label, [x.from, x.to]) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }).join('');
@@ -2875,7 +2887,7 @@ drawMap();
 
 function archiveCard(x){
   var id = edgeId(x);
-  return '<div class="archive-card">' + eventDateLink(x.date, id, 'archive-date') +
+  return '<div class="archive-card" data-event="' + id + '">' + eventDateLink(x.date, id, 'archive-date') +
     '<span class="archive-body">' + typeSpan(x.from) + ' ' + relSpan(x.from, x.label, x.to) + ' → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
     '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></span></div>';
@@ -2918,7 +2930,7 @@ function renderChambers(activeId){
   var html = '<h3><a href="/entity/' + activeId + '.html" style="color:inherit; text-decoration:none;">' + orgName + '</a></h3><div class="sub">Real, sourced statements only — nothing here is invented.</div>';
   function statementHtml(x){
     var id = edgeId(x);
-    return '<div class="statement"><span class="speaker">' + orgName + '</span>' + eventDateLink(x.date, id, 'stmt-date') +
+    return '<div class="statement" data-event="' + id + '"><span class="speaker">' + orgName + '</span>' + eventDateLink(x.date, id, 'stmt-date') +
       '<p>' + relSpan(x.from, x.label.charAt(0).toUpperCase() + x.label.slice(1), x.to) + ': ' + typeSpan(x.to) + '</p>' +
       '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></div>';
   }
@@ -2935,7 +2947,7 @@ function renderChambers(activeId){
 
 function feedCard(x){
   var id = edgeId(x);
-  return '<div class="feed-card">' + eventDateLink(x.date, id, 'feed-date') +
+  return '<div class="feed-card" data-event="' + id + '">' + eventDateLink(x.date, id, 'feed-date') +
     '<span class="feed-body">' + typeSpan(x.from) + ' ' + relSpan(x.from, x.label, x.to) + ' → ' + typeSpan(x.to) +
     '<span class="feed-scope">' + x.scope + '</span>' +
     '<a href="' + x.url + '" target="_blank" rel="noopener" class="source-link">source →</a></span></div>';
