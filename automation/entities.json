@@ -635,6 +635,11 @@
   "type": "person"
  },
  {
+  "id": "timcook",
+  "label": "Tim Cook",
+  "type": "person"
+ },
+ {
   "id": "duma",
   "label": "State Duma election",
   "type": "event"
