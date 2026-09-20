@@ -181,6 +181,15 @@ path.hl-country.no-data:hover{filter:brightness(0.97); stroke:var(--ink-dim);}
 .cp-related-link{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent-bg); border-radius:100px; padding:6px 14px; cursor:pointer; text-decoration:none; display:inline-block;}
 .cp-related-link:hover{border-color:var(--accent);}
 .cp-empty{color:var(--ink-dim); font-size:13.5px; padding:16px 0;}
+.conn-sub{font-size:12.5px; color:var(--ink-dim); margin:-6px 0 12px;}
+.conn-list{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+.conn-row{display:flex; align-items:center; gap:8px; font-family:'IBM Plex Sans',sans-serif; font-size:13px; background:var(--surface); border:1px solid var(--line); border-radius:100px; padding:6px 8px 6px 14px; cursor:pointer;}
+.conn-row:hover{border-color:var(--accent);}
+.conn-row.active{border-color:var(--accent); background:var(--accent-bg);}
+.conn-name{font-weight:600;}
+.conn-count{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim); background:var(--surface-2); border-radius:100px; padding:2px 8px;}
+.conn-row.active .conn-count{color:var(--accent); background:var(--surface);}
+.conn-detail-title{font-family:'Archivo',sans-serif; font-weight:800; font-size:16px; margin:18px 0 12px; padding-top:16px; border-top:1px dashed var(--line);}
 .comment-empty{color:var(--ink-dim); font-size:13.5px; padding:8px 0 18px;}
 
 .person-header{display:flex; gap:18px; align-items:flex-start; border-bottom:3px solid var(--ink); padding-bottom:16px; margin-bottom:14px;}
@@ -2520,11 +2529,12 @@ function activateView(viewId){
   renderComments(viewId === 'view-country' || viewId === 'view-event');
 }
 
-function openEntityPage(id, skipHash){
+function openEntityPage(id, skipHash, withId){
   var e = byId[id];
   if (!e) return;
   if (!skipHash) location.hash = '#/entity/' + id;
   if (e.type === 'country') openCountryPage(id); else openGenericEntityPage(id);
+  if (withId && byId[withId]) activateConnection(id, withId);
 }
 
 function showEntityView(){ activateView('view-country'); }
@@ -2573,6 +2583,62 @@ function wireShowMore(container){
   });
 }
 
+// Connections: which other entities this one shares the most edges with,
+// ranked by count. This is pure aggregation over EDGES we already have --
+// no new data collection -- but nothing on the site currently answers
+// "how are these two actually connected" without manually scanning both
+// profiles and cross-referencing dates by eye.
+function computeConnections(id, limit){
+  var counts = {};
+  EDGES.forEach(function(x){
+    if (x.from === id && x.to !== id && byId[x.to]) counts[x.to] = (counts[x.to] || 0) + 1;
+    if (x.to === id && x.from !== id && byId[x.from]) counts[x.from] = (counts[x.from] || 0) + 1;
+  });
+  return Object.keys(counts).map(function(k){ return {id: k, count: counts[k]}; })
+    .sort(function(a, b){ return b.count - a.count || byId[a.id].label.localeCompare(byId[b.id].label); })
+    .slice(0, limit || 12);
+}
+function connectionsHtml(id){
+  var conns = computeConnections(id, 12);
+  if (!conns.length) return '';
+  var rows = conns.map(function(c){
+    var other = byId[c.id];
+    return '<button type="button" class="conn-row" data-id="' + c.id + '">' +
+      '<span class="conn-name" style="color:' + typeVar[other.type] + '">' + other.label + '</span>' +
+      '<span class="conn-count">' + c.count + '</span></button>';
+  }).join('');
+  return '<div class="cp-section"><h3>Connections</h3><div class="conn-sub">Shared documented events, most connected first — click one for their joint timeline.</div>' +
+    '<div class="conn-list">' + rows + '</div><div id="connections-detail"></div></div>';
+}
+function renderConnectionDetail(idA, idB, target){
+  if (!target || !byId[idA] || !byId[idB]) return;
+  var edges = EDGES.filter(function(x){
+    return (x.from === idA && x.to === idB) || (x.from === idB && x.to === idA);
+  }).sort(function(a, b){ return new Date(b.date) - new Date(a.date); });
+  target.innerHTML = '<div class="conn-detail-title">' + byId[idA].label + ' ↔ ' + byId[idB].label + '</div>' +
+    newsCardsHtmlCollapsible(edges, 'No documented events between them yet.', 'conn-detail');
+  wireShowMore(target);
+}
+function activateConnection(id, otherId){
+  var container = document.getElementById('country-content');
+  if (!container) return;
+  var detail = container.querySelector('#connections-detail');
+  if (!detail) return;
+  Array.from(container.querySelectorAll('.conn-row')).forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-id') === otherId);
+  });
+  renderConnectionDetail(id, otherId, detail);
+}
+function wireConnections(id){
+  var container = document.getElementById('country-content');
+  if (!container) return;
+  Array.from(container.querySelectorAll('.conn-row')).forEach(function(btn){
+    btn.addEventListener('click', function(){
+      location.hash = '#/entity/' + id + '/with/' + btn.getAttribute('data-id');
+    });
+  });
+}
+
 function openGenericEntityPage(id){
   var e = byId[id];
   var outgoing = EDGES.filter(function(x){ return x.from === id; }).sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
@@ -2604,8 +2670,11 @@ function openGenericEntityPage(id){
     html += '<div class="cp-section"><h3>Mentioned in / connected to</h3>' + newsCardsHtmlCollapsible(incoming, '', 'cp-incoming') + '</div>';
   }
 
+  html += connectionsHtml(id);
+
   document.getElementById('country-content').innerHTML = html;
   wireShowMore(document.getElementById('country-content'));
+  wireConnections(id);
   currentCommentTopic = {id: 'entity-' + id, label: e.label};
   showEntityView();
 }
@@ -2649,8 +2718,11 @@ function openCountryPage(id){
       '</div></div>';
   }
 
+  html += connectionsHtml(id);
+
   document.getElementById('country-content').innerHTML = html;
   wireShowMore(document.getElementById('country-content'));
+  wireConnections(id);
   currentCommentTopic = {id: 'entity-' + id, label: e.label};
   showEntityView();
 }
@@ -3050,7 +3122,11 @@ function route(){
   var parts = hash.split('/').filter(Boolean);
   if (!parts.length) return false;
   if (parts[0] === 'event' && parts[1] && findEdgeById(parts[1])){ openEventPage(parts[1], true); return true; }
-  if (parts[0] === 'entity' && parts[1] && byId[parts[1]]){ openEntityPage(parts[1], true); return true; }
+  if (parts[0] === 'entity' && parts[1] && byId[parts[1]]){
+    var withId = (parts[2] === 'with' && parts[3] && byId[parts[3]]) ? parts[3] : null;
+    openEntityPage(parts[1], true, withId);
+    return true;
+  }
   if (parts[0] === 'trends' && parts[1]){ switchTab('tab-trends', true); renderTrends(parts[1]); return true; }
   if (document.getElementById('tab-' + parts[0])){ switchTab('tab-' + parts[0], true); return true; }
   return false;
