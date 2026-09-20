@@ -665,6 +665,49 @@ var ENTITIES = [
   {id:'olabi', label:'Olabi', type:'person', country:'syr'},
   {id:'fbolsonaro', label:'Flávio Bolsonaro', type:'person', country:'brazil'},
   {id:'johal', label:'Jagtar Singh Johal', type:'person', country:'uk'},
+  {id:'yermak', label:'Yermak', type:'person', country:'ukraine'},
+  {id:'koretsky', label:'Koretsky', type:'person', country:'ukraine'},
+  {id:'svyrydenko', label:'Svyrydenko', type:'person', country:'ukraine'},
+  {id:'poroshenko', label:'Poroshenko', type:'person', country:'ukraine'},
+  {id:'tymoshenko', label:'Tymoshenko', type:'person', country:'ukraine'},
+  {id:'petro', label:'Petro', type:'person', country:'col'},
+  {id:'cepeda', label:'Iván Cepeda', type:'person', country:'col'},
+  {id:'khan', label:'Khan', type:'person', country:'pak'},
+  {id:'shehbazsharif', label:'Shehbaz Sharif', type:'person', country:'pak'},
+  {id:'nawazsharif', label:'Nawaz Sharif', type:'person', country:'pak'},
+  {id:'asimmunir', label:'Asim Munir', type:'person', country:'pak'},
+  {id:'mishustin', label:'Mishustin', type:'person', country:'russia'},
+  {id:'liqiang', label:'Li Qiang', type:'person', country:'china'},
+  {id:'zhaoleji', label:'Zhao Leji', type:'person', country:'china'},
+  {id:'wanghuning', label:'Wang Huning', type:'person', country:'china'},
+  {id:'caiqi', label:'Cai Qi', type:'person', country:'china'},
+  {id:'dingxuexiang', label:'Ding Xuexiang', type:'person', country:'china'},
+  {id:'lixi', label:'Li Xi', type:'person', country:'china'},
+  {id:'lepen', label:'Le Pen', type:'person', country:'france'},
+  {id:'starmer', label:'Starmer', type:'person', country:'uk'},
+  {id:'burnham', label:'Burnham', type:'person', country:'uk'},
+  {id:'murmu', label:'Murmu', type:'person', country:'india'},
+  {id:'felipevi', label:'Felipe VI', type:'person', country:'esp'},
+  {id:'prabowo', label:'Prabowo', type:'person', country:'idn'},
+  {id:'gibran', label:'Gibran', type:'person', country:'idn'},
+  {id:'albanese', label:'Albanese', type:'person', country:'aus'},
+  {id:'lapid', label:'Lapid', type:'person', country:'isr'},
+  {id:'gantz', label:'Gantz', type:'person', country:'isr'},
+  {id:'herzog', label:'Herzog', type:'person', country:'isr'},
+  {id:'villarruel', label:'Villarruel', type:'person', country:'arg'},
+  {id:'kirchner', label:'Kirchner', type:'person', country:'arg'},
+  {id:'zuma', label:'Zuma', type:'person', country:'zaf'},
+  {id:'leminhhung', label:'Le Minh Hung', type:'person', country:'vnm'},
+  {id:'badawy', label:'Badawy', type:'person', country:'egy'},
+  {id:'obi', label:'Peter Obi', type:'person', country:'nga'},
+  {id:'akpabio', label:'Godswill Akpabio', type:'person', country:'nga'},
+  {id:'abubakar', label:'Atiku Abubakar', type:'person', country:'nga'},
+  {id:'wilders', label:'Wilders', type:'person', country:'nld'},
+  {id:'yesilgoz', label:'Dilan Yeşilgöz', type:'person', country:'nld'},
+  {id:'paetongtarn', label:'Paetongtarn', type:'person', country:'tha'},
+  {id:'thaksin', label:'Thaksin Shinawatra', type:'person', country:'tha'},
+  {id:'obrador', label:'Obrador', type:'person', country:'mex'},
+  {id:'mbs', label:'Mohammed bin Salman', type:'person', country:'sau'},
   {id:'duma', label:'State Duma election', type:'event'},
   {id:'russia', label:'Russia', type:'country', geo:RUS_PATH},
   {id:'ukraine', label:'Ukraine', type:'country', geo:UKR_PATH},
@@ -2184,26 +2227,26 @@ function openCountryPage(id){
   var domestic = domesticOf(id);
 
   var html = '<div class="country-header"><h2>' + e.label + '</h2>';
-  html += '<div class="snapshot">' + (sys ? sys.snapshot : 'No political-system profile written yet for ' + e.label + '.') + '</div></div>';
+  html += '<div class="snapshot">' + (sys ? autoLinkText(sys.snapshot, [id]) : 'No political-system profile written yet for ' + e.label + '.') + '</div></div>';
 
   if (sys){
     html += '<div class="cp-grid">';
     html += '<div><div class="cp-section"><h3>Snapshot</h3><table class="cp-facts">' +
-      sys.facts.map(function(f){ return '<tr><td>' + f[0] + '</td><td>' + f[1] + '</td></tr>'; }).join('') + '</table></div>';
+      sys.facts.map(function(f){ return '<tr><td>' + f[0] + '</td><td>' + autoLinkText(f[1], [id]) + '</td></tr>'; }).join('') + '</table></div>';
     if (sys.figures){
       html += '<div class="cp-section"><h3>Top leadership</h3><table class="cp-figures">' +
-        sys.figures.map(function(f){ return '<tr><td>' + f[0] + '</td><td>' + f[1] + '</td></tr>'; }).join('') + '</table></div>';
+        sys.figures.map(function(f){ return '<tr><td>' + f[0] + '</td><td>' + autoLinkText(f[1], [id]) + '</td></tr>'; }).join('') + '</table></div>';
     }
     html += '</div>';
     html += '<div><div class="cp-section"><h3>Composition</h3>' + (sys.seats ? seatBarHtml(sys.seats) : '<div class="cp-empty">No chamber breakdown recorded.</div>') + '</div>';
-    html += '<div class="cp-section"><h3>Parties</h3><ul class="cp-parties">' + sys.parties.map(function(p){ return '<li>' + p + '</li>'; }).join('') + '</ul></div>';
+    html += '<div class="cp-section"><h3>Parties</h3><ul class="cp-parties">' + sys.parties.map(function(p){ return '<li>' + autoLinkText(p, [id]) + '</li>'; }).join('') + '</ul></div>';
     html += '</div>';
     html += '</div>';
 
-    html += '<div class="cp-section"><h3>How the system works</h3><div class="cp-how"><p>' + sys.how + '</p></div></div>';
+    html += '<div class="cp-section"><h3>How the system works</h3><div class="cp-how"><p>' + autoLinkText(sys.how, [id]) + '</p></div></div>';
 
     html += '<div class="cp-section"><h3>Recent turning points</h3><ul class="cp-timeline">' +
-      sys.turning.map(function(t){ return '<li><span class="tdate">' + t.date + '</span><span>' + (t.flag ? '<span class="flag">△</span> ' : '') + t.event + '</span></li>'; }).join('') + '</ul></div>';
+      sys.turning.map(function(t){ return '<li><span class="tdate">' + t.date + '</span><span>' + (t.flag ? '<span class="flag">△</span> ' : '') + autoLinkText(t.event, [id]) + '</span></li>'; }).join('') + '</ul></div>';
   }
 
   html += '<div class="cp-section"><h3>International (said or did)</h3>' + newsCardsHtmlCollapsible(acted, 'Nothing recorded yet.', 'cp-intl') + '</div>';

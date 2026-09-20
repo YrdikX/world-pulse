@@ -400,6 +400,221 @@
   "type": "person"
  },
  {
+  "id": "yermak",
+  "label": "Yermak",
+  "type": "person"
+ },
+ {
+  "id": "koretsky",
+  "label": "Koretsky",
+  "type": "person"
+ },
+ {
+  "id": "svyrydenko",
+  "label": "Svyrydenko",
+  "type": "person"
+ },
+ {
+  "id": "poroshenko",
+  "label": "Poroshenko",
+  "type": "person"
+ },
+ {
+  "id": "tymoshenko",
+  "label": "Tymoshenko",
+  "type": "person"
+ },
+ {
+  "id": "petro",
+  "label": "Petro",
+  "type": "person"
+ },
+ {
+  "id": "cepeda",
+  "label": "Iván Cepeda",
+  "type": "person"
+ },
+ {
+  "id": "khan",
+  "label": "Khan",
+  "type": "person"
+ },
+ {
+  "id": "shehbazsharif",
+  "label": "Shehbaz Sharif",
+  "type": "person"
+ },
+ {
+  "id": "nawazsharif",
+  "label": "Nawaz Sharif",
+  "type": "person"
+ },
+ {
+  "id": "asimmunir",
+  "label": "Asim Munir",
+  "type": "person"
+ },
+ {
+  "id": "mishustin",
+  "label": "Mishustin",
+  "type": "person"
+ },
+ {
+  "id": "liqiang",
+  "label": "Li Qiang",
+  "type": "person"
+ },
+ {
+  "id": "zhaoleji",
+  "label": "Zhao Leji",
+  "type": "person"
+ },
+ {
+  "id": "wanghuning",
+  "label": "Wang Huning",
+  "type": "person"
+ },
+ {
+  "id": "caiqi",
+  "label": "Cai Qi",
+  "type": "person"
+ },
+ {
+  "id": "dingxuexiang",
+  "label": "Ding Xuexiang",
+  "type": "person"
+ },
+ {
+  "id": "lixi",
+  "label": "Li Xi",
+  "type": "person"
+ },
+ {
+  "id": "lepen",
+  "label": "Le Pen",
+  "type": "person"
+ },
+ {
+  "id": "starmer",
+  "label": "Starmer",
+  "type": "person"
+ },
+ {
+  "id": "burnham",
+  "label": "Burnham",
+  "type": "person"
+ },
+ {
+  "id": "murmu",
+  "label": "Murmu",
+  "type": "person"
+ },
+ {
+  "id": "felipevi",
+  "label": "Felipe VI",
+  "type": "person"
+ },
+ {
+  "id": "prabowo",
+  "label": "Prabowo",
+  "type": "person"
+ },
+ {
+  "id": "gibran",
+  "label": "Gibran",
+  "type": "person"
+ },
+ {
+  "id": "albanese",
+  "label": "Albanese",
+  "type": "person"
+ },
+ {
+  "id": "lapid",
+  "label": "Lapid",
+  "type": "person"
+ },
+ {
+  "id": "gantz",
+  "label": "Gantz",
+  "type": "person"
+ },
+ {
+  "id": "herzog",
+  "label": "Herzog",
+  "type": "person"
+ },
+ {
+  "id": "villarruel",
+  "label": "Villarruel",
+  "type": "person"
+ },
+ {
+  "id": "kirchner",
+  "label": "Kirchner",
+  "type": "person"
+ },
+ {
+  "id": "zuma",
+  "label": "Zuma",
+  "type": "person"
+ },
+ {
+  "id": "leminhhung",
+  "label": "Le Minh Hung",
+  "type": "person"
+ },
+ {
+  "id": "badawy",
+  "label": "Badawy",
+  "type": "person"
+ },
+ {
+  "id": "obi",
+  "label": "Peter Obi",
+  "type": "person"
+ },
+ {
+  "id": "akpabio",
+  "label": "Godswill Akpabio",
+  "type": "person"
+ },
+ {
+  "id": "abubakar",
+  "label": "Atiku Abubakar",
+  "type": "person"
+ },
+ {
+  "id": "wilders",
+  "label": "Wilders",
+  "type": "person"
+ },
+ {
+  "id": "yesilgoz",
+  "label": "Dilan Yeşilgöz",
+  "type": "person"
+ },
+ {
+  "id": "paetongtarn",
+  "label": "Paetongtarn",
+  "type": "person"
+ },
+ {
+  "id": "thaksin",
+  "label": "Thaksin Shinawatra",
+  "type": "person"
+ },
+ {
+  "id": "obrador",
+  "label": "Obrador",
+  "type": "person"
+ },
+ {
+  "id": "mbs",
+  "label": "Mohammed bin Salman",
+  "type": "person"
+ },
+ {
   "id": "duma",
   "label": "State Duma election",
   "type": "event"
