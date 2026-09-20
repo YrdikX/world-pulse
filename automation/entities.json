@@ -615,6 +615,26 @@
   "type": "person"
  },
  {
+  "id": "rasmussen",
+  "label": "Rasmussen",
+  "type": "person"
+ },
+ {
+  "id": "rezaei",
+  "label": "Rezaei",
+  "type": "person"
+ },
+ {
+  "id": "fidan",
+  "label": "Fidan",
+  "type": "person"
+ },
+ {
+  "id": "azaria",
+  "label": "Azaria",
+  "type": "person"
+ },
+ {
   "id": "duma",
   "label": "State Duma election",
   "type": "event"
