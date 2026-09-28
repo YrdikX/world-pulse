@@ -1,8 +1,10 @@
 name: Deep pass (LLM extraction, every 6 hours)
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'   # 00:00, 06:00, 12:00, 18:00 UTC
+  # Schedule temporarily paused to stop ANTHROPIC_API_KEY usage -- re-add
+  # the schedule block below to resume the automatic 6-hourly runs.
+  # schedule:
+  #   - cron: '0 */6 * * *'   # 00:00, 06:00, 12:00, 18:00 UTC
   workflow_dispatch:
 
 permissions:
